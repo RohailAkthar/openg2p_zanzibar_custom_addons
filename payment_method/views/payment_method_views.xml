@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_partner_relatives_form" model="ir.ui.view">
+        <field name="name">res.partner.relatives.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
+        <field name="arch" type="xml">
+            <!-- Insert Relatives tab after Personal Info (basic_info page) -->
+            <xpath expr="//page[@name='IDS']" position="after">
+                <page string="Payment Mode" name="payment_mode">
+
+                    <group col="2">
+
+                        <!-- Preferred Bank section directly after Other ID -->
+                        <group string="Payment Method">
+                            <field name="payment_mode" />
+                            <field name="bank_name"
+                                invisible="payment_mode != 'bank'" />
+                            <field name="account_num"
+                                invisible="payment_mode != 'bank'" />
+                            <field name="account_name"
+                                invisible="payment_mode != 'bank'" />
+                            <field name="mobile_wallet"
+                                invisible="payment_mode != 'mobile_wallet'" />
+                        </group>
+
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

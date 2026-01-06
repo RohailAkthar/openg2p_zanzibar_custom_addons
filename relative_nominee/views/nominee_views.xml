@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_partner_relatives_form" model="ir.ui.view">
+        <field name="name">res.partner.relatives.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
+        <field name="arch" type="xml">
+            <!-- Insert Relatives tab after Personal Info (basic_info page) -->
+            <xpath expr="//page[@name='basic_info']" position="after">
+                <page name="relatives" string="Nominee">
+                    <group col="2">
+                        <group>
+                            <field name="nominee_first_name" />
+                            <field name="nominee_last_name" />
+                            <field name="nominee_gender" readonly="disabled" string="Gender" />
+                            <field name="nominee_mobile" />
+                            <field name="nominee_zanid" />
+                            <field name="nominee_rel_benf" />
+                        </group>
+                        <group string="Address">
+                            <field name="nominee_house_street" />
+                            <field name="nominee_shehia" />
+                            <field name="nominee_post_code"/>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group>
+                            <field name="nominee_region"/>
+                            <field name="nominee_district" />
+                        </group>
+
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

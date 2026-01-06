@@ -1,0 +1,83 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* relative_nominee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2025-12-12 16:24+0000\n"
+"Last-Translator: AI Assistant <assistant@perplexity.ai>\n"
+"Language-Team: Swahili <https://translate.openspp.org/projects/openg2p/"
+"relative_nominee/sw/>\n"
+"Language: sw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Generator: Weblate 4.14\n"
+
+#. module: relative_nominee
+#: model:ir.ui.view,arch_db:relative_nominee.view_partner_relatives_form
+msgid "Relatives"
+msgstr "Wahusiano"
+
+#. module: relative_nominee
+#: model:ir.ui.view,arch_db:relative_nominee.view_partner_relatives_form
+msgid "Address"
+msgstr "Anuani"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_first_name
+msgid "Nominee First Name"
+msgstr "Jina la Kwanza la Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_last_name
+msgid "Nominee Last Name"
+msgstr "Jina la Mwisho la Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_gender
+msgid "Gender"
+msgstr "Jinsia"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_mobile
+msgid "Nominee Mobile"
+msgstr "Simu ya Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_zanid
+msgid "Nominee ZANID"
+msgstr "ZANID ya Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_rel_benf
+msgid "Nominee Relation to Beneficiary"
+msgstr "Uhusiano wa Mteule na Mstahiki"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_house_street
+msgid "Nominee House/Street"
+msgstr "Nyumba/Mtaa wa Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_shehia
+msgid "Nominee Shehia"
+msgstr "Shehia ya Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_post_code
+msgid "Nominee Post Code"
+msgstr "Msimbo wa Posta wa Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_region
+msgid "Nominee Region"
+msgstr "Mkoa wa Mteule"
+
+#. module: relative_nominee
+#: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_district
+msgid "Nominee District"
+msgstr "Wilaya ya Mteule"
