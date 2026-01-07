@@ -11,8 +11,8 @@
                 <field name="benf_zan_id"/>
             </xpath>
             
-            <!-- Add Post Code before Address with proper label -->
-            <xpath expr="//span[@name='address_name']" position="before">
+            <!-- Add Post Code after Address -->
+            <xpath expr="//div[@class='o_address_format']" position="after">
                 <field name="benf_post_code"/>
             </xpath>
             
