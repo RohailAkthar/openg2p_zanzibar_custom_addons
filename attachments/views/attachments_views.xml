@@ -10,6 +10,9 @@
                 <page string="Attachments">
                     <group>
                         <group>
+                            <field name="beneficiary_image" widget="image"/>
+                        </group>
+                        <group>
                             <field name="nominee_image" widget="image"/>
                         </group>
                         <group>

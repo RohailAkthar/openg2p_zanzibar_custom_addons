@@ -12,7 +12,7 @@ class ResPartnerRelatives(models.Model):
     nominee_last_name = fields.Char("Last Name")
     nominee_gender = fields.Selection(selection=_get_nominee_gender_dynamic_selection)
     nominee_mobile = fields.Char("Mobile")
-    nominee_zanid = fields.Char("ZanID")
+    nominee_zanid = fields.Char("ZanID", compute="_compute_nominee_zanid", readonly=True)
     nominee_rel_benf = fields.Selection(
     [
         ("wife", "Wife"),
@@ -40,6 +40,18 @@ class ResPartnerRelatives(models.Model):
     )
 
     nominee_post_code=fields.Char("PO BOX / Post code")
+
+    @api.depends("reg_ids")
+    def _compute_nominee_zanid(self):
+        for record in self:
+            val = False
+            # Check if reg_ids exists
+            if hasattr(record, "reg_ids"):
+                 # Look for Nominee Zanzibar ID
+                 reg_id = record.reg_ids.filtered(lambda r: r.id_type.name == "Nominee Zanzibar ID")
+                 if reg_id:
+                     val = reg_id[0].value
+            record.nominee_zanid = val
 
     @api.model
     def _get_nominee_region_selection(self):

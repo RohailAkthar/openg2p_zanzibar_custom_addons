@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="document_tag_nominee_photo" model="g2p.document.tag">
+            <field name="name">Nominee Photo</field>
+        </record>
+        <record id="document_tag_zan_id_photo" model="g2p.document.tag">
+            <field name="name">Zan ID Photo</field>
+        </record>
+        <record id="document_tag_beneficiary_photo" model="g2p.document.tag">
+            <field name="name">Beneficiary Photo</field>
+        </record>
+    </data>
+</odoo>
