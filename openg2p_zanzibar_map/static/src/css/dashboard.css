@@ -1,0 +1,226 @@
+/* ===== Modern Command Center Layout ===== */
+
+:root {
+    --z-sidebar-bg: #1e293b;    /* Dark Slate Blue */
+    --z-sidebar-text: #f8fafc;
+    --z-body-bg: #f1f5f9;
+    --z-card-bg: #ffffff;
+    --z-primary: #3b82f6;       /* Bright Blue */
+    --z-border: #e2e8f0;
+    --z-sidebar-width: 260px;   /* Fixed compact width */
+}
+
+.o_zanzibar_dashboard {
+    display: flex;
+    height: 95vh;
+    width: 100vw;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow: hidden;
+    background: var(--z-body-bg);
+}
+
+/* ----- 1. LEFT SIDEBAR (Filters + KPI) ----- */
+.o_dashboard_sidebar {
+    width: var(--z-sidebar-width);
+    background: var(--z-sidebar-bg);
+    color: var(--z-sidebar-text);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 20;
+    padding: 1.5rem;
+    gap: 2rem;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+}
+
+
+.o_sidebar_header h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.02em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.o_sidebar_section_title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #94a3b8; /* Muted text */
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+/* Dark Theme Inputs */
+.o_dark_select {
+    width: 100%;
+    background: #334155;
+    border: 1px solid #475569;
+    color: #fff;
+    padding: 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.o_dark_select:focus {
+    border-color: var(--z-primary);
+    background: #1e293b;
+}
+
+/* KPI in Sidebar */
+.o_sidebar_kpi {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 1.25rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+.o_kpi_val_sidebar {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--z-primary);
+    line-height: 1.2;
+}
+
+.o_kpi_label_sidebar {
+    font-size: 0.75rem;
+    color: #cbd5e1;
+}
+
+/* Buttons */
+.o_btn_refresh {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--z-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.o_btn_refresh:hover { background: #2563eb; }
+
+.o_btn_clear {
+    background: transparent;
+    color: #f87171;
+    border: 1px solid #7f1d1d;
+    padding: 0.4rem;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* ----- 2. RIGHT CONTENT AREA (Split Top/Bottom) ----- */
+.o_dashboard_main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents flex overflow */
+}
+
+/* TOP RIGHT: MAP (60% Height) */
+.o_main_map_section {
+    flex: 6; /* 60% */
+    position: relative;
+    background: #e2e8f0;
+    min-height: 0;
+}
+
+.o_map_container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* BOTTOM RIGHT: CHARTS (40% Height) */
+.o_main_charts_section {
+    flex: 4;
+    background: var(--z-body-bg);
+    padding: 1rem;
+    border-top: 1px solid var(--z-border);
+
+    /* The Fix: Grid logic */
+    display: grid;
+    /* 3 equal columns on desktop, 1 on mobile */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 1rem;
+
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent the section itself from growing */
+}
+
+
+/* Chart Cards - Side by Side */
+.o_mini_chart_card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    
+    /* Crucial: prevents chart from pushing card height */
+    min-height: 0; 
+    height: 100%; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    box-sizing: border-box;
+}
+
+.o_chart_title_small {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 0.4rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+
+.o_chart_canvas_wrap {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 250px;
+    /* This allows Chart.js to resize itself to the container */
+    min-height: 0; 
+}
+
+/* Map Loading Overlay */
+.o_map_loader {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 400; /* Above Leaflet */
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .o_main_charts_section {
+        grid-template-columns: repeat(2, 1fr);
+        overflow-y: auto; /* Allow scrolling only on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .o_main_charts_section {
+        grid-template-columns: 1fr;
+        flex: none; /* Let it take natural height if map is hidden or shrunk */
+        height: auto;
+    }
+}

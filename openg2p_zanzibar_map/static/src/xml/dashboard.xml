@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="openg2p_zanzibar_map.MainLayout">
+        <div class="o_zanzibar_dashboard">
+
+            <div class="o_dashboard_sidebar">
+                
+                <div class="o_sidebar_header">
+                    <h1>
+                        <i class="fa fa-map-o"/>
+                        <span>Zanzibar Dashboard</span>
+                    </h1>
+                </div>
+
+                <div class="o_sidebar_kpi">
+                    <span class="o_kpi_val_sidebar">
+                        <t t-esc="state.kpi.total_pensioners || 0"/>
+                    </span>
+                    <span class="o_kpi_label_sidebar">Registered Pensioners</span>
+                </div>
+
+                <div class="o_sidebar_filters">
+                    <div class="o_sidebar_section_title">Filter Data</div>
+                    
+                    <label class="text-white small mb-1">Gender</label>
+                    <select class="o_dark_select" t-on-change="(ev) => this.setFilterGender(ev.target.value || null)">
+                        <option value="">All Genders</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    
+                    <label class="text-white small mb-1">Age Group</label>
+                    <select class="o_dark_select" t-on-change="(ev) => this.setFilterAgeBucket(ev.target.value || null)">
+                        <option value="">All Ages</option>
+                        <!-- <option value="18-69">18 - 69</option> -->
+                        <option value="70-75">70 - 75</option>
+                        <option value="76-80">76 - 80</option>
+                        <option value="81-85">81 - 85</option>
+                        <option value="86-90">86 - 90</option>
+                        <option value="91-95">91 - 95</option>
+                        <option value="96-100">96 - 100</option>
+                        <option value="101+"> &gt; 100</option>
+                    </select>
+
+                    <button class="o_btn_refresh mt-3" t-on-click="fetchData">
+                        <i class="fa fa-refresh me-1"/> Refresh
+                    </button>
+
+                    <t t-if="hasActiveFilters">
+                        <button class="o_btn_clear" t-on-click="clearFilters">
+                            Clear Filters
+                        </button>
+                    </t>
+                </div>
+            </div>
+
+            <div class="o_dashboard_main">
+                
+                <div class="o_main_map_section">
+                    <MapComponent
+                        data="state.map_data"
+                    />
+                    <div t-if="state.loading" class="o_map_loader">
+                        <i class="fa fa-circle-o-notch fa-spin"/>
+                        <span>Refreshing Map...</span>
+                    </div>
+                </div>
+
+                <div class="o_main_charts_section" t-if="!state.loading">
+                    
+                    <div class="o_mini_chart_card">
+                        <div class="o_chart_title_small">Age Distribution</div>
+                        <div class="o_chart_canvas_wrap">
+                            <ChartComponent
+                                type="'pie'"
+                                data_label="'Count'"
+                                labels="Object.keys(state.charts.age || {})"
+                                data="Object.values(state.charts.age || {})"
+                                backgroundColor="['#3b82f6','#60a5fa','#93c5fd','#bfdbfe']"
+                                options="{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } } }"
+                                chartType="'age'"
+                                onSegmentClick="applyFilterFromChart"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="o_mini_chart_card">
+                        <div class="o_chart_title_small">Gender Split</div>
+                        <div class="o_chart_canvas_wrap">
+                            <ChartComponent
+                                type="'doughnut'"
+                                data_label="'Count'"
+                                labels="Object.keys(state.charts.gender || {})"
+                                data="Object.values(state.charts.gender || {})"
+                                backgroundColor="['#3b82f6','#ec4899']"
+                                options="{ maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } } }"
+                                chartType="'gender'"
+                                onSegmentClick="applyFilterFromChart"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="o_mini_chart_card">
+                        <div class="o_chart_title_small">Registrations by Region</div>
+                        <div class="o_chart_canvas_wrap">
+                            <ChartComponent
+                                t-if="state.charts.region_data"
+                                type="'bar'"
+                                labels="state.charts.region_data ? state.charts.region_data.labels || [] : []"
+                                data="(state.charts.region_data and state.charts.region_data.datasets and state.charts.region_data.datasets[0]) ? state.charts.region_data.datasets[0].data : []"
+                                data_label="'Registrations'"
+                                backgroundColor="['#3b82f6']"
+                                chartType="'region'"
+                                onSegmentClick="applyFilterFromChart"
+                                options="{ maintainAspectRatio: false, responsive: true }"
+                            />
+                            <div t-else="" class="text-center text-muted small mt-4">No data</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </t>
+</templates>
