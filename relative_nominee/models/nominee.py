@@ -12,7 +12,7 @@ class ResPartnerRelatives(models.Model):
     nominee_last_name = fields.Char("Last Name")
     nominee_gender = fields.Selection(selection=_get_nominee_gender_dynamic_selection)
     nominee_mobile = fields.Char("Mobile")
-    nominee_zanid = fields.Char("ZanID", compute="_compute_nominee_zanid", readonly=True)
+    nominee_zanid = fields.Char("ZanID", compute="_compute_nominee_zanid", readonly=True, store=True)
     nominee_rel_benf = fields.Selection(
     [
         ("wife", "Wife"),
