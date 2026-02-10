@@ -4,7 +4,7 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     benf_post_code = fields.Char(string="Post Code")
-    benf_zan_id = fields.Char(string="Zan ID", compute="_compute_benf_zan_id", readonly=True, store=true)
+    benf_zan_id = fields.Char(string="Zan ID", compute="_compute_benf_zan_id", readonly=True, store=True)
     disability = fields.Selection(
         [("yes", "Yes"), ("no", "No")], string="Do you have any disability?"
     )
