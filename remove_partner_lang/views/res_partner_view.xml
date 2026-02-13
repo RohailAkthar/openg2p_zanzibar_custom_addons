@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="hide_lang_in_individual_form" model="ir.ui.view">
         <field name="name">hide.lang.individual.registrant.form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
         <field name="arch" type="xml">
-
             <!-- Remove Language label -->
             <xpath expr="//label[@for='lang']" position="replace"/>
-
             <!-- Remove Language field container -->
             <xpath expr="//div[field[@name='lang']]" position="replace"/>
-
         </field>
     </record>
 </odoo>
