@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo >
+    <!-- Regions (ADM1) from tz.json -->
+    <record id="region_TZ01" model="g2p.region">
+        <field name="name">Arusha</field>
+        <field name="code">TZ01</field>
+    </record>
+
+    <record id="region_TZ02" model="g2p.region">
+        <field name="name">Dar-es-salaam</field>
+        <field name="code">TZ02</field>
+    </record>
+
+    <record id="region_TZ04" model="g2p.region">
+        <field name="name">Iringa</field>
+        <field name="code">TZ04</field>
+    </record>
+
+    <record id="region_TZ28" model="g2p.region">
+        <field name="name">Katavi</field>
+        <field name="code">TZ28</field>
+    </record>
+
+    <record id="region_TZ09" model="g2p.region">
+        <field name="name">Kilimanjaro</field>
+        <field name="code">TZ09</field>
+    </record>
+
+    <record id="region_TZ10" model="g2p.region">
+        <field name="name">Kusini Pemba</field>
+        <field name="code">TZ10</field>
+    </record>
+
+    <record id="region_TZ12" model="g2p.region">
+        <field name="name">Lindi</field>
+        <field name="code">TZ12</field>
+    </record>
+
+    <record id="region_TZ15" model="g2p.region">
+        <field name="name">Mjini Magharibi</field>
+        <field name="code">TZ15</field>
+    </record>
+
+    <record id="region_TZ17" model="g2p.region">
+        <field name="name">Mtwara</field>
+        <field name="code">TZ17</field>
+    </record>
+
+    <record id="region_TZ18" model="g2p.region">
+        <field name="name">Mwanza</field>
+        <field name="code">TZ18</field>
+    </record>
+
+    <record id="region_TZ19" model="g2p.region">
+        <field name="name">Pwani</field>
+        <field name="code">TZ19</field>
+    </record>
+
+    <record id="region_TZ20" model="g2p.region">
+        <field name="name">Rukwa</field>
+        <field name="code">TZ20</field>
+    </record>
+
+    <record id="region_TZ23" model="g2p.region">
+        <field name="name">Singida</field>
+        <field name="code">TZ23</field>
+    </record>
+
+    <record id="region_TZ24" model="g2p.region">
+        <field name="name">Tabora</field>
+        <field name="code">TZ24</field>
+    </record>
+
+    <!-- Districts (ADM2) for Arusha (TZ01) -->
+    <record id="district_arusha" model="g2p.district">
+        <field name="name">Arusha</field>
+        <field name="code">TZ0101</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_arusha_urban" model="g2p.district">
+        <field name="name">Arusha Urban</field>
+        <field name="code">TZ0102</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_karatu" model="g2p.district">
+        <field name="name">Karatu</field>
+        <field name="code">TZ0103</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_longido" model="g2p.district">
+        <field name="name">Longido</field>
+        <field name="code">TZ0104</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_meru" model="g2p.district">
+        <field name="name">Meru</field>
+        <field name="code">TZ0105</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_monduli" model="g2p.district">
+        <field name="name">Monduli</field>
+        <field name="code">TZ0106</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+    <record id="district_ngorongoro" model="g2p.district">
+        <field name="name">Ngorongoro</field>
+        <field name="code">TZ0107</field>
+        <field name="province_id" ref="region_TZ01"/>
+    </record>
+
+    <!-- Districts (ADM2) for Dar-es-salaam (TZ02) -->
+    <record id="district_ilala" model="g2p.district">
+        <field name="name">Ilala</field>
+        <field name="code">TZ0201</field>
+        <field name="province_id" ref="region_TZ02"/>
+    </record>
+    <record id="district_kinondoni" model="g2p.district">
+        <field name="name">Kinondoni</field>
+        <field name="code">TZ0202</field>
+        <field name="province_id" ref="region_TZ02"/>
+    </record>
+    <record id="district_temeke" model="g2p.district">
+        <field name="name">Temeke</field>
+        <field name="code">TZ0203</field>
+        <field name="province_id" ref="region_TZ02"/>
+    </record>
+    <record id="district_kigamboni" model="g2p.district">
+        <field name="name">Kigamboni</field>
+        <field name="code">TZ0204</field>
+        <field name="province_id" ref="region_TZ02"/>
+    </record>
+    <record id="district_ubungo" model="g2p.district">
+        <field name="name">Ubungo</field>
+        <field name="code">TZ0205</field>
+        <field name="province_id" ref="region_TZ02"/>
+    </record>
+
+    <!-- Districts (ADM2) for Iringa (TZ04) -->
+    <record id="district_iringa_municipal" model="g2p.district">
+        <field name="name">Iringa Urban</field>
+        <field name="code">TZ0401</field>
+        <field name="province_id" ref="region_TZ04"/>
+    </record>
+    <record id="district_mafinga_tc" model="g2p.district">
+        <field name="name">Mafinga</field>
+        <field name="code">TZ0402</field>
+        <field name="province_id" ref="region_TZ04"/>
+    </record>
+    <record id="district_iringa_rural" model="g2p.district">
+        <field name="name">Iringa</field>
+        <field name="code">TZ0403</field>
+        <field name="province_id" ref="region_TZ04"/>
+    </record>
+    <record id="district_kilolo" model="g2p.district">
+        <field name="name">Kilolo</field>
+        <field name="code">TZ0404</field>
+        <field name="province_id" ref="region_TZ04"/>
+    </record>
+    <record id="district_mufindi" model="g2p.district">
+        <field name="name">Mufindi</field>
+        <field name="code">TZ0405</field>
+        <field name="province_id" ref="region_TZ04"/>
+    </record>
+
+    <!-- Districts (ADM2) for Katavi (TZ28) -->
+    <record id="district_mpanda_tc" model="g2p.district">
+        <field name="name">Mpanda Urban</field>
+        <field name="code">TZ2801</field>
+        <field name="province_id" ref="region_TZ28"/>
+    </record>
+    <record id="district_mlele" model="g2p.district">
+        <field name="name">Mlele</field>
+        <field name="code">TZ2802</field>
+        <field name="province_id" ref="region_TZ28"/>
+    </record>
+    <record id="district_mpanda_rural" model="g2p.district">
+        <field name="name">Mpanda</field>
+        <field name="code">TZ2803</field>
+        <field name="province_id" ref="region_TZ28"/>
+    </record>
+    <record id="district_mpimbwe" model="g2p.district">
+        <field name="name">Mpimbwe</field>
+        <field name="code">TZ2804</field>
+        <field name="province_id" ref="region_TZ28"/>
+    </record>
+    <record id="district_nsimbo" model="g2p.district">
+        <field name="name">Nsimbo</field>
+        <field name="code">TZ2805</field>
+        <field name="province_id" ref="region_TZ28"/>
+    </record>
+
+    <!-- Districts (ADM2) for Kilimanjaro (TZ09) -->
+    <record id="district_moshi_municipal" model="g2p.district">
+        <field name="name">Moshi Urban</field>
+        <field name="code">TZ0901</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_hai" model="g2p.district">
+        <field name="name">Hai</field>
+        <field name="code">TZ0902</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_moshi_rural" model="g2p.district">
+        <field name="name">Moshi</field>
+        <field name="code">TZ0903</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_mwanga" model="g2p.district">
+        <field name="name">Mwanga</field>
+        <field name="code">TZ0904</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_rombo" model="g2p.district">
+        <field name="name">Rombo</field>
+        <field name="code">TZ0905</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_same" model="g2p.district">
+        <field name="name">Same</field>
+        <field name="code">TZ0906</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+    <record id="district_siha" model="g2p.district">
+        <field name="name">Siha</field>
+        <field name="code">TZ0907</field>
+        <field name="province_id" ref="region_TZ09"/>
+    </record>
+
+    <!-- Districts (ADM2) for Kusini Pemba (TZ10) -->
+    <record id="district_chake_chake" model="g2p.district">
+        <field name="name">Chake Chake</field>
+        <field name="code">TZ1001</field>
+        <field name="province_id" ref="region_TZ10"/>
+    </record>
+    <record id="district_mkoani" model="g2p.district">
+        <field name="name">Mkoani</field>
+        <field name="code">TZ1002</field>
+        <field name="province_id" ref="region_TZ10"/>
+    </record>
+
+    <!-- Districts (ADM2) for Lindi (TZ12) -->
+    <record id="district_lindi_urban" model="g2p.district">
+        <field name="name">Lindi Urban</field>
+        <field name="code">TZ1201</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+    <record id="district_kilwa" model="g2p.district">
+        <field name="name">Kilwa</field>
+        <field name="code">TZ1202</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+    <record id="district_lindi_rural" model="g2p.district">
+        <field name="name">Lindi</field>
+        <field name="code">TZ1203</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+    <record id="district_liwale" model="g2p.district">
+        <field name="name">Liwale</field>
+        <field name="code">TZ1204</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+    <record id="district_nachingwea" model="g2p.district">
+        <field name="name">Nachingwea</field>
+        <field name="code">TZ1205</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+    <record id="district_ruangwa" model="g2p.district">
+        <field name="name">Ruangwa</field>
+        <field name="code">TZ1206</field>
+        <field name="province_id" ref="region_TZ12"/>
+    </record>
+
+    <!-- Districts (ADM2) for Mjini Magharibi (TZ15) -->
+    <record id="district_mjini" model="g2p.district">
+        <field name="name">Mjini</field>
+        <field name="code">TZ1501</field>
+        <field name="province_id" ref="region_TZ15"/>
+    </record>
+    <record id="district_magharibi_a" model="g2p.district">
+        <field name="name">Magharibi A</field>
+        <field name="code">TZ1502</field>
+        <field name="province_id" ref="region_TZ15"/>
+    </record>
+    <record id="district_magharibi_b" model="g2p.district">
+        <field name="name">Magharibi B</field>
+        <field name="code">TZ1503</field>
+        <field name="province_id" ref="region_TZ15"/>
+    </record>
+
+    <!-- Districts (ADM2) for Mtwara (TZ17) -->
+    <record id="district_mtwara_municipal" model="g2p.district">
+        <field name="name">Mtwara Urban</field>
+        <field name="code">TZ1701</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_masasi_tc" model="g2p.district">
+        <field name="name">Masasi Urban</field>
+        <field name="code">TZ1702</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_nanyumbu_tc" model="g2p.district">
+        <field name="name">Nanyumbu</field>
+        <field name="code">TZ1703</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_newala_tc" model="g2p.district">
+        <field name="name">Newala Urban</field>
+        <field name="code">TZ1704</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_masasi_rural" model="g2p.district">
+        <field name="name">Masasi</field>
+        <field name="code">TZ1705</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_mtwara_rural" model="g2p.district">
+        <field name="name">Mtwara</field>
+        <field name="code">TZ1706</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_nanyumbu_rural" model="g2p.district">
+        <field name="name">Nanyumbu</field>
+        <field name="code">TZ1707</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_newala_rural" model="g2p.district">
+        <field name="name">Newala</field>
+        <field name="code">TZ1708</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+    <record id="district_tandahimba" model="g2p.district">
+        <field name="name">Tandahimba</field>
+        <field name="code">TZ1709</field>
+        <field name="province_id" ref="region_TZ17"/>
+    </record>
+
+    <!-- Districts (ADM2) for Mwanza (TZ18) -->
+    <record id="district_nyamagana" model="g2p.district">
+        <field name="name">Nyamagana</field>
+        <field name="code">TZ1801</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_ilemela" model="g2p.district">
+        <field name="name">Ilemela</field>
+        <field name="code">TZ1802</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_buchosa" model="g2p.district">
+        <field name="name">Buchosa</field>
+        <field name="code">TZ1803</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_kwimba" model="g2p.district">
+        <field name="name">Kwimba</field>
+        <field name="code">TZ1804</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_magu" model="g2p.district">
+        <field name="name">Magu</field>
+        <field name="code">TZ1805</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_misungwi" model="g2p.district">
+        <field name="name">Misungwi</field>
+        <field name="code">TZ1806</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_sengerema" model="g2p.district">
+        <field name="name">Sengerema</field>
+        <field name="code">TZ1807</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+    <record id="district_ukerewe" model="g2p.district">
+        <field name="name">Ukerewe</field>
+        <field name="code">TZ1808</field>
+        <field name="province_id" ref="region_TZ18"/>
+    </record>
+
+    <!-- Districts (ADM2) for Pwani (TZ19) -->
+    <record id="district_kibaha_tc" model="g2p.district">
+        <field name="name">Kibaha Urban</field>
+        <field name="code">TZ1901</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_bagamoyo" model="g2p.district">
+        <field name="name">Bagamoyo</field>
+        <field name="code">TZ1902</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_chalinze" model="g2p.district">
+        <field name="name">Chalinze</field>
+        <field name="code">TZ1903</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_kibaha_rural" model="g2p.district">
+        <field name="name">Kibaha</field>
+        <field name="code">TZ1904</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_kisarawe" model="g2p.district">
+        <field name="name">Kisarawe</field>
+        <field name="code">TZ1905</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_mafia" model="g2p.district">
+        <field name="name">Mafia</field>
+        <field name="code">TZ1906</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_mkuranga" model="g2p.district">
+        <field name="name">Mkuranga</field>
+        <field name="code">TZ1907</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+    <record id="district_rufiji" model="g2p.district">
+        <field name="name">Rufiji</field>
+        <field name="code">TZ1908</field>
+        <field name="province_id" ref="region_TZ19"/>
+    </record>
+
+    <!-- Districts (ADM2) for Rukwa (TZ20) -->
+    <record id="district_sumbawanga_municipal" model="g2p.district">
+        <field name="name">Sumbawanga Urban</field>
+        <field name="code">TZ2001</field>
+        <field name="province_id" ref="region_TZ20"/>
+    </record>
+    <record id="district_kalambo" model="g2p.district">
+        <field name="name">Kalambo</field>
+        <field name="code">TZ2002</field>
+        <field name="province_id" ref="region_TZ20"/>
+    </record>
+    <record id="district_nkasi" model="g2p.district">
+        <field name="name">Nkasi</field>
+        <field name="code">TZ2003</field>
+        <field name="province_id" ref="region_TZ20"/>
+    </record>
+    <record id="district_sumbawanga_rural" model="g2p.district">
+        <field name="name">Sumbawanga</field>
+        <field name="code">TZ2004</field>
+        <field name="province_id" ref="region_TZ20"/>
+    </record>
+
+    <!-- Districts (ADM2) for Singida (TZ23) -->
+    <record id="district_singida_municipal" model="g2p.district">
+        <field name="name">Singida Urban</field>
+        <field name="code">TZ2301</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_ikungi" model="g2p.district">
+        <field name="name">Ikungi</field>
+        <field name="code">TZ2302</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_iramba" model="g2p.district">
+        <field name="name">Iramba</field>
+        <field name="code">TZ2303</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_itigi" model="g2p.district">
+        <field name="name">Itigi</field>
+        <field name="code">TZ2304</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_manyoni" model="g2p.district">
+        <field name="name">Manyoni</field>
+        <field name="code">TZ2305</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_mkalama" model="g2p.district">
+        <field name="name">Mkalama</field>
+        <field name="code">TZ2306</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+    <record id="district_singida_rural" model="g2p.district">
+        <field name="name">Singida</field>
+        <field name="code">TZ2307</field>
+        <field name="province_id" ref="region_TZ23"/>
+    </record>
+
+    <!-- Districts (ADM2) for Tabora (TZ24) -->
+    <record id="district_tabora_municipal" model="g2p.district">
+        <field name="name">Tabora Urban</field>
+        <field name="code">TZ2401</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_nzega_tc" model="g2p.district">
+        <field name="name">Nzega Urban</field>
+        <field name="code">TZ2402</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_igunga" model="g2p.district">
+        <field name="name">Igunga</field>
+        <field name="code">TZ2403</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_kaliua" model="g2p.district">
+        <field name="name">Kaliua</field>
+        <field name="code">TZ2404</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_nzega_rural" model="g2p.district">
+        <field name="name">Nzega</field>
+        <field name="code">TZ2405</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_sikonge" model="g2p.district">
+        <field name="name">Sikonge</field>
+        <field name="code">TZ2406</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_urambo" model="g2p.district">
+        <field name="name">Urambo</field>
+        <field name="code">TZ2407</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+    <record id="district_uyui" model="g2p.district">
+        <field name="name">Uyui</field>
+        <field name="code">TZ2408</field>
+        <field name="province_id" ref="region_TZ24"/>
+    </record>
+</odoo>

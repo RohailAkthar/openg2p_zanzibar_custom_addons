@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+
+   <record id="sr_dashboard_action" model="ir.actions.client">
+      <field name="name">Dashboard</field>
+      <field name="tag">z_dashboard_main</field>
+   </record>
+
+   <menuitem
+        name="Dashboard"
+        id="sr_dashboard"
+        sequence="0"
+        action="sr_dashboard_action"
+        parent="g2p_registry_base.g2p_main_menu_root"
+    />
+
+</odoo>
