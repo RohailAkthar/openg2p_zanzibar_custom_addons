@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
         <field name="arch" type="xml">
             <!-- Insert Relatives tab after Personal Info (basic_info page) -->
-            <xpath expr="//page[@name='IDS']" position="after">
+            <xpath expr="//page[@name='ids']" position="after">
                 <page string="Payment Mode" name="payment_mode">
 
                     <group col="2">

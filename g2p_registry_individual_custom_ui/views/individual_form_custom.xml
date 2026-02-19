@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_individuals_form_custom" model="ir.ui.view">
+        <field name="name">view_individuals_form_custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Double the image size -->
+            <!-- <xpath expr="//field[@name='image_1920']" position="attributes">
+                <attribute name="options">{'preview_image': 'avatar_182'}</attribute>
+                <attribute name="class">oe_avatar_custom</attribute>
+            </xpath> -->
+            <!-- Extend width of family_name -->
+            <xpath expr="//field[@name='family_name']" position="attributes">
+                <attribute name="style">width:250px</attribute>
+            </xpath>
+
+            <!-- Extend width of given_name -->
+            <xpath expr="//field[@name='given_name']" position="attributes">
+                <attribute name="style">width:250px</attribute>
+            </xpath>
+
+            <!-- Extend width of middle_name -->
+            <xpath expr="//field[@name='middle_name']" position="attributes">
+                <attribute name="style">width:250px</attribute>
+            </xpath>
+
+            <!-- Make Pensioner ID Readonly -->
+            <xpath expr="//field[@name='pensioner_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_individuals_tree_custom" model="ir.ui.view">
+        <field name="name">view_individuals_tree_custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="pensioner_id" />
+                <field name="benf_zan_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

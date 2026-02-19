@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="social_registry_profile_custom.UserMenu" t-inherit="web.UserMenu" t-inherit-mode="extension">
+        <xpath expr="//small[hasclass('oe_topbar_name')]" position="attributes">
+            <attribute name="class" add="d-lg-inline-block" remove="d-none" separator=" "/>
+        </xpath>
+        <xpath expr="//small[hasclass('oe_topbar_name')]" position="attributes">
+            <attribute name="t-att-class" remove="{'d-lg-inline-block' : env.debug}" separator=" "/>
+        </xpath>
+        <xpath expr="//small[hasclass('oe_topbar_name')]/mark" position="attributes">
+            <attribute name="t-if">env.debug</attribute>
+        </xpath>
+    </t>
+</templates>

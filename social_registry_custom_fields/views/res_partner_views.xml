@@ -5,11 +5,73 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
         <field name="arch" type="xml">
-            <!-- Move fields to the right-side group -->
-            <!-- Add Zan ID after Registration Date -->
-            <xpath expr="//field[@name='registration_date']" position="after">
-                <field name="benf_zan_id"/>
+            <!-- Remove Registration Date from its original location FIRST to avoid finding the new one later -->
+            <xpath expr="//field[@name='registration_date']" position="replace">
+                <!-- Removed -->
             </xpath>
+
+            <!-- Refactor Header: 3-Column Layout (Names | Info | Photo) -->
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title mb24">
+                     <div class="row">
+                        <!-- Column 1: Names -->
+                        <div class="col-4">
+                            <h1 class="oe_read_only">
+                                <field id="registrant" name="name" readonly="1" class="oe_read_only" />
+                            </h1>
+                            <div class="oe_edit_only">
+                                <h2>
+                                    <field name="given_name" placeholder="First Name..." required="1" class="oe_edit_only" readonly="disabled"/>
+                                </h2>
+                                <h2>
+                                    <field name="middle_name" placeholder="Middle Name..." class="oe_edit_only" readonly="disabled" nolabel="1" required="1"/>
+                                </h2>
+                                <h2>
+                                    <field name="family_name" placeholder="Surname..." required="1" class="oe_edit_only" readonly="disabled"/>
+                                </h2>
+                            </div>
+                        </div>
+                        <!-- Column 2: Registration Info -->
+                        <div class="col-5 mt-3">
+                            <div style="display: table;">
+                                <div style="display: table-row;">
+                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;  white-space: nowrap;">Registration Date</div>
+                                    <div style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
+                                </div>
+                                <div style="display: table-row;">
+                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;" class="fw-bold">Pensioner ID</div>
+                                    <div style="display: table-cell; padding-bottom: 10px;"><field name="pensioner_id" readonly="1" nolabel="1"/></div>
+                                </div>
+                                <div style="display: table-row;">
+                                    <div style="display: table-cell; padding-right: 15px;" class="fw-bold">Zan ID</div>
+                                    <div style="display: table-cell;"><field name="benf_zan_id" readonly="1" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column 3: Profile Photo -->
+                        <div class="col-3 text-end ">
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                style="width:200px; height:200px; margin-left: 250px;"
+                                options="{'preview_image': 'avatar_1024'}"
+                                nolabel="1"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+            <!-- Hide the original image field since we moved it to the header block -->
+            <xpath expr="//field[@name='image_1920']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Registration Date removal moved to top -->
+
+            <!-- Remove the previous attempt to add fields after registration_date (since registration_date is moved) -->
+            <!-- Note: The above replace usually handles it if the original xpath was targeted there, but we need to clean up the previous file content manually if it was there. -->
+            <!-- Actually, since I'm editing the file, I should just remove the old blocks. The replace_file_content below targets the whole file structure related to these changes. -->
             
             <!-- Add Post Code after Address -->
             <xpath expr="//div[@class='o_address_format']" position="after">
@@ -18,9 +80,23 @@
             
             <!-- Add the Yes/No questions to the first group (right column) to align with Post Code/Address -->
             <xpath expr="//page[@name='basic_info']/group[1]/group[2]" position="inside">
-                <field name="disability" widget="radio" options="{'horizontal': true}"/>
-                <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/>
-                <field name="has_health_insurance" widget="radio" options="{'horizontal': true}"/>
+                <group string="Additional Information" colspan="2">
+                    <field name="disability" widget="radio" options="{'horizontal': true}"/>
+                    <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/>
+                    <field name="has_health_insurance" widget="radio" options="{'horizontal': true}"/>
+                </group>
+            </xpath>
+
+            <!-- Move Date of Birth fields to under the District field (left column) -->
+            <xpath expr="//field[@name='district']" position="after">
+                <field name="birthdate" readonly="disabled" colspan="2" placeholder="mm/dd/yyyy"/>
+                <field name="age" />
+                <field name="gender" readonly="disabled" />
+            </xpath>
+
+            <!-- Remove the original group containing these fields to avoid duplication -->
+            <xpath expr="//page[@name='basic_info']/group[2]/group[1]" position="replace">
+                <!-- Removed DOB group -->
             </xpath>
         </field>
     </record>

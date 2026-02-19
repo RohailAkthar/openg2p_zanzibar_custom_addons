@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="social_registry_profile_custom_base"
+        inherit_id="g2p_agent_portal_base.base"
+        name="Social Registry Profile Custom Base"
+        priority="1000"
+    >
+        <xpath expr="//div[hasclass('user')]//a[hasclass('dropdown-toggle')]" position="inside">
+            <span class="ms-2 text-white" t-esc="request.env.user.name" style="font-weight: 500; vertical-align: middle;" />
+        </xpath>
+    </template>
+</odoo>

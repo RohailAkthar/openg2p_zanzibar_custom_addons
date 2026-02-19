@@ -1,0 +1,11 @@
+.header-container .nav .nav-user {
+    width: auto !important;
+}
+
+.nav-user .user {
+    width: auto !important;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    /* Add spacing between language selector and user profile */
+}

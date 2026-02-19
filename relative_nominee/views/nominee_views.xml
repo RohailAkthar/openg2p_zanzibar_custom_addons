@@ -5,31 +5,55 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
         <field name="arch" type="xml">
+            <!-- Filter Beneficiary Phones (existing field) -->
+            <!-- Filter Beneficiary Phones (existing field) -->
+            <xpath expr="//field[@name='phone_number_ids']" position="replace">
+                <field name="beneficiary_phone_number_ids" context="{'default_phone_owner': 'beneficiary', 'reg_form': True}" nolabel="1" colspan="2">
+                    <tree decoration-danger="disabled">
+                        <field name="phone_no" string="Phone Numbers" widget="phone" options="{'enable_sms': false}"/>
+                        <field name="country_id" />
+                        <field name="date_collected" />
+                        <field name="disabled" column_invisible="1" />
+                    </tree>
+                </field>
+            </xpath>
+
             <!-- Insert Relatives tab after Personal Info (basic_info page) -->
             <xpath expr="//page[@name='basic_info']" position="after">
                 <page name="relatives" string="Nominee info">
                     <group col="2">
                         <group>
                             <field name="nominee_first_name" />
+                            <field name="nominee_middle_name" />
                             <field name="nominee_last_name" />
                             <field name="nominee_gender" readonly="disabled" string="Gender" />
-                            <field name="nominee_mobile" />
+                            <!-- <field name="nominee_mobile" /> -->
                             <field name="nominee_zanid" />
                             <field name="nominee_rel_benf" />
                         </group>
+                        <group string="Phone Numbers">
+                        <field name="nominee_phone_number_ids" context="{'default_phone_owner': 'nominee', 'reg_form': True}" nolabel="1" colspan="2">
+                            <tree decoration-danger="disabled">
+                                <field name="phone_no" string="Phone Numbers" widget="phone" options="{'enable_sms': false}"/>
+                                <field name="country_id" />
+                                <field name="date_collected" />
+                                <field name="disabled" column_invisible="1" />
+                            </tree>
+                        </field>
+                    </group>
+
+                    </group>
+                    <group col="2">
                         <group>
                             <field name="nominee_house_street" />
                             <field name="nominee_shehia" />
                             <field name="nominee_post_code"/>
-                        </group>
-                    </group>
-                    <group col="2">
-                        <group>
                             <field name="nominee_region"/>
                             <field name="nominee_district" />
                         </group>
 
                     </group>
+                    
                 </page>
             </xpath>
         </field>
