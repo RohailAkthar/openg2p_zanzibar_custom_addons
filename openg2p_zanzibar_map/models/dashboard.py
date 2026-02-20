@@ -156,6 +156,9 @@ class DashboardLogic(models.Model):
         # ---------------------------------------------------
         district_counts = {}
         province_counts = {}
+        province_counts_name_only = {}
+        
+
 
         if age_bucket:
             # When filtered by age, build manually from partners
@@ -177,6 +180,9 @@ class DashboardLogic(models.Model):
                     if p.region.name:
                         province_counts[p.region.name] = (
                             province_counts.get(p.region.name, 0) + 1
+                        )
+                        province_counts_name_only[p.region.name] = (
+                            province_counts_name_only.get(p.region.name, 0) + 1
                         )
 
         else:
@@ -210,6 +216,7 @@ class DashboardLogic(models.Model):
                     province_counts[region.code] = count
                 if region.name:
                     province_counts[region.name] = count
+                    province_counts_name_only[region.name] = count
 
         # ---------------------------------------------------
         # Chart Region Data (Names Only)
@@ -218,8 +225,7 @@ class DashboardLogic(models.Model):
         chart_labels = []
         chart_values = []
 
-        for key, value in province_counts.items():
-            if not key.startswith("TZ"):  # filter out codes
+        for key, value in province_counts_name_only.items():
                 chart_labels.append(key)
                 chart_values.append(value)
 
