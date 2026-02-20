@@ -17,7 +17,7 @@
                     <div class="o_sidebar_section_title">Refine Data</div>
 
                     <label class="o_input_label">Gender</label>
-                    <select class="o_prof_select"
+                    <select class="o_prof_select select" t-att-value="state.filters.gender"
                         t-on-change="(ev) => this.setFilterGender(ev.target.value || null)">
                         <option value="">All Genders</option>
                         <option value="male">Male</option>
@@ -25,7 +25,7 @@
                     </select>
 
                     <label class="o_input_label">Age Bracket</label>
-                    <select class="o_prof_select"
+                    <select class="o_prof_select select" t-att-value="state.filters.age_bucket"
                         t-on-change="(ev) => this.setFilterAgeBucket(ev.target.value || null)">
                         <option value="">All Ages</option>
                         <option value="70-75">70 - 75</option>
@@ -36,9 +36,9 @@
                         <option value="101+"> &gt; 100</option>
                     </select>
 
-                    <button class="o_btn_apply mt-3" t-on-click="fetchData">
+                    <!-- <button class="o_btn_apply mt-3" t-on-click="fetchData">
                         Apply Filters
-                    </button>
+                    </button> -->
 
                     <t t-if="hasActiveFilters">
                         <button class="o_btn_clear" t-on-click="clearFilters">
@@ -55,6 +55,7 @@
                     <MapComponent
                         data="state.map_data"
                         filters="state.filters"
+                        province_data="state.province_data"
                         onMapClick="applyFilterFromMap"
                     />
                     <div class="o_map_kpi_floating">
@@ -75,7 +76,9 @@
 
                         <div class="o_chart_body">
                             <ChartComponent
+                                t-if="state.charts.age"
                                 type="'pie'"
+                                title="'Age Distribution'"
                                 data_label="'Count'"
                                 labels="Object.keys(state.charts.age || {})"
                                 data="Object.values(state.charts.age || {})"
@@ -83,14 +86,19 @@
                                 chartType="'age'"
                                 onSegmentClick="applyFilterFromChart"
                             />
+                                <div t-else="" class="text-center text-muted small mt-4">No data
+                                    available
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
                     <div class="o_chart_card o_card_gender">
 
                         <div class="o_chart_body">
                             <ChartComponent
+                                t-if="state.charts.gender"
                                 type="'doughnut'"
+                                title="'Gender Split'"
                                 data_label="'Count'"
                                 labels="Object.keys(state.charts.gender || {})"
                                 data="Object.values(state.charts.gender || {})"
@@ -99,6 +107,8 @@
                                 chartType="'gender'"
                                 onSegmentClick="applyFilterFromChart"
                             />
+                             <div t-else="" class="text-center text-muted small mt-4">No data
+                                available</div>
                         </div>
                     </div>
 

@@ -16,6 +16,32 @@
     --z-text-light: #64748b;
     
 }
+.select {
+    background: linear-gradient(135deg, #111c26, #eef2ff);
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* Hover */
+.select:hover {
+    border-color: #6366f1;
+}
+.select option {
+    background-color: #1E293B !important;
+    color: #c1c4ca !important;
+}
+
+.o_chart_optional_title{
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--z-text-light);
+    /* margin-bottom: 0.5rem; */
+    text-align: center;
+}
 
 .o_zanzibar_dashboard {
     display: flex;
