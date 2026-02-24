@@ -76,7 +76,7 @@ export class ChartComponent extends Component {
             },
             plugins: {
                 legend: {
-                    display: this.props.type === 'pie' || this.props.type === 'doughnut',
+                    display: false,
                     position: 'bottom',
                     labels: {
                         boxWidth: 12,

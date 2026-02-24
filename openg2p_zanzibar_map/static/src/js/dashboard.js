@@ -39,8 +39,27 @@ export class ZDashboard extends Component {
         this.state.kpi = data.kpi || {};
         this.state.charts = data.charts || {};
         this.state.map_data = data.map_data || {};
+        this.state.province_data = data.province_data || {};
         this.state.loading = false;
     }
+
+setFilterGender(value) {
+    this.state.filters.gender = value || null;
+    console.log("Setting gender filter to:", this.state.filters.gender);
+    this.fetchData();
+}
+
+setFilterAgeBucket(value) {
+    this.state.filters.age_bucket = value || null;
+    console.log("Setting age bucket filter to:", this.state.filters.age_bucket);
+    this.fetchData();
+}
+
+
+get hasActiveFilters() {
+    const f = this.state.filters;
+    return !!(f.gender || f.age_bucket || f.region || f.district);
+}
 
     /**
      * Updated to be additive. Clicking a chart adds to existing filters.
