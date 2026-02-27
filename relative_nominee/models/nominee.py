@@ -8,11 +8,11 @@ class ResPartnerRelatives(models.Model):
         return [(option.value, option.code) for option in options]
 
     # Your existing fields...
-    nominee_first_name = fields.Char("First Name")
-    nominee_middle_name = fields.Char("Middle Name")
-    nominee_last_name = fields.Char("Surname")
-    nominee_gender = fields.Selection(selection=_get_nominee_gender_dynamic_selection)
-    nominee_mobile = fields.Char("Mobile")
+    nominee_first_name = fields.Char("First Name", tracking=True)
+    nominee_middle_name = fields.Char("Middle Name", tracking=True)
+    nominee_last_name = fields.Char("Surname", tracking=True)
+    nominee_gender = fields.Selection(selection=_get_nominee_gender_dynamic_selection, tracking=True)
+    nominee_mobile = fields.Char("Mobile", tracking=True)
     nominee_zanid = fields.Char("ZanID", compute="_compute_nominee_zanid", readonly=True, store=True)
     nominee_rel_benf = fields.Selection(
     [
@@ -24,23 +24,26 @@ class ResPartnerRelatives(models.Model):
         ("other", "Other"),
     ],
     string="Relationship with beneficiary",
+    tracking=True,
     )
 
-    nominee_house_street = fields.Char(string="House & Street")
-    nominee_shehia = fields.Char(string="Shehia (Ward)")
+    nominee_house_street = fields.Char(string="House & Street", tracking=True)
+    nominee_shehia = fields.Char(string="Shehia (Ward)", tracking=True)
     
         # REMOVED: nominee_region_code, nominee_district_code
     # NEW: Direct Selection fields
     nominee_region = fields.Selection(
         selection='_get_nominee_region_selection',
-        string="Region"
+        string="Region",
+        tracking=True
     )
     nominee_district = fields.Selection(
         selection='_get_nominee_district_selection', 
-        string="District"
+        string="District",
+        tracking=True
     )
 
-    nominee_post_code=fields.Char("PO BOX / Post code")
+    nominee_post_code=fields.Char("PO BOX / Post code", tracking=True)
     
     beneficiary_phone_number_ids = fields.One2many(
         "g2p.phone.number",

@@ -9,9 +9,10 @@ class ResPartnerRelatives(models.Model):
         ("no", "No"),
     ],
     string="Are you receiving any other pension?",
+    tracking=True,
     )
 
-    scheme_name = fields.Char(string="If Yes, which scheme")
+    scheme_name = fields.Char(string="If Yes, which scheme", tracking=True)
     # account_num = fields.Char(string="Account Number")
     # account_name = fields.Char(string="Account Name")
 
