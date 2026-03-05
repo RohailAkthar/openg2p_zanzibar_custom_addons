@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="individual_list_inherit" inherit_id="g2p_registration_portal_base.individual_list">
+        <!-- Update Zan ID mapping for both draft records and partners -->
+        <xpath expr="//td[@data-search-field='zanid']" position="replace">
+            <td data-search-field="zanid">
+                <t t-out="group.benf_zan_id" />
+            </td>
+        </xpath>
+
+        <!-- Update status icon based on state for draft records or active status for partners -->
+        <xpath expr="//div[@class='status-icon']" position="replace">
+            <div class="status-icon">
+                <t t-if="group.state">
+                    <!-- Draft record -->
+                    <t t-if="group.state == 'draft'">
+                        <span class="badge rounded-pill bg-warning text-dark">Draft</span>
+                    </t>
+                    <t t-elif="group.state == 'submitted'">
+                        <span class="badge rounded-pill bg-info text-dark">Submitted</span>
+                    </t>
+                    <t t-elif="group.state == 'published'">
+                        <span class="badge rounded-pill bg-success text-white">Approved</span>
+                    </t>
+                    <t t-else="">
+                        <span class="badge rounded-pill bg-secondary text-white"><t t-esc="group.state"/></span>
+                    </t>
+                </t>
+                <t t-else="">
+                    <!-- Published partner -->
+                    <t t-if="group.active">
+                        <img src="/g2p_registration_portal_base/static/src/img/active_logo.png" class="active-logo" alt="Active"/>
+                    </t>
+                    <t t-else="">
+                        <img src="/g2p_registration_portal_base/static/src/img/inactive_logo.png" class="inactive-logo" alt="Inactive"/>
+                    </t>
+                </t>
+            </div>
+        </xpath>
+
+        <xpath expr="//a[starts-with(@t-attf-href, '/portal/registration/individual/update/')]" position="replace">
+            <t t-if="group.state == 'published'">
+                <button type="button" class="view-button" disabled="disabled" style="opacity: 0.6; cursor: not-allowed;">Update</button>
+            </t>
+            <t t-else="">
+                <a t-attf-href="/portal/registration/individual/update/{{ group.id }}">
+                    <button string="Update" type="object" class="view-button">Update</button>
+                </a>
+            </t>
+        </xpath>
+
+    </template>
+
+</odoo>

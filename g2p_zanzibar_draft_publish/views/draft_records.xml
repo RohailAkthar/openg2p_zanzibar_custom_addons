@@ -1,0 +1,59 @@
+<odoo>
+    <!-- Inherit Tree View -->
+    <record id="view_draft_imported_record_tree_inherit" model="ir.ui.view">
+        <field name="name">draft.record.tree.inherit</field>
+        <field name="model">draft.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_tree" />
+        <field name="arch" type="xml">
+            <!-- Hide original fields properly using column_invisible for Odoo 17 -->
+            <xpath expr="//field[@name='given_name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='family_name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='addl_name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='region']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <!-- Add and position new fields -->
+            <xpath expr="//field[@name='given_name']" position="before">
+                <field name="zan_id" readonly="id != False" />
+                <field name="name" readonly="id != False" />
+            </xpath>
+
+            <xpath expr="//field[@name='gender']" position="after">
+                <field name="birthdate_date" readonly="id != False" />
+                <field name="registration_date" readonly="id != False" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Form View -->
+    <record id="view_draft_imported_record_form_inherit" model="ir.ui.view">
+        <field name="name">draft.record.form.inherit</field>
+        <field name="model">draft.record</field>
+        <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <group>
+                    <group>
+                        <field name="given_name"/>
+                        <field name="middle_name"/>
+                        <field name="family_name"/>
+                    </group>
+                    <group>
+                        <field name="zan_id"/>
+                        <field name="birthdate_date"/>
+                        <field name="registration_date"/>
+                        <field name="gender"/>
+                        <field name="phone"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

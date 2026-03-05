@@ -1,0 +1,60 @@
+{
+    "name": "MuK Backend Theme",
+    "summary": "Odoo Community Backend Theme",
+    "description": """
+        This module offers a mobile compatible design for Odoo Community.
+        Furthermore it allows the user to define some design preferences.
+    """,
+    "version": "17.0.1.2.1",
+    "category": "Themes/Backend",
+    "license": "LGPL-3",
+    "author": "MuK IT",
+    "website": "https://openg2p.org",
+    "live_test_url": "https://mukit.at/demo",
+    "contributors": [
+        "Mathias Markl <mathias.markl@mukit.at>",
+    ],
+    "depends": [
+        "muk_web_chatter",
+        "muk_web_dialog",
+        "zanzi_apps_bar",
+        "muk_web_colors",
+        "g2p_registry_base",
+        "g2p_agent_portal_base",
+        "queue_job"
+    ],
+    "excludes": [
+        "web_enterprise",
+    ],
+    "data": [
+        "templates/web_layout.xml",
+        "views/res_config_settings.xml",
+        "views/menus.xml"
+    ],
+    "assets": {
+        "web._assets_primary_variables": [
+            (
+                "after",
+                "web/static/src/scss/primary_variables.scss",
+                "zanzi_theme/static/src/scss/colors.scss",
+            ),
+            (
+                "after",
+                "web/static/src/scss/primary_variables.scss",
+                "zanzi_theme/static/src/scss/variables.scss",
+            ),
+        ],
+        "web.assets_backend": [
+            "zanzi_theme/static/src/webclient/**/*.xml",
+            "zanzi_theme/static/src/webclient/**/*.scss",
+            "zanzi_theme/static/src/webclient/**/*.js",
+            "zanzi_theme/static/src/views/**/*.scss",
+        ],
+    },
+    "images": ["static/description/banner.png", "static/description/theme_screenshot.png"],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+    "post_init_hook": "_setup_module",
+    "uninstall_hook": "_uninstall_cleanup",
+}

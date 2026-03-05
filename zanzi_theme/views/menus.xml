@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+
+    <menuitem
+        id="g2p_registry_base.g2p_main_menu_root"
+        name=" ⁠⁠Pension Registry"
+        web_icon="zanzi_theme,static/src/img/ensr.png"
+    />
+
+   <record id ="account.menu_finance" model="ir.ui.menu">
+            <field name="active" eval="False" />
+        </record>
+
+    <menuitem
+        name="Admin Controls"
+        id="base.menu_administration"
+        web_icon="zanzi_theme,static/src/img/settings.png"
+    />
+
+
+        <record id ="contacts.menu_contacts" model="ir.ui.menu">
+            <field name="active" eval="False" />
+        </record>
+
+
+<menuitem
+        id="g2p_agent_portal_base.menu_account_supplier"
+        name="Registration"
+        sequence="15"
+        web_icon="zanzi_theme,static/src/img/portal.png"
+        action="contacts.action_contacts"
+    />
+
+
+
+   <record id ="queue_job.menu_queue_job_root" model="ir.ui.menu">
+            <field name="active" eval="False" />
+        </record>
+<menuitem
+        id="openg2p_zanzibar_map.sr_dashboard"
+        name="Dashboard"
+        sequence="15"
+        web_icon="zanzi_theme,static/src/img/dashboard.png"
+    />
+
+    <menuitem
+        id="g2p_registry_base.g2p_configuration_menu_root"
+        name="Configuration"
+        groups="g2p_registry_base.group_g2p_admin"
+        web_icon="zanzi_theme,static/src/img/config.png"
+    />
+	
+
+
+    <menuitem
+        id="base.menu_management"
+        name="Tools"
+        groups="g2p_registry_base.group_g2p_admin"
+        web_icon="zanzi_theme,static/src/img/app.png"
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id ="queue_job.menu_queue_job_root" model="ir.ui.menu">
+            <field name="active" eval="False" />
+        </record>
+
+     <record id ="mail.menu_root_discuss" model="ir.ui.menu">
+            <field name="active" eval="False" />
+        </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+	<t t-name="zanzi_apps_bar.WebClient" t-inherit="web.WebClient" t-inherit-mode="extension">
+	    <xpath expr="//NavBar" position="after">
+	    	<AppsBar />
+	    </xpath>
+	</t>
+
+</templates>

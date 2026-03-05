@@ -15,24 +15,24 @@
                 <div class="oe_title mb24">
                      <div class="row">
                         <!-- Column 1: Names -->
-                        <div class="col-4">
+                        <div class="col-5" style="overflow: hidden;">
                             <h1 class="oe_read_only">
                                 <field id="registrant" name="name" readonly="1" class="oe_read_only" />
                             </h1>
-                            <div class="oe_edit_only">
+                            <div class="oe_edit_only" style="max-width: 100%;">
                                 <h2>
-                                    <field name="given_name" placeholder="First Name..." required="1" class="oe_edit_only" readonly="disabled"/>
+                                    <field name="given_name" placeholder="First Name..." required="1" class="oe_edit_only" readonly="disabled" style="max-width: 100%;"/>
                                 </h2>
                                 <h2>
-                                    <field name="middle_name" placeholder="Middle Name..." class="oe_edit_only" readonly="disabled" nolabel="1" required="1"/>
+                                    <field name="middle_name" placeholder="Middle Name..." class="oe_edit_only" readonly="disabled" nolabel="1" required="1" style="max-width: 100%;"/>
                                 </h2>
                                 <h2>
-                                    <field name="family_name" placeholder="Surname..." required="1" class="oe_edit_only" readonly="disabled"/>
+                                    <field name="family_name" placeholder="Surname..." required="1" class="oe_edit_only" readonly="disabled" style="max-width: 100%;"/>
                                 </h2>
                             </div>
                         </div>
                         <!-- Column 2: Registration Info -->
-                        <div class="col-5 mt-3">
+                        <div class="col-4 mt-3">
                             <div style="display: table;">
                                 <div style="display: table-row;">
                                     <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;  white-space: nowrap;">Registration Date</div>
