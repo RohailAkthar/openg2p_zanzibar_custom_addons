@@ -1,0 +1,20 @@
+{
+    "name": "Custom Import Template",
+    "version": "17.0.1.0.0",
+    "category": "G2P",
+    "summary": "Custom import template for Pension Registry Individuals",
+    "author": "Admin",
+    "website": "https://openg2p.org",
+    "license": "LGPL-3",
+    "depends": [
+        "base_import",
+        "g2p_registry_individual",
+        "social_registry_custom_fields",
+        "payment_method",
+        "relative_nominee",
+        "g2p_social_registry",
+    ],
+    "data": [],
+    "installable": True,
+    "application": False,
+}
