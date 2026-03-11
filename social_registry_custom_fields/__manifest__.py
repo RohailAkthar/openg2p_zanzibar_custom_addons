@@ -9,10 +9,16 @@
     "depends": [
         "g2p_social_registry",
         "g2p_registry_individual",
+        "g2p_draft_publish",
     ],
     "data": [
         "views/res_partner_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "social_registry_custom_fields/static/src/css/hide_systray.css",
+        ],
+    },
     "installable": True,
     "application": False,
 }

@@ -3,6 +3,17 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Requirement: Direct Excel upload shows as 'Yes'
+            if self.env.context.get("import_file"):
+                vals["db_import"] = "yes"
+            # Requirement: Approved from draft shows as 'No'
+            elif vals.get("db_import") == "yes":
+                vals["db_import"] = "no"
+        return super().create(vals_list)
+
     benf_post_code = fields.Char(string="Post Code", tracking=True)
     benf_zan_id = fields.Char(string="Zan ID", compute="_compute_benf_zan_id", readonly=True, store=True)
     disability = fields.Selection(
