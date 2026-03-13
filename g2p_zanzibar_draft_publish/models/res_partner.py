@@ -53,3 +53,18 @@ class G2PRespartnerIntegration(models.Model):
             
             if sync_vals:
                 active_record.write(sync_vals)
+
+    def action_reject(self):
+        """Open the reject wizard from the edit popup, targeting the active draft record."""
+        context = self.env.context
+        record_id = context.get("active_id")
+        if not record_id:
+            return
+        return {
+            "name": "Confirm Rejection",
+            "type": "ir.actions.act_window",
+            "res_model": "reject.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"active_ids": [record_id], "active_model": "draft.record"},
+        }

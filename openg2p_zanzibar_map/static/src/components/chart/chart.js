@@ -35,19 +35,19 @@ export class ChartComponent extends Component {
         }
     }
 
-  renderChart() {
+    renderChart() {
         if (!this.canvasRef.el || !this.props.labels || !this.props.data) return;
         const ctx = this.canvasRef.el.getContext("2d");
         const defaultColors = [
-                    '#3b82f6', // Blue
-                    '#ec4899', // Pink
-                    '#8b5cf6', // Violet
-                    '#10b981', // Emerald
-                    '#f59e0b', // Amber
-                    '#06b6d4', // Cyan
-                    '#ef4444', // Red
-                    '#6366f1'  // Indigo
-                ];
+            '#3b82f6', // Blue
+            '#ec4899', // Pink
+            '#8b5cf6', // Violet
+            '#10b981', // Emerald
+            '#f59e0b', // Amber
+            '#06b6d4', // Cyan
+            '#ef4444', // Red
+            '#6366f1'  // Indigo
+        ];
 
         // Ensure Bar charts use multiple colors if only one is provided
         let bgColors = this.props.backgroundColor;
@@ -62,7 +62,7 @@ export class ChartComponent extends Component {
                     const index = elements[0].index;
                     const label = this.props.labels[index];
                     const value = this.props.data[index];
-                    
+
                     // Send info back to ZDashboard
                     this.props.onSegmentClick({
                         chartType: this.props.chartType,
@@ -71,8 +71,31 @@ export class ChartComponent extends Component {
                     });
                 }
             },
+            scales: {
+                x: {
+                    display: this.props.type === 'bar',
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    display: this.props.type === 'bar',
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                }
+            },
             layout: {
-                padding: 10
+                padding: {
+                    top: 0,
+                    bottom: 20,      /* Increased bottom padding for X-axis labels */
+                    left: 10,
+                    right: 40        /* Increased right padding for "500" label */
+                }
             },
             plugins: {
                 legend: {
@@ -91,23 +114,27 @@ export class ChartComponent extends Component {
                         const value = context.dataset.data[context.dataIndex];
                         return value !== 0;
                     },
-                    color: '#ffffff', // Changed to white for visibility
+                    color: '#000000',    /* Changed to black for better visibility */
                     font: {
                         weight: 'bold',
                         size: 11
                     },
                     anchor: 'center',
-                    align: 'center',  // For pie/doughnut charts, 'end' often works better
+                    align: 'center',
                     textAlign: 'center',
                     formatter: (value, context) => {
+                        const type = context.chart.config.type;
+                        if (type === 'bar') {
+                            return value;
+                        }
                         const label = this.props.labels[context.dataIndex] || "";
                         const dataset = context.chart.data.datasets[0].data;
                         const sum = dataset.reduce((a, b) => a + b, 0);
                         const percentage = sum > 0 ? ((value * 100) / sum).toFixed(0) + "%" : "0%";
                         return `${label}\n${value} (${percentage})`;
                     },
-                    textShadowBlur: 3,
-                    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+                    textShadowBlur: 2,
+                    textShadowColor: 'rgba(255, 255, 255, 0.4)', /* Light shadow for black text */
                 }
             }
         };
@@ -134,7 +161,7 @@ export class ChartComponent extends Component {
             };
         }
 
-this.chartInstance = new Chart(ctx, {
+        this.chartInstance = new Chart(ctx, {
             type: this.props.type,
             data: {
                 labels: this.props.labels,
@@ -142,6 +169,7 @@ this.chartInstance = new Chart(ctx, {
                     data: this.props.data,
                     backgroundColor: bgColors,
                     borderWidth: 1,
+                    hoverOffset: 0,  /* Correct place to disable pop-out effect */
                 }],
             },
             plugins: [ChartDataLabels],

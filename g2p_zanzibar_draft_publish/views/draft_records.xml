@@ -5,6 +5,10 @@
         <field name="model">draft.record</field>
         <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_tree" />
         <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="import">0</attribute>
+            </xpath>
             <!-- Hide original fields properly using column_invisible for Odoo 17 -->
             <xpath expr="//field[@name='given_name']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
@@ -28,6 +32,34 @@
             <xpath expr="//field[@name='gender']" position="after">
                 <field name="birthdate_date" readonly="id != False" />
                 <field name="registration_date" readonly="id != False" />
+            </xpath>
+
+            <!-- Hide Submit button -->
+            <xpath expr="//button[@name='action_submit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Show Approve button for draft state instead of submitted -->
+            <xpath expr="//button[@name='action_publish']" position="attributes">
+                <attribute name="invisible">state != 'draft'</attribute>
+            </xpath>
+
+            <!-- Show Reject button for draft state instead of submitted -->
+            <xpath expr="//button[@name='action_reject']" position="attributes">
+                <attribute name="invisible">state != 'draft'</attribute>
+            </xpath>
+
+            <!-- Fix State column alignment and colors -->
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="decoration-success">state == 'published'</attribute>
+                <attribute name="decoration-info">state == 'draft'</attribute>
+                <attribute name="widget">badge</attribute>
+                <attribute name="class">text-start</attribute>
+            </xpath>
+
+            <!-- Edit only for draft -->
+            <xpath expr="//button[@name='action_open_wizard']" position="attributes">
+                <attribute name="invisible">state != 'draft'</attribute>
             </xpath>
         </field>
     </record>
@@ -56,4 +88,151 @@
             </xpath>
         </field>
     </record>
+
+    <!-- Override validation form wizard: hide Submit, add Reject -->
+    <record id="view_validation_form_inherit" model="ir.ui.view">
+        <field name="name">validation.form.inherit.zanzibar</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view" />
+        <field name="arch" type="xml">
+            <!-- Hide Submit button -->
+            <xpath expr="//footer/button[@name='action_submit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Add Reject button after Approve -->
+            <xpath expr="//footer/button[@name='action_publish']" position="after">
+                <button
+                    class="btn btn-danger"
+                    name="action_reject"
+                    string="Reject"
+                    type="object"
+                    invisible="imported_record_state != 'draft'"
+                    groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Search view for Drafts tab -->
+    <record id="view_draft_record_search" model="ir.ui.view">
+        <field name="name">draft.record.search</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+            <search string="Search Drafts">
+                <field name="zan_id" string="Zan ID" />
+                <field name="name" string="Name" />
+                <field name="phone" string="Phone" />
+                <field name="gender" string="Gender" />
+                <field name="birthdate_date" string="Date of Birth" />
+                <field name="registration_date" string="Registration Date" />
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'published')]" />
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}" />
+                    <filter name="group_gender" string="Gender" context="{'group_by': 'gender'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Search view for Rejected tab -->
+    <record id="view_rejected_record_search" model="ir.ui.view">
+        <field name="name">draft.record.rejected.search</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+            <search string="Search Rejected">
+                <field name="zan_id" string="Zan ID" />
+                <field name="name" string="Name" />
+                <field name="birthdate_date" string="Date of Birth" />
+                <field name="rejection_reason" string="Remark" />
+                <field name="rejected_by_user_id" string="Rejected By" />
+                <group expand="0" string="Group By">
+                    <filter name="group_rejected_by" string="Rejected By" context="{'group_by': 'rejected_by_user_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Override Drafts action to show draft + approved records only -->
+    <record id="g2p_draft_publish.action_draft_imported_record" model="ir.actions.act_window">
+        <field name="name">Draft/Approved</field>
+        <field name="res_model">draft.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ['draft', 'published'])]</field>
+        <field name="search_view_id" ref="view_draft_record_search" />
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"
+        />
+    </record>
+
+    <!-- Rejected tree view (shows rejection reason and rejected by) -->
+    <record id="view_rejected_record_tree" model="ir.ui.view">
+        <field name="name">draft.record.rejected.tree</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+            <tree create="0" delete="0" edit="0" import="0">
+                <field name="zan_id" />
+                <field name="name" />
+                <field name="birthdate_date" />
+                <field
+                    decoration-danger="state == 'rejected'"
+                    widget="badge"
+                    name="state"
+                    class="text-start"
+                />
+                <field name="rejection_reason" string="Remark" />
+                <field name="rejected_by_user_id" />
+                <button
+                    string="View"
+                    type="object"
+                    name="action_open_wizard_view_only"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Rejected action -->
+    <record id="action_rejected_records" model="ir.actions.act_window">
+        <field name="name">Rejected</field>
+        <field name="res_model">draft.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'rejected')]</field>
+        <field name="search_view_id" ref="view_rejected_record_search" />
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('view_rejected_record_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"
+        />
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <!-- Add Discard button to rejection wizard -->
+    <record id="reject_wizard_view_inherit" model="ir.ui.view">
+        <field name="name">reject.wizard.form.inherit.zanzibar</field>
+        <field name="model">reject.wizard</field>
+        <field name="inherit_id" ref="g2p_draft_publish.reject_wizard_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//footer/button[@name='confirm_rejection']" position="after">
+                <button string="Discard" class="btn btn-secondary" special="cancel" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide "Submitted" menu -->
+    <record id="g2p_draft_publish.menu_submitted_records" model="ir.ui.menu">
+        <field name="active" eval="False" />
+    </record>
+
+    <!-- Add "Rejected" menu -->
+    <menuitem
+        id="menu_rejected_records"
+        name="Rejected"
+        parent="g2p_draft_publish.draft_publish_main_menu"
+        action="action_rejected_records"
+        sequence="12"
+    />
 </odoo>

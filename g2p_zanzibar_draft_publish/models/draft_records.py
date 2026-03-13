@@ -11,6 +11,7 @@ class G2PDraftRecord(models.Model):
     birthdate_date = fields.Date(string="Date of Birth")
     registration_date = fields.Date(string="Registration Date")
     nominee_mobile = fields.Char(string="Nominee Mobile")
+    rejected_by_user_id = fields.Many2one('res.users', string='Rejected By', readonly=True)
 
     name = fields.Char(string="Name", compute="_compute_name", store=True)
 

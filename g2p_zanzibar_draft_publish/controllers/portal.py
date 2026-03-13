@@ -1,5 +1,6 @@
 import logging
 import json
+import re
 import base64
 import requests
 from datetime import datetime, date
@@ -173,7 +174,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         draft_record = (
             request.env["draft.record"]
             .sudo()
-            .search([("zan_id", "=", zan_id.strip())], limit=1)
+            .search([("zan_id", "=", zan_id.strip()), ("state", "!=", "rejected")], limit=1)
         )
         if draft_record:
              return {
@@ -448,7 +449,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         
         # Get draft records
         draft_records = request.env["draft.record"].sudo().search([
-            ('state', 'in', ['draft', 'submitted'])
+            ('state', 'in', ['draft', 'published'])
         ])
         
         # Get published partners (res.partner records that were created from drafts)
@@ -511,6 +512,26 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 }))
         return reg_ids
 
+    def _validate_tz_phone(self, phone):
+        """Validate Tanzania phone number format.
+        After stripping +255/255/0 prefix, the local number must start with 6 or 7
+        and be exactly 9 digits. Returns error message or None if valid.
+        """
+        if not phone:
+            return None  # Empty phone is allowed (not required)
+        # Strip common prefixes to get local number
+        local = phone
+        if local.startswith('+255'):
+            local = local[4:]
+        elif local.startswith('255'):
+            local = local[3:]
+        elif local.startswith('0'):
+            local = local[1:]
+        # Validate: must be 9 digits starting with 6 or 7
+        if local and not re.match(r'^[67][0-9]{8}$', local):
+            return "Phone number must start with 6 or 7 after +255 and be 9 digits"
+        return None
+
     @http.route(
         ["/portal/registration/individual/create/submit"],
         type="http",
@@ -520,6 +541,20 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     )
     def individual_create_submit(self, **kw):
         try:
+            # Validate phone numbers before processing
+            phone_error = self._validate_tz_phone(kw.get("mobile"))
+            if phone_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Beneficiary Mobile: {phone_error}"},
+                )
+            nominee_phone_error = self._validate_tz_phone(kw.get("nominee_mobile"))
+            if nominee_phone_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Nominee Mobile: {nominee_phone_error}"},
+                )
+
             user = request.env.user
             # Name construction logic from main.py
             name = ""
@@ -678,6 +713,20 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     )
     def update_individual_submit(self, **kw):
         try:
+            # Validate phone numbers before processing
+            phone_error = self._validate_tz_phone(kw.get("mobile"))
+            if phone_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Beneficiary Mobile: {phone_error}"},
+                )
+            nominee_phone_error = self._validate_tz_phone(kw.get("nominee_mobile"))
+            if nominee_phone_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Nominee Mobile: {nominee_phone_error}"},
+                )
+
             draft_id = kw.get("group_id")
             if not draft_id:
                 # Fallback to base class if no draft_id (though in this module it should be draft_id)
