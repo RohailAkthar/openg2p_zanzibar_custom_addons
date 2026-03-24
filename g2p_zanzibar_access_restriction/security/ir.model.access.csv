@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_g2p_disable_registrant_wizard_super_admin,g2p.disable.registrant.wizard.super.admin,model_g2p_disable_registrant_wizard,group_g2p_super_admin,1,1,1,1

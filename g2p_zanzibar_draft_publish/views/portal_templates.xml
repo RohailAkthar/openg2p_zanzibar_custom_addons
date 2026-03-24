@@ -22,6 +22,9 @@
                     <t t-elif="group.state == 'published'">
                         <span class="badge rounded-pill bg-success text-white">Approved</span>
                     </t>
+                    <t t-elif="group.state == 'rejected'">
+                        <span class="badge rounded-pill bg-danger text-white">Rejected</span>
+                    </t>
                     <t t-else="">
                         <span class="badge rounded-pill bg-secondary text-white"><t t-esc="group.state"/></span>
                     </t>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_g2p_super_admin" model="res.groups">
+        <field name="name">G2P Super Admin</field>
+        <field name="category_id" ref="g2p_registry_base.openg2p_module"/>
+        <field name="implied_ids" eval="[(4, ref('g2p_registry_base.group_g2p_admin'))]"/>
+    </record>
+</odoo>

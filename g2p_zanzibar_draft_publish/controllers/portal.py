@@ -158,6 +158,26 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         if not id_type:
             return {"status": "ERROR", "message": "Zanzibar ID type not found in system"}
 
+        # Check for any "active" (non-rejected) record in draft or published state
+        active_rec = request.env['draft.record'].sudo().search([
+            ('zan_id', '=', zan_id.strip()),
+            ('state', '!=', 'rejected')
+        ], limit=1)
+
+        if active_rec:
+            if active_rec.state == 'published':
+                return {
+                    "status": "ALREADY_EXISTS",
+                    "message": "Beneficiary with this Zan ID already exists in the system."
+                }
+            else:
+                return {
+                    "status": "ALREADY_EXISTS_IN_DRAFT",
+                    "message": "Beneficiary with this Zan ID already exists in draft records."
+                }
+
+        # If no active draft found (all are rejected or none exist), 
+        # check if there's a record in the registry
         reg_id = (
             request.env["g2p.reg.id"]
             .sudo()
@@ -165,22 +185,19 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         )
 
         if reg_id and reg_id.partner_id:
-            return {
-                "status": "ALREADY_EXISTS",
-                "message": "Beneficiary with this Zan ID already exists in the system."
-            }
+            # It's in the registry. Is it "Rejected"?
+            # We treat it as rejected if an accompanying rejected draft exists
+            # and we've already confirmed no active draft exists.
+            has_rejected_draft = request.env['draft.record'].sudo().search([
+                ('zan_id', '=', zan_id.strip()),
+                ('state', '=', 'rejected')
+            ], limit=1)
 
-        # 2. Check in draft records
-        draft_record = (
-            request.env["draft.record"]
-            .sudo()
-            .search([("zan_id", "=", zan_id.strip()), ("state", "!=", "rejected")], limit=1)
-        )
-        if draft_record:
-             return {
-                "status": "ALREADY_EXISTS_IN_DRAFT",
-                "message": "Beneficiary with this Zan ID already exists in draft records."
-            }
+            if not has_rejected_draft:
+                return {
+                    "status": "ALREADY_EXISTS",
+                    "message": "Beneficiary with this Zan ID already exists in the system."
+                }
 
         # 3. Call External API (Mirror from main.py)
         try:
@@ -272,20 +289,22 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
 
         for phone_rec in phone_records:
             # Check if this phone belongs to a draft record
-            if phone_rec.partner_id and phone_rec.partner_id.draft_record_ids:
+            if phone_rec.partner_id and any(d.state != 'rejected' for d in phone_rec.partner_id.draft_record_ids):
                 return {
                     "status": "ALREADY_EXISTS_IN_DRAFT",
                     "message": "Beneficiary with this phone number already exists in draft records."
                 }
 
-        # 2. Check in published partners via g2p.phone.number relationship
         for phone_rec in phone_records:
-            # Check if this phone belongs to a published partner (no draft records)
-            if phone_rec.partner_id and not phone_rec.partner_id.draft_record_ids:
-                return {
-                    "status": "ALREADY_EXISTS",
-                    "message": "Beneficiary with this phone number already exists in the system."
-                }
+            # Check if this phone belongs to a published partner with NO non-rejected draft records
+            if phone_rec.partner_id and not any(d.state != 'rejected' for d in phone_rec.partner_id.draft_record_ids):
+                # If there is a rejected draft, we allow it.
+                # If there are NO drafts (e.g. direct import), we still block it as it's "in the system".
+                if not any(d.state == 'rejected' for d in phone_rec.partner_id.draft_record_ids):
+                    return {
+                        "status": "ALREADY_EXISTS",
+                        "message": "Beneficiary with this phone number already exists in the system."
+                    }
 
         # 3. Return success if phone is available
         return {
@@ -301,11 +320,11 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         # Clean phone number (remove spaces, dashes, etc.)
         clean_phone = "".join(char for char in phone if char.isdigit())
 
-        # Check in draft records via nominee_mobile field
+        # Check in draft records via nominee_mobile field (ignore rejected)
         draft_records_with_nominee_phone = (
             request.env["draft.record"]
             .sudo()
-            .search([("nominee_mobile", "=", clean_phone)], limit=1)
+            .search([("nominee_mobile", "=", clean_phone), ("state", "!=", "rejected")], limit=1)
         )
 
         if draft_records_with_nominee_phone:
@@ -322,10 +341,17 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         )
 
         if published_partners_with_nominee_phone:
-            return {
-                "status": "ALREADY_EXISTS",
-                "message": "Nominee with this phone number already exists in the system."
-            }
+            # Check if there's an accompanying rejected draft
+            has_rejected_draft = request.env['draft.record'].sudo().search([
+                ('nominee_mobile', '=', clean_phone),
+                ('state', '=', 'rejected')
+            ], limit=1)
+
+            if not has_rejected_draft:
+                return {
+                    "status": "ALREADY_EXISTS",
+                    "message": "Nominee with this phone number already exists in the system."
+                }
 
         return {
             "status": "SUCCESS",
@@ -449,7 +475,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         
         # Get draft records
         draft_records = request.env["draft.record"].sudo().search([
-            ('state', 'in', ['draft', 'published'])
+            ('state', 'in', ['draft', 'published', 'rejected'])
         ])
         
         # Get published partners (res.partner records that were created from drafts)

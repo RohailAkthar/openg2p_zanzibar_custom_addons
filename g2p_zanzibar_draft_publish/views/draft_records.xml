@@ -57,8 +57,10 @@
                 <attribute name="class">text-start</attribute>
             </xpath>
 
-            <!-- Edit only for draft -->
+            <!-- Changed from Edit to View and set to readonly action -->
             <xpath expr="//button[@name='action_open_wizard']" position="attributes">
+                <attribute name="name">action_open_wizard_view_only</attribute>
+                <attribute name="string">View</attribute>
                 <attribute name="invisible">state != 'draft'</attribute>
             </xpath>
         </field>
@@ -109,6 +111,42 @@
                     invisible="imported_record_state != 'draft'"
                     groups="g2p_draft_publish.group_int_approver,g2p_draft_publish.group_int_admin"
                 />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="g2p_validation_form_view_only" model="ir.ui.view">
+        <field name="name">Validation Form View Only</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_draft_publish.g2p_validation_form_view_only" />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="edit">0</attribute>
+                <attribute name="create">0</attribute>
+            </xpath>
+            <!-- Force readonly on Zanzibar specific/custom fields and name fields -->
+            <xpath expr="//field[@name='given_name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='family_name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='middle_name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='middle_name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='beneficiary_phone_number_ids']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reg_ids']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <!-- Check if birthdate exists in this view context; it's usually birthdate in registry -->
+            <xpath expr="//field[@name='birthdate']" position="attributes">
+                <attribute name="readonly">1</attribute>
             </xpath>
         </field>
     </record>

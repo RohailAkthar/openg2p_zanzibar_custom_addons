@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="individual_list_inherit" inherit_id="g2p_registration_portal_base.individual_list">
+
+        <!-- Hide "Create New" button for users NOT in Admin group -->
+        <xpath expr="//a[contains(@t-attf-href, '/portal/registration/individual/create/')]" position="replace">
+            <t t-if="request.env.user.has_group('g2p_portal_update_restriction.group_portal_registrant_admin')">
+                <a
+                    t-attf-href="/portal/registration/individual/create/"
+                    class="ms-2"
+                    style="margin-top: 20px; margin-right: 20px;"
+                >
+                    <button type="button" class="btn btn-primary create-new"> Create New <span
+                            class="mx-1"
+                        />
+                        <span class="fa fa-plus" />
+                    </button>
+                </a>
+            </t>
+        </xpath>
+
+        <!-- Wrap "Update" column (both enabled and disabled states) with User group check -->
+        <xpath expr="//tbody//td[last()]" position="replace">
+            <td>
+                <t t-if="request.env.user.has_group('g2p_portal_update_restriction.group_portal_registrant_user')">
+                    <!-- Restore "View" button from g2p_social_registry_model -->
+                    <a t-attf-href="/portal/registration/individual/view/{{ group.id }}" class="btn btn-secondary btn-sm" style="margin-right: 5px;">
+                        View
+                    </a>
+                    <t t-if="group.state in ['draft', 'rejected']">
+                        <a t-attf-href="/portal/registration/individual/update/{{ group.id }}">
+                            <button string="Update" type="object" class="view-button">Update</button>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <button type="button" class="view-button" disabled="disabled" style="opacity: 0.6; cursor: not-allowed;">Update</button>
+                    </t>
+                </t>
+            </td>
+        </xpath>
+
+    </template>
+</odoo>

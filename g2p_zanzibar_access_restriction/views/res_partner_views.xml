@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_individuals_form_inherit_access" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.access</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
+        <field name="arch" type="xml">
+            <!-- Target the Disable button -->
+            <xpath expr="//button[@name='%(g2p_registry_base.action_disable_registrant_wizard)d']" position="attributes">
+                <attribute name="groups">g2p_zanzibar_access_restriction.group_g2p_super_admin</attribute>
+            </xpath>
+            <!-- Target the Enable button -->
+            <xpath expr="//button[@name='enable_registrant']" position="attributes">
+                <attribute name="groups">g2p_zanzibar_access_restriction.group_g2p_super_admin</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
