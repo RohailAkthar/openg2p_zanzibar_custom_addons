@@ -16,6 +16,9 @@
     --z-text-light: #64748b;
     
 }
+.text-geo{
+    max-height: 60px; overflow-y: auto;display: block;white-space: normal;
+}
 .select {
     background: linear-gradient(135deg, #111c26, #eef2ff);
     border: 1px solid #c7d2fe;

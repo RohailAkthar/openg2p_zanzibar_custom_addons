@@ -13,6 +13,7 @@ export class ZDashboard extends Component {
             kpi: {},
             charts: {},
             map_data: {},
+            map_geojson: {},
             loading: true,
             filters: {
                 gender: null,
@@ -40,6 +41,7 @@ export class ZDashboard extends Component {
         this.state.charts = data.charts || {};
         this.state.map_data = data.map_data || {};
         this.state.province_data = data.province_data || {};
+        this.state.map_geojson = data.map_geojson || {};
         this.state.loading = false;
     }
 
