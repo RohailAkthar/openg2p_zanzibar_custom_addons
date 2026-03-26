@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Move Audit menu to top-level, next to Configuration -->
+    <menuitem
+        id="auditlog.menu_audit"
+        name="Audit"
+        parent="g2p_registry_base.g2p_main_menu_root"
+        sequence="1010"
+        groups="base.group_system"
+    />
+</odoo>

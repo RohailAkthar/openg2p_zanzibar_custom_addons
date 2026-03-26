@@ -1,5 +1,6 @@
 # Part of OpenG2P. See LICENSE file for full copyright and licensing details.
 import logging
+import json
 from odoo import api, models
 
 _logger = logging.getLogger(__name__)
@@ -8,6 +9,17 @@ _logger = logging.getLogger(__name__)
 class DashboardLogic(models.Model):
     _name = "dashboard.logic"
     _description = "Dashboard Logic"
+
+    def _parse_geojson_feature(self, raw_geojson):
+        if not raw_geojson:
+            return False
+        try:
+            parsed = json.loads(raw_geojson)
+        except (TypeError, ValueError):
+            return False
+        if isinstance(parsed, dict) and parsed.get("type") == "Feature":
+            return parsed
+        return False
 
     @api.model
     def get_dashboard_data(self, filters=None):
@@ -241,6 +253,33 @@ class DashboardLogic(models.Model):
                 ],
             }
 
+        province_geojson_features = []
+        for region in Region.search([("geojson_feature", "!=", False)]):
+            feature = self._parse_geojson_feature(region.geojson_feature)
+            if not feature:
+                continue
+            properties = dict(feature.get("properties") or {})
+            properties.setdefault("id", region.code or str(region.id))
+            properties.setdefault("name", region.name)
+            feature["properties"] = properties
+            province_geojson_features.append(feature)
+
+        district_geojson_features = []
+        for district in District.search([("geojson_feature", "!=", False)]):
+            feature = self._parse_geojson_feature(district.geojson_feature)
+            if not feature:
+                continue
+            parent_region = getattr(district, "province_id", False) or getattr(
+                district, "region_id", False
+            )
+            parent_code = parent_region.code if parent_region else False
+            properties = dict(feature.get("properties") or {})
+            properties.setdefault("id", district.code or str(district.id))
+            properties.setdefault("shapeName", district.name)
+            properties.setdefault("province_code", parent_code)
+            feature["properties"] = properties
+            district_geojson_features.append(feature)
+
         return {
             "kpi": {
                 "total_pensioners": total_partners,
@@ -253,6 +292,16 @@ class DashboardLogic(models.Model):
             },
             "map_data": district_counts,
             "province_data": province_counts,
+            "map_geojson": {
+                "provinces": {
+                    "type": "FeatureCollection",
+                    "features": province_geojson_features,
+                },
+                "districts": {
+                    "type": "FeatureCollection",
+                    "features": district_geojson_features,
+                },
+            },
         }
 
     # ---------------------------------------------------

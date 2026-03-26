@@ -46,16 +46,27 @@ class MockPartner:
         self.state = draft_rec.state or 'draft'
         
         # Build mock relations required by QWeb templates
-        region_id = self._data.get('region')
-        try:
-            self.region = env['g2p.region'].sudo().browse(int(region_id)) if region_id else env['g2p.region'].sudo()
-        except (ValueError, TypeError):
+        # Handle both IDs (from portal updates) and Names (from old imports)
+        reg_val = self._data.get('region') or self._data.get('region_id')
+        self.region = env['g2p.region'].sudo()
+        if isinstance(reg_val, int):
+            self.region = self.region.browse(reg_val)
+        elif isinstance(reg_val, str):
+            self.region = self.region.search([('name', '=ilike', reg_val.strip())], limit=1)
+        if not self.region.exists():
             self.region = env['g2p.region'].sudo()
             
-        district_id = self._data.get('district')
-        try:
-            self.district = env['g2p.district'].sudo().browse(int(district_id)) if district_id else env['g2p.district'].sudo()
-        except (ValueError, TypeError):
+        dist_val = self._data.get('district') or self._data.get('district_id')
+        self.district = env['g2p.district'].sudo()
+        if isinstance(dist_val, int):
+            self.district = self.district.browse(dist_val)
+        elif isinstance(dist_val, str):
+            # District search depends on region if available
+            domain = [('name', '=ilike', dist_val.strip())]
+            if self.region:
+                domain = ['&'] + domain + [('province_id', '=', self.region.id)]
+            self.district = self.district.search(domain, limit=1)
+        if not self.district.exists():
             self.district = env['g2p.district'].sudo()
             
         # Robust phone handling: Template uses phone_number_ids and beneficiary_phone_number_ids
@@ -835,10 +846,16 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
 
             # Mandatory relational fields
             if "region" in kw:
-                try: vals["region"] = int(kw.get("region")) if kw.get("region") else False
+                try: 
+                    reg_id = int(kw.get("region")) if kw.get("region") else False
+                    vals["region"] = reg_id
+                    vals["region_id"] = reg_id
                 except: pass
             if "district" in kw:
-                try: vals["district"] = int(kw.get("district")) if kw.get("district") else False
+                try: 
+                    dist_id = int(kw.get("district")) if kw.get("district") else False
+                    vals["district"] = dist_id
+                    vals["district_id"] = dist_id
                 except: pass
 
             # Extra specific fields
@@ -895,18 +912,8 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 "db_import": "yes",
             })
 
-            # Write back to draft
+            # Write back to draft - Simplified as all fields are now computed in the backend
             draft.write({
-                'given_name': vals.get('given_name') or draft.given_name,
-                'middle_name': vals.get('middle_name') or draft.middle_name,
-                'family_name': vals.get('family_name') or draft.family_name,
-                'addl_name': vals.get('addl_name') or draft.addl_name,
-                'zan_id': kw.get('benf_zan_id') or draft.zan_id,
-                'birthdate_date': vals.get('birthdate') or draft.birthdate_date,
-                'gender': vals.get('gender') or draft.gender,
-                'phone': kw.get('mobile') or draft.phone,
-                'nominee_mobile': kw.get('nominee_mobile') or draft.nominee_mobile,
-                'name': vals.get('name') or draft.name,
                 'partner_data': json.dumps(vals),
             })
             return request.redirect("/portal/registration/individual")

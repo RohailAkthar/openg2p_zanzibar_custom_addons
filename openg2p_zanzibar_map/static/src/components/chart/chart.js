@@ -71,30 +71,12 @@ export class ChartComponent extends Component {
                     });
                 }
             },
-            scales: {
-                x: {
-                    display: this.props.type === 'bar',
-                    ticks: {
-                        font: {
-                            size: 10
-                        }
-                    }
-                },
-                y: {
-                    display: this.props.type === 'bar',
-                    ticks: {
-                        font: {
-                            size: 10
-                        }
-                    }
-                }
-            },
             layout: {
                 padding: {
-                    top: 0,
-                    bottom: 20,      /* Increased bottom padding for X-axis labels */
+                    top: this.props.type === 'bar' ? 10 : 25,
+                    bottom: 10,
                     left: 10,
-                    right: 40        /* Increased right padding for "500" label */
+                    right: this.props.type === 'bar' ? 60 : 10
                 }
             },
             plugins: {
@@ -114,27 +96,26 @@ export class ChartComponent extends Component {
                         const value = context.dataset.data[context.dataIndex];
                         return value !== 0;
                     },
-                    color: '#000000',    /* Changed to black for better visibility */
+                    color: (context) => this.props.type === 'bar' ? '#334155' : '#ffffff',
                     font: {
                         weight: 'bold',
                         size: 11
                     },
-                    anchor: 'center',
-                    align: 'center',
+                    anchor: (context) => this.props.type === 'bar' ? 'end' : 'center',
+                    align: (context) => this.props.type === 'bar' ? 'end' : 'center',
                     textAlign: 'center',
                     formatter: (value, context) => {
-                        const type = context.chart.config.type;
-                        if (type === 'bar') {
-                            return value;
-                        }
                         const label = this.props.labels[context.dataIndex] || "";
                         const dataset = context.chart.data.datasets[0].data;
                         const sum = dataset.reduce((a, b) => a + b, 0);
                         const percentage = sum > 0 ? ((value * 100) / sum).toFixed(0) + "%" : "0%";
+                        if (this.props.type === 'bar') {
+                            return `${value} (${percentage})`;
+                        }
                         return `${label}\n${value} (${percentage})`;
                     },
-                    textShadowBlur: 2,
-                    textShadowColor: 'rgba(255, 255, 255, 0.4)', /* Light shadow for black text */
+                    textShadowBlur: (context) => this.props.type === 'bar' ? 0 : 3,
+                    textShadowColor: (context) => this.props.type === 'bar' ? 'transparent' : 'rgba(0, 0, 0, 0.5)',
                 }
             }
         };
@@ -169,7 +150,6 @@ export class ChartComponent extends Component {
                     data: this.props.data,
                     backgroundColor: bgColors,
                     borderWidth: 1,
-                    hoverOffset: 0,  /* Correct place to disable pop-out effect */
                 }],
             },
             plugins: [ChartDataLabels],

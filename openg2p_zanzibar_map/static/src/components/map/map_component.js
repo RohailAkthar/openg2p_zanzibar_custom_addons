@@ -29,45 +29,14 @@ export class MapComponent extends Component {
                 await loadCSS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
                 await loadJS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
 
-                const [provinceRes, districtRes] = await Promise.all([
-                    fetch("/openg2p_zanzibar_map/static/lib/tz.json"),
-                    fetch("/openg2p_zanzibar_map/static/lib/geoBoundaries-TZA-ADM2.geojson"),
-                ]);
-
-                if (!provinceRes.ok || !districtRes.ok) {
-                    throw new Error("GeoJSON Load Error");
-                }
-
-                const fullProvinceData = await provinceRes.json();
-                const fullDistrictData = await districtRes.json();
-
-                const zanzibarCodes = ["TZ06", "TZ07", "TZ10", "TZ11", "TZ15"];
-                const PEMBA_CODES = ["TZ06", "TZ10"];
-
-                const SHIFT_X = 0;
-                const SHIFT_Y = -0.3;
-
-                const transform = (f, code) =>
-                    PEMBA_CODES.includes(code)
-                        ? this.shiftFeature(f, SHIFT_X, SHIFT_Y)
-                        : f;
-
-                this.provinceGeoJson = {
+                const mapGeojson = this.props?.map_geojson || {};
+                this.provinceGeoJson = mapGeojson.provinces || {
                     type: "FeatureCollection",
-                    features: fullProvinceData.features
-                        .filter((f) => zanzibarCodes.includes(f.properties?.id))
-                        .map((f) => transform(f, f.properties.id)),
+                    features: [],
                 };
-
-                this.districtGeoJson = {
+                this.districtGeoJson = mapGeojson.districts || {
                     type: "FeatureCollection",
-                    features: fullDistrictData.features
-                        .filter((f) =>
-                            zanzibarCodes.includes(f.properties?.province_code)
-                        )
-                        .map((f) =>
-                            transform(f, f.properties?.province_code)
-                        ),
+                    features: [],
                 };
             } catch (err) {
                 console.error("Map Init Failed:", err);
@@ -81,7 +50,7 @@ export class MapComponent extends Component {
             }
         });
 
-onWillUpdateProps((nextProps) => {
+        onWillUpdateProps((nextProps) => {
             if (!nextProps?.filters?.region && this.currentLevel === "district") {
                 this.currentLevel = "province";
                 this.selectedProvinceCode = null;
@@ -91,11 +60,15 @@ onWillUpdateProps((nextProps) => {
         useEffect(
             () => {
                 if (this.map) {
-                
                     this.refreshCurrentLayer();
                 }
             },
-            () => [this.props.province_data, this.props.data, this.currentLevel]
+            () => [
+                this.props.province_data,
+                this.props.data,
+                this.props.map_geojson,
+                this.currentLevel,
+            ]
         );
 
         onWillUnmount(() => {
@@ -107,7 +80,7 @@ onWillUpdateProps((nextProps) => {
     }
 
     // ----------------------------
-    // Normalization
+    // Normalization (unchanged)
     // ----------------------------
     normalizeString(str) {
         if (!str) return "";
@@ -129,7 +102,7 @@ onWillUpdateProps((nextProps) => {
     }
 
     // ----------------------------
-    // Geometry Shift
+    // Geometry Shift – used ONLY to close the gap between Unguja and Pemba
     // ----------------------------
     shiftFeature(feature, dx, dy) {
         const shift = (coords) =>
@@ -147,7 +120,7 @@ onWillUpdateProps((nextProps) => {
     }
 
     // ----------------------------
-    // Dynamic Gradient
+    // Dynamic Gradient (unchanged)
     // ----------------------------
     getGradientColor(baseColor, value, max) {
         const safeMax = max > 0 ? max : 1;
@@ -176,11 +149,24 @@ onWillUpdateProps((nextProps) => {
     }
 
     refreshCurrentLayer() {
+        this.syncGeoJsonFromProps();
         if (this.currentLevel === "province") {
             this.renderProvinceLayer();
         } else if (this.selectedProvinceCode) {
             this.renderDistrictLayer(this.selectedProvinceCode);
         }
+    }
+
+    syncGeoJsonFromProps() {
+        const mapGeojson = this.props?.map_geojson || {};
+        this.provinceGeoJson = mapGeojson.provinces || {
+            type: "FeatureCollection",
+            features: [],
+        };
+        this.districtGeoJson = mapGeojson.districts || {
+            type: "FeatureCollection",
+            features: [],
+        };
     }
 
     addValueMarker(latlng, name, value, percent) {
@@ -208,16 +194,30 @@ onWillUpdateProps((nextProps) => {
     }
 
     fitToLayer() {
-        if (this.map && this.geoJsonLayer) {
-            this.map.fitBounds(this.geoJsonLayer.getBounds(), {
+        if (!this.map || !this.geoJsonLayer) return;
+
+        const bounds = this.geoJsonLayer.getBounds();
+
+        if (bounds.isValid()) {
+            this.map.fitBounds(bounds, {
                 padding: [5, 5],
                 animate: true,
             });
+        } else {
+            this.map.setView([-6.1659, 35.7516], 6.5);
         }
     }
 
+    getVisibleDistrictFeatures(code) {
+        const allFeatures = this.districtGeoJson?.features || [];
+        return allFeatures.filter((f) => {
+            const provinceCode = f.properties?.province_code;
+            return provinceCode === code;
+        });
+    }
+
     // ----------------------------
-    // Province Layer
+    // Province Layer – with Pemba → Unguja shift
     // ----------------------------
     renderProvinceLayer() {
         if (!this.provinceGeoJson) return;
@@ -236,22 +236,41 @@ onWillUpdateProps((nextProps) => {
         };
 
         const normProvinceData = this.normalizeData(
-            this.props?.province_data
+            this.props?.province_data || {}
         );
-        console.log("Normalized Province Data:", normProvinceData);
-        console.log("Province  features:", this.props?.province_data);
-        let mapTotal = 0;
 
-        this.provinceGeoJson.features.forEach((f) => {
-            const normId = this.normalizeString(f.properties.id);
-            const normName = this.normalizeString(f.properties.name);
-            mapTotal +=
+        // === SHIFT PEMBA CLOSER TO UNGUJA (no empty ocean gap) ===
+        // Tune the two numbers below if the gap is still too big/small.
+        // Pemba is originally north of Unguja → we move it south (negative dy) and slightly west.
+        const SHIFT_X = 0;
+        const SHIFT_Y = -0.3;
+
+        const shiftedFeatures = (this.provinceGeoJson.features || []).map((f) => {
+            const name = (f.properties?.name || "").toString().toLowerCase();
+            if (name.includes("pemba")) {
+                return this.shiftFeature(f, SHIFT_X, SHIFT_Y);
+            }
+            return f; // Unguja and any other provinces stay at real coordinates
+        });
+
+        const shiftedProvinceGeoJson = {
+            type: "FeatureCollection",
+            features: shiftedFeatures,
+        };
+
+        // Sum total using original data (properties never change)
+        let mapTotal = 0;
+        for (const f of this.provinceGeoJson.features || []) {
+            const normId = this.normalizeString(f.properties?.id);
+            const normName = this.normalizeString(f.properties?.name);
+            const val =
                 normProvinceData[normId] ||
                 normProvinceData[normName] ||
                 0;
-        });
+            mapTotal += val;
+        }
 
-        this.geoJsonLayer = L.geoJson(this.provinceGeoJson, {
+        this.geoJsonLayer = L.geoJson(shiftedProvinceGeoJson, {
             style: (f) => ({
                 fillColor:
                     PROVINCE_COLORS[f.properties.id] || "#e2e8f0",
@@ -261,16 +280,14 @@ onWillUpdateProps((nextProps) => {
                 fillOpacity: 0.85,
             }),
             onEachFeature: (f, layer) => {
-                const normId = this.normalizeString(f.properties.id);
+                const normId = this.normalizeString(f.properties?.id);
                 const normName = this.normalizeString(
-                    f.properties.name
+                    f.properties?.name
                 );
                 const val =
                     normProvinceData[normId] ||
                     normProvinceData[normName] ||
                     0;
-
-
 
                 const percent = mapTotal
                     ? (val / mapTotal) * 100
@@ -306,22 +323,17 @@ onWillUpdateProps((nextProps) => {
         this.fitToLayer();
     }
 
-
     drillDownToProvince(code) {
-        console.log("Drill down to province code:", code);
-        console.log("District GeoJSON features:", this.districtGeoJson?.features);
-        const hasData = this.districtGeoJson?.features.some(
-            (f) => f.properties?.province_code === code
-        );
-        console.log("Has data for drill down:", hasData);
-        if (!hasData) return;
+        const hasDistricts = this.getVisibleDistrictFeatures(code).length > 0;
+        if (!hasDistricts) return;
 
         this.currentLevel = "district";
         this.selectedProvinceCode = code;
         this.renderDistrictLayer(code);
     }
+
     // ----------------------------
-    // District Layer
+    // District Layer (unchanged – only one island is shown, no gap)
     // ----------------------------
     renderDistrictLayer(code) {
         if (!this.districtGeoJson) return;
@@ -342,20 +354,19 @@ onWillUpdateProps((nextProps) => {
         const parentColor =
             PROVINCE_COLORS[code] || "#94a3b8";
 
-        const features =
-            this.districtGeoJson.features.filter(
-                (f) =>
-                    f.properties?.province_code === code
-            );
-
         const normDistrictData = this.normalizeData(
-            this.props?.data
+            this.props?.data || {}
         );
 
-        const values = Object.values(normDistrictData);
+        const features = this.getVisibleDistrictFeatures(code);
+
+        const visibleValues = features.map((f) => {
+            const normName = this.normalizeString(f.properties?.shapeName);
+            return normDistrictData[normName] || 0;
+        });
         const maxValue =
-            values.length > 0
-                ? Math.max(...values)
+            visibleValues.length > 0
+                ? Math.max(...visibleValues)
                 : 0;
 
         this.geoJsonLayer = L.geoJson(
@@ -404,10 +415,8 @@ onWillUpdateProps((nextProps) => {
                                 e.target
                             ),
                         click: () => {
-                            this.currentLevel =
-                                "province";
-                            this.selectedProvinceCode =
-                                null;
+                            this.currentLevel = "province";
+                            this.selectedProvinceCode = null;
 
                             this.props?.onMapClick?.({
                                 region: null,
@@ -430,6 +439,7 @@ MapComponent.template =
 MapComponent.props = {
     data: { type: Object, optional: true },
     province_data: { type: Object, optional: true },
+    map_geojson: { type: Object, optional: true },
     filters: { type: Object, optional: true },
     onMapClick: { type: Function, optional: true },
 };

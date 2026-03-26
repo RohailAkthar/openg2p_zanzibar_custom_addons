@@ -68,26 +68,140 @@
 
     <!-- Inherit Form View -->
     <record id="view_draft_imported_record_form_inherit" model="ir.ui.view">
-        <field name="name">draft.record.form.inherit</field>
+        <field name="name">draft.record.form.inherit.zanzibar</field>
         <field name="model">draft.record</field>
         <field name="inherit_id" ref="g2p_draft_publish.view_draft_imported_record_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
-                <group>
-                    <group>
-                        <field name="given_name"/>
-                        <field name="middle_name"/>
-                        <field name="family_name"/>
-                    </group>
-                    <group>
-                        <field name="zan_id"/>
-                        <field name="birthdate_date"/>
-                        <field name="registration_date"/>
-                        <field name="gender"/>
-                        <field name="phone"/>
-                    </group>
-                </group>
+            <!-- Ensure statusbar matches new model state names if needed, otherwise use original -->
+            <xpath expr="//header" position="replace">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,published" />
+                </header>
             </xpath>
+            
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Registrant Name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="given_name" readonly="1"/>
+                            <field name="middle_name" readonly="1"/>
+                            <field name="family_name" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="zan_id" readonly="1"/>
+                            <field name="birthdate_date" string="Date of Birth" readonly="1"/>
+                            <field name="registration_date" readonly="1"/>
+                            <field name="gender" readonly="1"/>
+                            <field name="phone" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Personal Info" name="personal_info">
+                            <group>
+                                <group>
+                                    <field name="address_display" string="Address" readonly="1"/>
+                                    <field name="post_code" string="Post Code" readonly="1"/>
+                                    <field name="region_id" string="Region" readonly="1"/>
+                                    <field name="district_id" readonly="1"/>
+                                    <field name="birthdate_date" string="Date of Birth" readonly="1"/>
+                                    <field name="age" readonly="1" />
+                                    <field name="gender" readonly="1"/>
+                                </group>
+                                <group>
+                                    <group string="Phone Numbers">
+                                        <field name="phone" nolabel="1" readonly="1"/>
+                                    </group>
+                                    <group string="Additional Information">
+                                        <field name="has_disability" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                        <field name="receives_allowance" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                        <field name="has_health_insurance" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                    </group>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Nominee Info" name="nominee_info">
+                            <group>
+                                <group>
+                                    <field name="nominee_first_name" readonly="1"/>
+                                    <field name="nominee_middle_name_display" string="Middle Name" readonly="1"/>
+                                    <field name="nominee_last_name" readonly="1"/>
+                                    <field name="nominee_gender" readonly="1"/>
+                                    <field name="nominee_zanid" readonly="1"/>
+                                    <field name="nominee_rel_benf" readonly="1"/>
+                                </group>
+                                <group string="Phone Numbers">
+                                    <field name="nominee_mobile" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="nominee_house_street" readonly="1"/>
+                                    <field name="nominee_shehia" readonly="1"/>
+                                    <field name="nominee_post_code_display" readonly="1"/>
+                                    <field name="nominee_region_display" readonly="1"/>
+                                    <field name="nominee_district_display" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="IDs" name="ids_info">
+                            <group>
+                                <group>
+                                    <field name="id_type_1" string="ID Type" readonly="1"/>
+                                    <field name="id_number_1" string="ID Number" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="id_type_2" string="ID Type" readonly="1"/>
+                                    <field name="id_number_2" string="ID Number" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Payment Mode" name="payment_mode_info">
+                            <group>
+                                <group>
+                                    <field name="payment_mode" readonly="1"/>
+                                    <field name="mobile_wallet" readonly="1" invisible="payment_mode != 'mobile_wallet'" />
+                                    <field name="bank_name" readonly="1" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                    <field name="account_num" readonly="1" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                    <field name="account_name" readonly="1" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Pension Information" name="pension_info">
+                            <group>
+                                <group>
+                                    <field name="other_pension" readonly="1"/>
+                                    <field name="scheme_name" readonly="1" invisible="other_pension != 'yes'" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Additional Information" name="additional_info_tab">
+                            <group>
+                                <group>
+                                    <field name="has_disability" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                    <field name="receives_allowance" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                    <field name="has_health_insurance" widget="radio" options="{'horizontal': true}" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Other Information" name="other_info">
+                            <group>
+                                <group string="Enumerator Details">
+                                    <field name="enumerator_name" />
+                                    <field name="enumerator_eid" />
+                                    <field name="registration_date" readonly="1" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+            
         </field>
     </record>
 
@@ -151,6 +265,142 @@
         </field>
     </record>
 
+    <!-- Read-only draft.record form view with chatter -->
+    <record id="view_draft_record_readonly_form" model="ir.ui.view">
+        <field name="name">draft.record.readonly.form</field>
+        <field name="model">draft.record</field>
+        <field name="arch" type="xml">
+            <form string="Draft Record" edit="0" create="0" delete="0">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,published"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Registrant Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="given_name" readonly="1"/>
+                            <field name="middle_name" readonly="1"/>
+                            <field name="family_name" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="zan_id" readonly="1"/>
+                            <field name="birthdate_date" string="Date of Birth" readonly="1"/>
+                            <field name="registration_date" readonly="1"/>
+                            <field name="gender" readonly="1"/>
+                            <field name="phone" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Personal Info" name="personal_info">
+                            <group>
+                                <group>
+                                    <field name="address_display" string="Address" invisible="not address_display" />
+                                    <field name="post_code" string="Post Code" invisible="not post_code" />
+                                    <field name="region_id" string="Region" invisible="not region_id" />
+                                    <field name="district_id" invisible="not district_id" />
+                                    <field name="birthdate_date" string="Date of Birth" invisible="not birthdate_date" />
+                                    <field name="age" invisible="not age" />
+                                    <field name="gender" invisible="not gender" />
+                                </group>
+                                <group>
+                                    <group string="Additional Information" invisible="not has_disability and not receives_allowance and not has_health_insurance">
+                                        <field name="has_disability" widget="radio" options="{'horizontal': true}" invisible="not has_disability"/>
+                                        <field name="receives_allowance" widget="radio" options="{'horizontal': true}" invisible="not receives_allowance"/>
+                                        <field name="has_health_insurance" widget="radio" options="{'horizontal': true}" invisible="not has_health_insurance"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group string="Rejection Details" invisible="state != 'rejected'">
+                                <field name="rejection_reason" />
+                                <field name="rejected_by_user_id" />
+                            </group>
+                        </page>
+                        <page string="Nominee Info" name="nominee_info" invisible="not nominee_first_name and not nominee_mobile">
+                            <group>
+                                <group>
+                                    <field name="nominee_first_name" invisible="not nominee_first_name" />
+                                    <field name="nominee_middle_name_display" string="Middle Name" invisible="not nominee_middle_name_display" />
+                                    <field name="nominee_last_name" invisible="not nominee_last_name" />
+                                    <field name="nominee_gender" invisible="not nominee_gender" />
+                                    <field name="nominee_zanid" invisible="not nominee_zanid" />
+                                    <field name="nominee_rel_benf" invisible="not nominee_rel_benf" />
+                                </group>
+                                <group string="Phone Numbers" invisible="not nominee_mobile">
+                                    <field name="nominee_mobile" />
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="nominee_house_street" invisible="not nominee_house_street" />
+                                    <field name="nominee_shehia" invisible="not nominee_shehia" />
+                                    <field name="nominee_post_code_display" invisible="not nominee_post_code_display" />
+                                    <field name="nominee_region_display" invisible="not nominee_region_display" />
+                                    <field name="nominee_district_display" invisible="not nominee_district_display" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="IDs" name="ids_info" invisible="not id_number_1 and not id_number_2">
+                            <group>
+                                <group>
+                                    <field name="id_type_1" string="ID Type" invisible="not id_number_1" />
+                                    <field name="id_number_1" string="ID Number" invisible="not id_number_1" />
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="id_type_2" string="ID Type" invisible="not id_number_2" />
+                                    <field name="id_number_2" string="ID Number" invisible="not id_number_2" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Payment Mode" name="payment_mode_info" invisible="not payment_mode">
+                            <group>
+                                <group>
+                                    <field name="payment_mode" string="Preferred Payment Method" />
+                                    <field name="mobile_wallet" invisible="payment_mode != 'mobile_wallet'" />
+                                    <field name="bank_name" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                    <field name="account_num" string="Account Number" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                    <field name="account_name" invisible="payment_mode not in ['bank', 'bank_transfer']" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Pension Information" name="pension_info" invisible="not other_pension">
+                            <group>
+                                <group>
+                                    <field name="other_pension" />
+                                    <field name="scheme_name" invisible="other_pension != 'yes'" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Other Information" name="other_info" invisible="not registration_date and not enumerator_name">
+                            <group>
+                                <group string="Enumerator Details" invisible="not enumerator_name">
+                                    <field name="enumerator_name" />
+                                    <field name="enumerator_eid" />
+                                    <field name="registration_date" invisible="not registration_date" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
     <!-- Search view for Drafts tab -->
     <record id="view_draft_record_search" model="ir.ui.view">
         <field name="name">draft.record.search</field>
@@ -202,7 +452,7 @@
             name="view_ids"
             eval="[(5, 0, 0),
                 (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_tree')}),
-                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"
+                (0,0,{'view_mode': 'form', 'view_id': ref('view_draft_record_readonly_form')})]"
         />
     </record>
 
@@ -243,7 +493,7 @@
             name="view_ids"
             eval="[(5, 0, 0),
                 (0,0,{'view_mode': 'tree', 'view_id': ref('view_rejected_record_tree')}),
-                (0,0,{'view_mode': 'form', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_form')})]"
+                (0,0,{'view_mode': 'form', 'view_id': ref('view_draft_record_readonly_form')})]"
         />
         <field name="context">{'create': False}</field>
     </record>

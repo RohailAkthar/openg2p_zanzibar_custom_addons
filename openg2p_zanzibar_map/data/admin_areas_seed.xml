@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <!-- Regions -->
+    <record id="region_mjini_magharibi" model="g2p.region">
+        <field name="name">Mjini Magharibi</field>
+        <field name="code">mjini_magharibi</field>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="region_kaskazini_unguja" model="g2p.region">
+        <field name="name">Kaskazini Unguja</field>
+        <field name="code">kaskazini_unguja</field>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="region_kusini_unguja" model="g2p.region">
+        <field name="name">Kusini Unguja</field>
+        <field name="code">kusini_unguja</field>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="region_kaskazini_pemba" model="g2p.region">
+        <field name="name">Kaskazini Pemba</field>
+        <field name="code">kaskazini_pemba</field>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="region_kusini_pemba" model="g2p.region">
+        <field name="name">Kusini Pemba</field>
+        <field name="code">kusini_pemba</field>
+        <field name="geojson_feature">{}</field>
+    </record>
+
+    <!-- Districts -->
+    <record id="district_chake_chake" model="g2p.district">
+        <field name="name">Chake Chake</field>
+        <field name="code">chake_chake</field>
+        <field name="province_id" ref="region_kusini_pemba"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_kaskazini_a" model="g2p.district">
+        <field name="name">Kaskazini A</field>
+        <field name="code">kaskazini_a</field>
+        <field name="province_id" ref="region_kaskazini_unguja"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_kaskazini_b" model="g2p.district">
+        <field name="name">Kaskazini B</field>
+        <field name="code">kaskazini_b</field>
+        <field name="province_id" ref="region_kaskazini_unguja"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_kati" model="g2p.district">
+        <field name="name">Kati</field>
+        <field name="code">kati</field>
+        <field name="province_id" ref="region_kusini_unguja"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_kusini" model="g2p.district">
+        <field name="name">Kusini</field>
+        <field name="code">kusini</field>
+        <field name="province_id" ref="region_kusini_unguja"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_mjini_magharibi_a" model="g2p.district">
+        <field name="name">Magharibi</field>
+        <field name="code">mjini_magharibi_a</field>
+        <field name="province_id" ref="region_mjini_magharibi"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_magharibi_b" model="g2p.district">
+        <field name="name">Magharibi</field>
+        <field name="code">magharibi_b</field>
+        <field name="province_id" ref="region_mjini_magharibi"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_micheweni" model="g2p.district">
+        <field name="name">Micheweni</field>
+        <field name="code">micheweni</field>
+        <field name="province_id" ref="region_kaskazini_pemba"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_mkoani" model="g2p.district">
+        <field name="name">Mkoani</field>
+        <field name="code">mkoani</field>
+        <field name="province_id" ref="region_kusini_pemba"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+    <record id="district_wete" model="g2p.district">
+        <field name="name">Wete</field>
+        <field name="code">wete</field>
+        <field name="province_id" ref="region_kaskazini_pemba"/>
+        <field name="geojson_feature">{}</field>
+    </record>
+</odoo>
