@@ -12,6 +12,8 @@
         "g2p_social_registry_model",
     ],
     "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
         "views/draft_records.xml",
         "views/portal_templates.xml",
     ],

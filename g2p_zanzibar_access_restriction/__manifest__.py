@@ -9,11 +9,17 @@
     "depends": [
         "g2p_registry_individual",
         "social_registry_custom_fields",
+        "account",
+        "g2p_odk_importer",
+        "queue_job",
+        "g2p_documents",
     ],
     "data": [
         "security/zanzibar_security.xml",
         "security/ir.model.access.csv",
+        "data/ir_module_category_data.xml",
         "views/res_partner_views.xml",
+        "views/menus.xml",
     ],
     "installable": True,
     "auto_install": False,

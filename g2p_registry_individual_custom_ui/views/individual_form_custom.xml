@@ -5,12 +5,10 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
         <field name="arch" type="xml">
-            
-            <!-- Double the image size -->
-            <!-- <xpath expr="//field[@name='image_1920']" position="attributes">
-                <attribute name="options">{'preview_image': 'avatar_182'}</attribute>
-                <attribute name="class">oe_avatar_custom</attribute>
-            </xpath> -->
+            <xpath expr="//form" position="attributes">
+                <!-- Keep create="1" to enable Import, but we'll hide the New button via CSS -->
+                <attribute name="class">hide_new_button_form</attribute>
+            </xpath>
             <!-- Extend width of family_name -->
             <xpath expr="//field[@name='family_name']" position="attributes">
                 <attribute name="style">width:250px</attribute>
@@ -30,7 +28,6 @@
             <xpath expr="//field[@name='pensioner_id']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
-
         </field>
     </record>
 
@@ -39,9 +36,47 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree"/>
         <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="class">hide_new_button_tree</attribute>
+            </xpath>
             <xpath expr="//field[@name='name']" position="before">
                 <field name="pensioner_id" />
                 <field name="benf_zan_id" />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_enumerator_config_tree_custom" model="ir.ui.view">
+        <field name="name">view_enumerator_config_tree_custom</field>
+        <field name="model">g2p.enumerator</field>
+        <field name="inherit_id" ref="g2p_enumerator.view_enumerator_config_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="class">hide_new_button_tree</attribute>
+            </xpath>
+            <xpath expr="//field[@name='enum_latitude']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='enum_longitude']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='enum_altitude']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='enum_accuracy']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_enumerator_config_form_custom" model="ir.ui.view">
+        <field name="name">view_enumerator_config_form_custom</field>
+        <field name="model">g2p.enumerator</field>
+        <field name="inherit_id" ref="g2p_enumerator.view_enumerator_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="class">hide_new_button_form</attribute>
+            </xpath>
+            <xpath expr="//field[@name='enum_latitude']/.." position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>

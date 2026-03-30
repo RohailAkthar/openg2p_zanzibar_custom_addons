@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Redesign the Change Password Wizard Form to use a vertical single-user layout -->
+    <record id="change_password_wizard_view_inherit" model="ir.ui.view">
+        <field name="name">change.password.wizard.form.inherit</field>
+        <field name="model">change.password.wizard</field>
+        <field name="inherit_id" ref="base.change_password_wizard_view"/>
+        <field name="arch" type="xml">
+            <!-- Hide the standard multi-user table -->
+            <xpath expr="//field[@name='user_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Add the clean vertical fields for single-user edit -->
+            <xpath expr="//field[@name='user_ids']" position="before">
+                <group>
+                    <field name="user_id_display" readonly="1"/>
+                    <field name="user_login_display" readonly="1"/>
+                    <field name="new_passwd_display" password="True" default_focus="1" placeholder="Type new password here..." style="width: 200px;"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Restrict "Change Password" action to only appear in the Form view (single user) -->
+    <record id="base.change_password_wizard_action" model="ir.actions.act_window">
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

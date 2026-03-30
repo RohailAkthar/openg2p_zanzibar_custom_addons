@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Make 'Groups' menu visible in normal mode for Settings administrators -->
+    <record id="base.menu_action_res_groups" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>
+    </record>
+</odoo>

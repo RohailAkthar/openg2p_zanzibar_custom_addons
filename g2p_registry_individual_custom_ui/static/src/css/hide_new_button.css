@@ -1,0 +1,15 @@
+/* List View */
+.o_list_view.hide_new_button_tree .o_list_button_add,
+.o_list_view:has(.hide_new_button_tree) .o_list_button_add,
+.o_list_view.hide_new_button_tree button[data-hotkey="c"],
+.o_list_view:has(.hide_new_button_tree) button[data-hotkey="c"] {
+    display: none !important;
+}
+
+/* Form View */
+.o_form_view.hide_new_button_form .o_form_button_create,
+.o_form_view:has(.hide_new_button_form) .o_form_button_create,
+.o_form_view.hide_new_button_form button[data-hotkey="c"],
+.o_form_view:has(.hide_new_button_form) button[data-hotkey="c"] {
+    display: none !important;
+}
