@@ -6,16 +6,16 @@
         <field name="model">change.password.wizard</field>
         <field name="inherit_id" ref="base.change_password_wizard_view"/>
         <field name="arch" type="xml">
-            <!-- Hide the standard multi-user table -->
+            <!-- Hide the standard multi-user table when single user display is active -->
             <xpath expr="//field[@name='user_ids']" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="invisible">user_id_display</attribute>
             </xpath>
             <!-- Add the clean vertical fields for single-user edit -->
             <xpath expr="//field[@name='user_ids']" position="before">
-                <group>
-                    <field name="user_id_display" readonly="1"/>
-                    <field name="user_login_display" readonly="1"/>
-                    <field name="new_passwd_display" password="True" default_focus="1" placeholder="Type new password here..." style="width: 200px;"/>
+                <group invisible="not user_id_display">
+                    <field name="user_id_display"/>
+                    <field name="user_login_display"/>
+                    <field name="new_passwd_display" password="True" default_focus="1" style="width: 250px;"/>
                 </group>
             </xpath>
         </field>
