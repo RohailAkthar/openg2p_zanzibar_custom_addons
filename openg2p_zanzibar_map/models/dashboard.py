@@ -1,7 +1,7 @@
 # Part of OpenG2P. See LICENSE file for full copyright and licensing details.
 import logging
 import json
-from odoo import api, models
+from odoo import api, models, _
 
 _logger = logging.getLogger(__name__)
 
@@ -246,7 +246,7 @@ class DashboardLogic(models.Model):
                 "labels": chart_labels,
                 "datasets": [
                     {
-                        "label": "Registrations",
+                        "label": _("Registrations"),
                         "data": chart_values,
                         "backgroundColor": "#4e73df",
                     }
@@ -308,7 +308,7 @@ class DashboardLogic(models.Model):
     # Gender Distribution
     # ---------------------------------------------------
     def _gender_distribution(self, partners):
-        result = {"Male": 0, "Female": 0, "Unknown": 0}
+        result = {_("Male"): 0, _("Female"): 0, _("Unknown"): 0}
 
         for p in partners:
             if not p.gender:

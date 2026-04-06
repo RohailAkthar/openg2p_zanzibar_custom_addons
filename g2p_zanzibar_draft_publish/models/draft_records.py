@@ -19,7 +19,7 @@ class G2PDraftRecord(models.Model):
     region_id = fields.Many2one('g2p.region', string="Region", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     post_code = fields.Char(string="Post Code", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     district_id = fields.Many2one('g2p.district', string="District", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
-    gender = fields.Char(string="Gender", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
+    gender = fields.Selection([('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], string="Gender", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True, readonly=True)
     has_disability = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Do you have any disability?", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     receives_allowance = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Are you receiving 5000 allowance from district council? (Below 70 years)", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     has_health_insurance = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Are you covered with any health insurance scheme?", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
@@ -28,7 +28,7 @@ class G2PDraftRecord(models.Model):
     nominee_first_name = fields.Char(string="First Name", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     nominee_middle_name_display = fields.Char(string="Middle Name", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     nominee_last_name = fields.Char(string="Surname", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
-    nominee_gender = fields.Char(string="Nominee Gender", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
+    nominee_gender = fields.Selection([('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], string="Nominee Gender", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True, readonly=True)
     nominee_zanid = fields.Char(string="Nominee ZanID", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     nominee_rel_benf = fields.Char(string="Relationship with beneficiary", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     nominee_house_street = fields.Char(string="House & Street", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
@@ -226,6 +226,8 @@ class G2PDraftRecord(models.Model):
 
             # Multi-choice mappings for readability
             GENDER_MAP = {'female': 'Female', 'male': 'Male', 'other': 'Other'}
+            # Multi-choice mappings for readability
+            GENDER_MAP = {'female': 'Female', 'male': 'Male', 'other': 'Other'}
             PAYMENT_MAP = {
                 'bank': 'Bank',
                 'bank_transfer': 'Bank Transfer',
@@ -343,11 +345,13 @@ class G2PDraftRecord(models.Model):
                         base_data = {}
                     merged = {**base_data, **original_data}
                     merged["imported_record_state"] = "draft"
-                    record.sudo().write({'partner_data': json.dumps(merged)})
+                    # Suppress tracking during initial creation setup to avoid "None -> Value" logs
+                    record.sudo().with_context(mail_notrack=True).write({'partner_data': json.dumps(merged)})
                 except:
                     pass
             else:
-                record._update_partner_data_from_fields()
+                # Suppress tracking during initial creation setup to avoid "None -> Value" logs
+                record.with_context(mail_notrack=True)._update_partner_data_from_fields()
         return records
 
     def _clean_null_values(self, data):

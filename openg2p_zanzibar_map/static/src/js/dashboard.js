@@ -1,5 +1,6 @@
 /** @odoo-module **/
 import { Component, useState, onWillStart } from "@odoo/owl";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { MapComponent } from "../components/map/map_component";
@@ -8,6 +9,7 @@ import { KpiComponent } from "../components/kpi/kpi";
 
 export class ZDashboard extends Component {
     setup() {
+        this._t = _t;
         this.orm = useService("orm");
         this.state = useState({
             kpi: {},
@@ -70,7 +72,9 @@ get hasActiveFilters() {
         if (!payload || !payload.chartType) return;
 
         if (payload.chartType === "gender") {
-            const g = payload.label === "Male" ? "male" : payload.label === "Female" ? "female" : null;
+            const isMale = payload.label === "Male" || payload.label === _t("Male");
+            const isFemale = payload.label === "Female" || payload.label === _t("Female");
+            const g = isMale ? "male" : isFemale ? "female" : null;
             this.state.filters.gender = this.state.filters.gender === g ? null : g;
         } else if (payload.chartType === "age") {
             const key = payload.label;

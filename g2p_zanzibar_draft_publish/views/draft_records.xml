@@ -309,7 +309,7 @@
                                     <field name="district_id" invisible="not district_id" />
                                     <field name="birthdate_date" string="Date of Birth" invisible="not birthdate_date" />
                                     <field name="age" invisible="not age" />
-                                    <field name="gender" invisible="not gender" />
+                                    <field name="gender" invisible="not gender" readonly="1" />
                                 </group>
                                 <group>
                                     <group string="Additional Information" invisible="not has_disability and not receives_allowance and not has_health_insurance">
@@ -330,7 +330,7 @@
                                     <field name="nominee_first_name" invisible="not nominee_first_name" />
                                     <field name="nominee_middle_name_display" string="Middle Name" invisible="not nominee_middle_name_display" />
                                     <field name="nominee_last_name" invisible="not nominee_last_name" />
-                                    <field name="nominee_gender" invisible="not nominee_gender" />
+                                    <field name="nominee_gender" invisible="not nominee_gender" readonly="1" />
                                     <field name="nominee_zanid" invisible="not nominee_zanid" />
                                     <field name="nominee_rel_benf" invisible="not nominee_rel_benf" />
                                 </group>
@@ -410,7 +410,7 @@
                 <field name="zan_id" string="Zan ID" />
                 <field name="name" string="Name" />
                 <field name="phone" string="Phone" />
-                <field name="gender" string="Gender" />
+                <field name="gender" string="Gender" readonly="1" />
                 <field name="birthdate_date" string="Date of Birth" />
                 <field name="registration_date" string="Registration Date" />
                 <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]" />
@@ -443,10 +443,10 @@
 
     <!-- Override Drafts action to show draft + approved records only -->
     <record id="g2p_draft_publish.action_draft_imported_record" model="ir.actions.act_window">
-        <field name="name">Draft/Approved</field>
+        <field name="name">Drafts</field>
         <field name="res_model">draft.record</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('state', 'in', ['draft', 'published'])]</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
         <field name="search_view_id" ref="view_draft_record_search" />
         <field
             name="view_ids"
@@ -510,10 +510,35 @@
         </field>
     </record>
 
+    <!-- Approved action -->
+    <record id="action_published_records" model="ir.actions.act_window">
+        <field name="name">Approved</field>
+        <field name="res_model">draft.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'published')]</field>
+        <field name="search_view_id" ref="view_draft_record_search" />
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0,0,{'view_mode': 'tree', 'view_id': ref('g2p_draft_publish.view_draft_imported_record_tree')}),
+                (0,0,{'view_mode': 'form', 'view_id': ref('view_draft_record_readonly_form')})]"
+        />
+        <field name="context">{'create': False}</field>
+    </record>
+
     <!-- Hide "Submitted" menu -->
     <record id="g2p_draft_publish.menu_submitted_records" model="ir.ui.menu">
         <field name="active" eval="False" />
     </record>
+
+    <!-- Add "Approved" menu -->
+    <menuitem
+        id="menu_published_records"
+        name="Approved"
+        parent="g2p_draft_publish.draft_publish_main_menu"
+        action="action_published_records"
+        sequence="11"
+    />
 
     <!-- Add "Rejected" menu -->
     <menuitem
@@ -523,4 +548,9 @@
         action="action_rejected_records"
         sequence="12"
     />
+
+    <!-- Rename main menu to Pensioner Verification -->
+    <record id="g2p_draft_publish.draft_publish_main_menu" model="ir.ui.menu">
+        <field name="name">Pensioner Verification</field>
+    </record>
 </odoo>

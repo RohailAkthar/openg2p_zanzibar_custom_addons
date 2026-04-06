@@ -1,0 +1,244 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* openg2p_zanzibar_map
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0-20250807\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-02 06:48+0000\n"
+"PO-Revision-Date: 2026-04-02 06:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: openg2p_zanzibar_map
+#: model_terms:ir.actions.act_window,help:openg2p_zanzibar_map.action_district
+msgid "Add District!"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Age Bracket"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Age Distribution"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "All Ages"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "All Genders"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__code
+msgid "Capitol"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model_terms:ir.actions.act_window,help:openg2p_zanzibar_map.action_district
+msgid "Click the create button to enter a new District."
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Count"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#: model:ir.actions.client,name:openg2p_zanzibar_map.sr_dashboard_action
+#: model:ir.ui.menu,name:openg2p_zanzibar_map.sr_dashboard
+#, python-format
+msgid "Dashboard"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_dashboard_logic
+msgid "Dashboard Logic"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.actions.act_window,name:openg2p_zanzibar_map.action_district
+#: model:ir.ui.menu,name:openg2p_zanzibar_map.menu_district
+msgid "District"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__code
+msgid "District Code"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__name
+msgid "District Name"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Female"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Gender"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Gender Split"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__geojson_feature
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__geojson_feature
+msgid "GeoJSON Feature"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,help:openg2p_zanzibar_map.field_g2p_district__geojson_feature
+msgid "GeoJSON feature payload for rendering this district on the map."
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,help:openg2p_zanzibar_map.field_g2p_region__geojson_feature
+msgid "GeoJSON feature payload for rendering this region on the map."
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__id
+msgid "ID"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Male"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "No data available"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_g2p_region
+msgid "Province"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__name
+msgid "Province Name"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__province_id
+msgid "Province/Region"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Refine Data"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Region Distribution"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: code:addons/openg2p_zanzibar_map/models/dashboard.py:0
+#, python-format
+msgid "Registrations"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Reset View"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_g2p_district
+msgid "Sri Lanka District"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Total Pensioners"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#: code:addons/openg2p_zanzibar_map/models/dashboard.py:0
+#, python-format
+msgid "Unknown"
+msgstr ""
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Updating Data..."
+msgstr ""

@@ -1,0 +1,245 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* openg2p_zanzibar_map
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0-20250807\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-02 06:48+0000\n"
+"PO-Revision-Date: 2026-04-02 12:35+0530\n"
+"Last-Translator: \n"
+"Language-Team: Swahili\n"
+"Language: sw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: openg2p_zanzibar_map
+#: model_terms:ir.actions.act_window,help:openg2p_zanzibar_map.action_district
+msgid "Add District!"
+msgstr "Ongeza Wilaya!"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Age Bracket"
+msgstr "Kundi la Umri"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Age Distribution"
+msgstr "Usambazaji wa Umri"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "All Ages"
+msgstr "Umri Wote"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "All Genders"
+msgstr "Jinsia Zote"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__code
+msgid "Capitol"
+msgstr "Mji Mkuu"
+
+#. module: openg2p_zanzibar_map
+#: model_terms:ir.actions.act_window,help:openg2p_zanzibar_map.action_district
+msgid "Click the create button to enter a new District."
+msgstr "Bonyeza kitufe cha kuunda ili kuingiza Wilaya mpya."
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Count"
+msgstr "Idadi"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__create_uid
+msgid "Created by"
+msgstr "Imeundwa na"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__create_date
+msgid "Created on"
+msgstr "Imeundwa tarehe"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#: model:ir.actions.client,name:openg2p_zanzibar_map.sr_dashboard_action
+#: model:ir.ui.menu,name:openg2p_zanzibar_map.sr_dashboard
+#, python-format
+msgid "Dashboard"
+msgstr "Dashibodi"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_dashboard_logic
+msgid "Dashboard Logic"
+msgstr "Mantiki ya Dashibodi"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__display_name
+msgid "Display Name"
+msgstr "Jina la Kuonyesha"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.actions.act_window,name:openg2p_zanzibar_map.action_district
+#: model:ir.ui.menu,name:openg2p_zanzibar_map.menu_district
+msgid "District"
+msgstr "Wilaya"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__code
+msgid "District Code"
+msgstr "Msimbo wa Wilaya"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__name
+msgid "District Name"
+msgstr "Jina la Wilaya"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Female"
+msgstr "Kike"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Gender"
+msgstr "Jinsia"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Gender Split"
+msgstr "Mchanganuo wa Jinsia"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__geojson_feature
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__geojson_feature
+msgid "GeoJSON Feature"
+msgstr "Kipengele cha GeoJSON"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,help:openg2p_zanzibar_map.field_g2p_district__geojson_feature
+msgid "GeoJSON feature payload for rendering this district on the map."
+msgstr "Mzigo wa kipengele cha GeoJSON kwa kuonyesha wilaya hii kwenye ramani."
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,help:openg2p_zanzibar_map.field_g2p_region__geojson_feature
+msgid "GeoJSON feature payload for rendering this region on the map."
+msgstr "Mzigo wa kipengele cha GeoJSON kwa kuonyesha mkoa huu kwenye ramani."
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__id
+msgid "ID"
+msgstr "Kitambulisho"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__write_uid
+msgid "Last Updated by"
+msgstr "Imesasishwa mwisho na"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_dashboard_logic__write_date
+msgid "Last Updated on"
+msgstr "Imesasishwa mwisho tarehe"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Male"
+msgstr "Kiume"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "No data available"
+msgstr "Hakuna data inayopatikana"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_g2p_region
+msgid "Province"
+msgstr "Mkoa"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_region__name
+msgid "Province Name"
+msgstr "Jina la Mkoa"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model.fields,field_description:openg2p_zanzibar_map.field_g2p_district__province_id
+msgid "Province/Region"
+msgstr "Mkoa/Eneo"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Refine Data"
+msgstr "Chuja Data"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Region Distribution"
+msgstr "Usambazaji wa Mikoa"
+
+#. module: openg2p_zanzibar_map
+#: code:addons/openg2p_zanzibar_map/models/dashboard.py:0
+#, python-format
+msgid "Registrations"
+msgstr "Usajili"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Reset View"
+msgstr "Weka Upya Mwonekano"
+
+#. module: openg2p_zanzibar_map
+#: model:ir.model,name:openg2p_zanzibar_map.model_g2p_district
+msgid "Sri Lanka District"
+msgstr "Wilaya ya Sri Lanka"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Total Pensioners"
+msgstr "Jumla ya Wastaafu"
+
+#. module: openg2p_zanzibar_map
+#: code:addons/openg2p_zanzibar_map/models/dashboard.py:0
+#, python-format
+msgid "Unknown"
+msgstr "Haijulikani"
+
+#. module: openg2p_zanzibar_map
+#. odoo-javascript
+#: code:addons/openg2p_zanzibar_map/static/src/xml/dashboard.xml:0
+#, python-format
+msgid "Updating Data..."
+msgstr "Inasasisha Data..."

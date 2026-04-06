@@ -1,0 +1,508 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* g2p_zanzibar_draft_publish
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-06 06:10+0000\n"
+"PO-Revision-Date: 2026-04-06 06:10+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "<span class=\"badge rounded-pill bg-danger text-white\">Rejected</span>"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "<span class=\"badge rounded-pill bg-info text-dark\">Submitted</span>"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "<span class=\"badge rounded-pill bg-success text-white\">Approved</span>"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "<span class=\"badge rounded-pill bg-warning text-dark\">Draft</span>"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__account_name
+msgid "Account Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__account_num
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Account Number"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "Active"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Additional Information"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__address_display
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Address"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__age
+msgid "Age"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__airtel_money
+msgid "Airtel Money"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.actions.act_window,name:g2p_zanzibar_draft_publish.action_published_records
+#: model:ir.ui.menu,name:g2p_zanzibar_draft_publish.menu_published_records
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Approved"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__has_health_insurance
+msgid "Are you covered with any health insurance scheme?"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__receives_allowance
+msgid ""
+"Are you receiving 5000 allowance from district council? (Below 70 years)"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__other_pension
+msgid "Are you receiving any other pension?"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__bank
+msgid "Bank"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__bank_name
+msgid "Bank Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__bank_transfer
+msgid "Bank Transfer"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__cash_pickup
+msgid "Cash Pickup"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model,name:g2p_zanzibar_draft_publish.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__birthdate_date
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Date of Birth"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.reject_wizard_view_inherit
+msgid "Discard"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__district_id
+msgid "District"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__has_disability
+msgid "Do you have any disability?"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Draft"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Draft Record"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model,name:g2p_zanzibar_draft_publish.model_draft_record
+msgid "Draft Records"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__enumerator_name
+msgid "Enumerator"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Enumerator Details"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__enumerator_eid
+msgid "Enumerator User ID"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__ezypesa
+msgid "EzyPesa"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__family_name
+msgid "Family Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_first_name
+msgid "First Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__gender
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Gender"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__given_name
+msgid "Given Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Group By"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__halopesa
+msgid "Halo Pesa"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_house_street
+msgid "House & Street"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__id_number_1
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "ID Number"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__id_type_1
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "ID Type"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "IDs"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "Inactive"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__mpesa
+msgid "M-Pesa"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__middle_name
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_middle_name_display
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Middle Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__mobile_wallet
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__mobile_wallet
+msgid "Mobile Wallet"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__name
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__has_disability__no
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__has_health_insurance__no
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__other_pension__no
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__receives_allowance__no
+msgid "No"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_district_display
+msgid "Nominee District"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_gender
+msgid "Nominee Gender"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__id_number_2
+msgid "Nominee ID Number"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__id_type_2
+msgid "Nominee ID Type"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Nominee Info"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_mobile
+msgid "Nominee Mobile"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_post_code_display
+msgid "Nominee PO BOX / Post code"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_region_display
+msgid "Nominee Region"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_shehia
+msgid "Nominee Shehia (Ward)"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_zanid
+msgid "Nominee ZanID"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_res_partner__draft_record_id
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_res_users__draft_record_id
+msgid "Original Draft Record"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Other Information"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__partner_data
+msgid "Partner Data (JSON)"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Payment Mode"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Pension Information"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Personal Info"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__phone
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Phone"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Phone Numbers"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__post_code
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Post Code"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__payment_mode
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Preferred Payment Method"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__region_id
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Region"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_form_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Registrant Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__registration_date
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Registration Date"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_validation_form_inherit
+msgid "Reject"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model,name:g2p_zanzibar_draft_publish.model_reject_wizard
+msgid "Reject Wizard"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.actions.act_window,name:g2p_zanzibar_draft_publish.action_rejected_records
+#: model:ir.ui.menu,name:g2p_zanzibar_draft_publish.menu_rejected_records
+msgid "Rejected"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__rejected_by_user_id
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Rejected By"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_readonly_form
+msgid "Rejection Details"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_rel_benf
+msgid "Relationship with beneficiary"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_tree
+msgid "Remark"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__scheme_name
+msgid "Scheme Name"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "Search Drafts"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Search Rejected"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__shehia_display
+msgid "Shehia (Ward)"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+msgid "State"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__nominee_last_name
+msgid "Surname"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__payment_mode__tigopesa
+msgid "Tigo Pesa"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.individual_list_inherit
+msgid "Update"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_imported_record_tree_inherit
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_tree
+msgid "View"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__has_disability__yes
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__has_health_insurance__yes
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__other_pension__yes
+#: model:ir.model.fields.selection,name:g2p_zanzibar_draft_publish.selection__draft_record__receives_allowance__yes
+msgid "Yes"
+msgstr ""
+
+#. module: g2p_zanzibar_draft_publish
+#: model:ir.model.fields,field_description:g2p_zanzibar_draft_publish.field_draft_record__zan_id
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_draft_record_search
+#: model_terms:ir.ui.view,arch_db:g2p_zanzibar_draft_publish.view_rejected_record_search
+msgid "Zan ID"
+msgstr ""
