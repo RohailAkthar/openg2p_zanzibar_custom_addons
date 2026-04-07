@@ -82,7 +82,7 @@
             <xpath expr="//page[@name='basic_info']/group[1]/group[2]" position="inside">
                 <group string="Additional Information" colspan="2">
                     <field name="disability" widget="radio" options="{'horizontal': true}"/>
-                    <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/>
+                    <!-- <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/> -->
                     <field name="has_health_insurance" widget="radio" options="{'horizontal': true}"/>
                 </group>
             </xpath>

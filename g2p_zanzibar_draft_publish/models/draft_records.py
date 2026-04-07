@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
+    _order = "write_date desc, id desc"
 
     # Stored + tracked computed fields with inverse for full chatter logging
     _INV = "_inverse_mapped_fields"
@@ -73,9 +74,9 @@ class G2PDraftRecord(models.Model):
 
     rejected_by_user_id = fields.Many2one('res.users', string='Rejected By', readonly=True, tracking=True)
     
-    # Enumerator Details for Draft Visibility (computed from portal creator)
-    enumerator_name = fields.Char(string="Enumerator", compute="_compute_enumerator_details")
-    enumerator_eid = fields.Char(string="Enumerator User ID", compute="_compute_enumerator_details")
+    # Field Officer Details for Draft Visibility (computed from portal creator)
+    enumerator_name = fields.Char(string="Field Officer", compute="_compute_enumerator_details")
+    enumerator_eid = fields.Char(string="Field Officer ID", compute="_compute_enumerator_details")
 
     name = fields.Char(string="Name", compute="_compute_name", store=True)
     age = fields.Integer(string="Age", compute="_compute_age")
@@ -107,7 +108,7 @@ class G2PDraftRecord(models.Model):
 
     @api.depends('create_uid')
     def _compute_enumerator_details(self):
-        """Automatically pull enumerator details from the draft creator for visibility."""
+        """Automatically pull field officer details from the draft creator for visibility."""
         for record in self:
             creator = record.create_uid
             if creator and creator.partner_id:
@@ -564,7 +565,7 @@ class G2PDraftRecord(models.Model):
 
         partner = partner_model.sudo().create(valid_data)
 
-        # --- Handle Enumerator (find or create) ---
+        # --- Handle Field Officer (find or create) ---
         creator = self.create_uid
         if creator and creator.partner_id:
             enumerator_model = self.env["g2p.enumerator"].sudo()

@@ -487,7 +487,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         # Get draft records
         draft_records = request.env["draft.record"].sudo().search([
             ('state', 'in', ['draft', 'published', 'rejected'])
-        ])
+        ], order='write_date desc, id desc')
         
         # Get published partners (res.partner records that were created from drafts)
         # Check if draft_record_id field exists
@@ -497,14 +497,14 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 ('is_group', '=', False),
                 ('db_import', '=', 'yes'),
                 ('draft_record_id', '!=', False),
-            ])
+            ], order='write_date desc, id desc')
         else:
             # Fallback for when field doesn't exist yet (during upgrade)
             published_partners = request.env["res.partner"].sudo().search([
                 ('is_registrant', '=', True),
                 ('is_group', '=', False),
                 ('db_import', '=', 'yes'),
-            ])
+            ], order='write_date desc, id desc')
         
         # Combine both lists
         all_individuals = []
