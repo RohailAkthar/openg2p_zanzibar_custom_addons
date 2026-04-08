@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_user_session_audit_tree" model="ir.ui.view">
+        <field name="name">user.session.audit.tree</field>
+        <field name="model">user.session.audit</field>
+        <field name="arch" type="xml">
+            <tree string="User Sessions" decoration-info="not logout_date" create="0" delete="0" import="0">
+                <field name="user_id"/>
+                <field name="user_type"/>
+                <field name="login_date"/>
+                <field name="logout_date"/>
+                <field name="duration" widget="float_time"/>
+                <field name="ip_address"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_user_session_audit_form" model="ir.ui.view">
+        <field name="name">user.session.audit.form</field>
+        <field name="model">user.session.audit</field>
+        <field name="arch" type="xml">
+            <form string="User Session" create="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="user_type"/>
+                            <field name="login_date"/>
+                            <field name="logout_date"/>
+                        </group>
+                        <group>
+                            <field name="duration" widget="float_time"/>
+                            <field name="ip_address"/>
+                            <field name="session_id"/>
+                        </group>
+                    </group>
+                    <group string="System Information">
+                        <field name="user_agent"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_user_session_audit_search" model="ir.ui.view">
+        <field name="name">user.session.audit.search</field>
+        <field name="model">user.session.audit</field>
+        <field name="arch" type="xml">
+            <search string="Search User Sessions">
+                <field name="user_id"/>
+                <field name="user_type"/>
+                <filter string="Pensioner Registry" name="registry" domain="[('user_type', '=', 'registry')]"/>
+                <filter string="Registration Portal" name="portal" domain="[('user_type', '=', 'portal')]"/>
+                <filter string="Active Sessions" name="active" domain="[('logout_date', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="User Type" name="group_user_type" context="{'group_by': 'user_type'}"/>
+                    <filter string="Login Date" name="group_login" context="{'group_by': 'login_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_user_session_audit" model="ir.actions.act_window">
+        <field name="name">User Sessions</field>
+        <field name="res_model">user.session.audit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_user_audit_root" 
+              name="User Audit" 
+              parent="base.menu_administration" 
+              sequence="100"
+              groups="g2p_zanzibar_access_restriction.group_g2p_super_admin"/>
+
+    <menuitem id="menu_user_session_audit" 
+              name="Sessions" 
+              parent="menu_user_audit_root" 
+              action="action_user_session_audit" 
+              sequence="10"/>
+</odoo>

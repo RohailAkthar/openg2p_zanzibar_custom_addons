@@ -25,11 +25,16 @@ class AuditlogHTTPRequest(models.Model):
     @api.depends("create_date", "name")
     def _compute_display_name(self):
         for httprequest in self:
-            create_date = fields.Datetime.from_string(httprequest.create_date)
-            tz_create_date = fields.Datetime.context_timestamp(httprequest, create_date)
-            httprequest.display_name = "{} ({})".format(
-                httprequest.name or "?", fields.Datetime.to_string(tz_create_date)
-            )
+            if httprequest.create_date:
+                create_date = fields.Datetime.from_string(httprequest.create_date)
+                tz_create_date = fields.Datetime.context_timestamp(
+                    httprequest, create_date
+                )
+                httprequest.display_name = "{} ({})".format(
+                    httprequest.name or "?", fields.Datetime.to_string(tz_create_date)
+                )
+            else:
+                httprequest.display_name = httprequest.name or "?"
 
     def name_get(self):
         return [(request.id, request.display_name) for request in self]

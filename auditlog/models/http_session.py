@@ -20,12 +20,19 @@ class AuditlogtHTTPSession(models.Model):
     @api.depends("create_date", "user_id")
     def _compute_display_name(self):
         for httpsession in self:
-            create_date = fields.Datetime.from_string(httpsession.create_date)
-            tz_create_date = fields.Datetime.context_timestamp(httpsession, create_date)
-            httpsession.display_name = "{} ({})".format(
-                httpsession.user_id and httpsession.user_id.name or "?",
-                fields.Datetime.to_string(tz_create_date),
-            )
+            if httpsession.create_date:
+                create_date = fields.Datetime.from_string(httpsession.create_date)
+                tz_create_date = fields.Datetime.context_timestamp(
+                    httpsession, create_date
+                )
+                httpsession.display_name = "{} ({})".format(
+                    httpsession.user_id and httpsession.user_id.name or "?",
+                    fields.Datetime.to_string(tz_create_date),
+                )
+            else:
+                httpsession.display_name = (
+                    httpsession.user_id and httpsession.user_id.name or "?"
+                )
 
     def name_get(self):
         return [(session.id, session.display_name) for session in self]
