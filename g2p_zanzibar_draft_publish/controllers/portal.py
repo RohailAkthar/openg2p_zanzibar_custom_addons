@@ -569,6 +569,18 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             return "Phone number must start with 6 or 7 after +255 and be 9 digits"
         return None
 
+    def _validate_id_type(self, id_type_name, value):
+        """Validate an ID value against the regex pattern defined in the ID Type configuration.
+        Returns error message or None if valid.
+        """
+        if not value:
+            return None
+        id_type = request.env["g2p.id.type"].sudo().search([("name", "=", id_type_name)], limit=1)
+        if id_type and id_type.id_validation:
+            if not re.match(id_type.id_validation, value):
+                return f"Invalid format for {id_type_name}. Please match the required pattern."
+        return None
+
     @http.route(
         ["/portal/registration/individual/create/submit"],
         type="http",
@@ -590,6 +602,20 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 return request.render(
                     "g2p_registration_portal_base.error_template",
                     {"error_message": f"Nominee Mobile: {nominee_phone_error}"},
+                )
+
+            # Validate IDs before processing
+            zan_id_error = self._validate_id_type("Zanzibar ID", kw.get("benf_zan_id"))
+            if zan_id_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Beneficiary Zan ID: {zan_id_error}"},
+                )
+            nominee_zan_id_error = self._validate_id_type("Nominee Zanzibar ID", kw.get("nominee_zanid"))
+            if nominee_zan_id_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Nominee Zan ID: {nominee_zan_id_error}"},
                 )
 
             user = request.env.user
@@ -762,6 +788,20 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 return request.render(
                     "g2p_registration_portal_base.error_template",
                     {"error_message": f"Nominee Mobile: {nominee_phone_error}"},
+                )
+
+            # Validate IDs before processing
+            zan_id_error = self._validate_id_type("Zanzibar ID", kw.get("benf_zan_id"))
+            if zan_id_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Beneficiary Zan ID: {zan_id_error}"},
+                )
+            nominee_zan_id_error = self._validate_id_type("Nominee Zanzibar ID", kw.get("nominee_zanid"))
+            if nominee_zan_id_error:
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": f"Nominee Zan ID: {nominee_zan_id_error}"},
                 )
 
             draft_id = kw.get("group_id")
