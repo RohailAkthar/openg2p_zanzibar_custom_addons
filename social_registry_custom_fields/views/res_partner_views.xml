@@ -35,15 +35,15 @@
                         <div class="col-4 mt-3">
                             <div style="display: table;">
                                 <div style="display: table-row;">
-                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;  white-space: nowrap;">Registration Date</div>
+                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;  white-space: nowrap;"><label for="registration_date" string="Registration Date"/></div>
                                     <div style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
                                 </div>
                                 <div style="display: table-row;">
-                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;" class="fw-bold">Pensioner ID</div>
+                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;" class="fw-bold"><label for="pensioner_id" string="Pensioner ID"/></div>
                                     <div style="display: table-cell; padding-bottom: 10px;"><field name="pensioner_id" readonly="1" nolabel="1"/></div>
                                 </div>
                                 <div style="display: table-row;">
-                                    <div style="display: table-cell; padding-right: 15px;" class="fw-bold">Zan ID</div>
+                                    <div style="display: table-cell; padding-right: 15px;" class="fw-bold"><label for="benf_zan_id" string="Zan ID"/></div>
                                     <div style="display: table-cell;"><field name="benf_zan_id" readonly="1" nolabel="1"/></div>
                                 </div>
                             </div>

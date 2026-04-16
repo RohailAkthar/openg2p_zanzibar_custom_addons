@@ -111,28 +111,41 @@ class ResPartner(models.Model):
                 if did:
                     vals['district'] = did
 
-    def _handle_custom_import_logic(self, vals):
-        """Helper to handle IDs that depend on record creation."""
-        # Handle Zanzibar ID
-        if 'import_zan_id' in vals and vals['import_zan_id']:
-            zan_id_type = self.env['g2p.id.type'].sudo().search([('name', '=ilike', 'Zanzibar ID')], limit=1)
-            if zan_id_type:
-                for record in self:
-                    existing_id = record.sudo().reg_ids.filtered(lambda r: r.id_type == zan_id_type)
-                    if existing_id:
-                        # Minimize writes
-                        if existing_id[0].value != vals['import_zan_id']:
-                            existing_id[0].write({'value': vals['import_zan_id'], 'status': 'valid'})
-                    else:
-                        self.env['g2p.reg.id'].sudo().create({
-                            'partner_id': record.id,
-                            'id_type': zan_id_type.id,
-                            'value': vals['import_zan_id'],
-                            'status': 'valid',
-                        })
+    def _handle_custom_import_logic(self, vals_list, records):
+        """Helper to handle IDs in batch to avoid per-record database lookups."""
+        if not vals_list or not records:
+            return
 
-        # Zanzibar ID is handled in the Optimized logic above
-        pass
+        # 1. Batch lookup for the Zanzibar ID type (Performance: Search once instead of 40,000 times)
+        zan_id_type = self.env['g2p.id.type'].sudo().search([('name', '=ilike', 'Zanzibar ID')], limit=1)
+        if not zan_id_type:
+            return
+
+        reg_ids_to_create = []
+        
+        # 2. Process records in batch
+        for i, record in enumerate(records):
+            vals = vals_list[i]
+            zan_val = vals.get('import_zan_id')
+            if not zan_val:
+                continue
+
+            # Check for existing IDs to avoid duplicates (filtered is fast for memory records)
+            existing_id = record.sudo().reg_ids.filtered(lambda r: r.id_type == zan_id_type)
+            if existing_id:
+                if existing_id[0].value != zan_val:
+                    existing_id[0].write({'value': zan_val, 'status': 'valid'})
+            else:
+                reg_ids_to_create.append({
+                    'partner_id': record.id,
+                    'id_type': zan_id_type.id,
+                    'value': zan_val,
+                    'status': 'valid',
+                })
+
+        # 3. Bulk create all Registrant IDs in a single database operation
+        if reg_ids_to_create:
+            self.env['g2p.reg.id'].sudo().create(reg_ids_to_create)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -140,14 +153,16 @@ class ResPartner(models.Model):
             self._prepare_import_vals(vals)
         self._handle_import_lookups(vals_list)
         records = super().create(vals_list)
-        # Zanzibar ID still needs to be handled after creation
-        for i, record in enumerate(records):
-            record._handle_custom_import_logic(vals_list[i])
+        
+        # Optimized batch handling for Zanzibar IDs
+        self._handle_custom_import_logic(vals_list, records)
         return records
 
     def write(self, vals):
         self._prepare_import_vals(vals)
         self._handle_import_lookups([vals])
         res = super().write(vals)
-        self._handle_custom_import_logic(vals)
+        
+        # Consistent handling for writes
+        self._handle_custom_import_logic([vals], self)
         return res

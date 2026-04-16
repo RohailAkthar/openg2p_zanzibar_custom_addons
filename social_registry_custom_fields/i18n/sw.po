@@ -7,6 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sw\n"
 
 #. module: social_registry_custom_fields
 #: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__benf_post_code
@@ -37,6 +38,7 @@ msgstr "Je, unahudumiwa na mpango wowote wa bima ya afya?"
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__disability__yes
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__is_receiving_allowance__yes
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__has_health_insurance__yes
+#: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__db_import__yes
 msgid "Yes"
 msgstr "Ndiyo"
 
@@ -44,5 +46,43 @@ msgstr "Ndiyo"
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__disability__no
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__is_receiving_allowance__no
 #: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__has_health_insurance__no
+#: model:ir.model.fields,selection:social_registry_custom_fields.selection__res_partner__db_import__no
 msgid "No"
 msgstr "Hapana"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__pensioner_id
+msgid "Pensioner ID"
+msgstr "ID ya Mstaafu"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__phone
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_registry_individuals_filter_zanzibar
+msgid "Phone"
+msgstr "Simu"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__db_import
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_registry_individuals_filter_zanzibar
+msgid "Imported"
+msgstr "Zimeingizwa"
+
+#. module: social_registry_custom_fields
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Registration Date"
+msgstr "Tarehe ya Usajili"
+
+#. module: social_registry_custom_fields
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Zan ID"
+msgstr "Kitambulisho cha Zanzibar"
+
+#. module: social_registry_custom_fields
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Additional Information"
+msgstr "Taarifa ya Ziada"
+
+#. module: social_registry_custom_fields
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Phone Numbers"
+msgstr "Namba za Simu"

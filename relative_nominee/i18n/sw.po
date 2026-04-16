@@ -92,3 +92,7 @@ msgstr "Mkoa wa Mteule"
 #: model:ir.model.fields,field_description:relative_nominee.field_res_partner__nominee_district
 msgid "Nominee District"
 msgstr "Wilaya ya Mteule"
+
+#. module: relative_nominee
+msgid "Phone Numbers"
+msgstr "Namba za Simu"
