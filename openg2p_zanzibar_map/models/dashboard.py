@@ -23,11 +23,19 @@ class DashboardLogic(models.Model):
 
     @api.model
     def get_dashboard_data(self, filters=None):
-        filters = filters or {}
+        # 1. Strict Security Check
+        if not self.env.user.has_group("openg2p_zanzibar_map.group_dashboard_viewer"):
+            from odoo.exceptions import AccessError
+            raise AccessError(_("You do not have permission to view this dashboard."))
 
-        Partner = self.env["res.partner"]
-        District = self.env["g2p.district"]
-        Region = self.env["g2p.region"]
+        filters = filters or {}
+        lang = filters.get("lang", self.env.context.get("lang", "en_US"))
+        
+        # 2. Administrative Privileges (Sudo)
+        # Allows viewers to see statistics without direct read access to sensitive records
+        Partner = self.env["res.partner"].sudo().with_context(lang=lang)
+        District = self.env["g2p.district"].sudo().with_context(lang=lang)
+        Region = self.env["g2p.region"].sudo().with_context(lang=lang)
 
         # ---------------------------------------------------
         # Base Domain (Individuals Only)
@@ -272,7 +280,7 @@ class DashboardLogic(models.Model):
             parent_region = getattr(district, "province_id", False) or getattr(
                 district, "region_id", False
             )
-            parent_code = parent_region.code if parent_region else False
+            parent_code = parent_region.sudo().code if parent_region else False
             properties = dict(feature.get("properties") or {})
             properties.setdefault("id", district.code or str(district.id))
             properties.setdefault("shapeName", district.name)

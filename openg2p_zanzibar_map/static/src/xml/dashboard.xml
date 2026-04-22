@@ -2,138 +2,174 @@
 <templates>
     <t t-name="openg2p_zanzibar_map.MainLayout">
         <div class="o_zanzibar_dashboard">
-
-            <div class="o_dashboard_sidebar">
-
-                <div class="o_sidebar_header">
-                    <h1>
-                        <i class="fa fa-globe" />
-                        <span> <t t-esc="_t('Dashboard')"/></span>
-                    </h1>
-                </div>
-
-
-                <div class="o_sidebar_filters">
-                    <div class="o_sidebar_section_title"><t t-esc="_t('Refine Data')"/></div>
-
-                    <label class="o_input_label"><t t-esc="_t('Gender')"/></label>
-                    <select class="o_prof_select select" t-att-value="state.filters.gender"
-                        t-on-change="(ev) => this.setFilterGender(ev.target.value || null)">
-                        <option value=""><t t-esc="_t('All Genders')"/></option>
-                        <option value="male"><t t-esc="_t('Male')"/></option>
-                        <option value="female"><t t-esc="_t('Female')"/></option>
-                    </select>
-
-                    <label class="o_input_label"><t t-esc="_t('Age Bracket')"/></label>
-                    <select class="o_prof_select select" t-att-value="state.filters.age_bucket"
-                        t-on-change="(ev) => this.setFilterAgeBucket(ev.target.value || null)">
-                        <option value=""><t t-esc="_t('All Ages')"/></option>
-                        <option value="70-75">70 - 75</option>
-                        <option value="76-80">76 - 80</option>
-                        <option value="81-85">81 - 85</option>
-                        <option value="86-90">86 - 90</option>
-                        <option value="91-95">91 - 95</option>
-                        <option value="101+"> &gt; 100</option>
-                    </select>
-
-                    <!-- <button class="o_btn_apply mt-3" t-on-click="fetchData">
-                        Apply Filters
-                    </button> -->
-
-                    <t t-if="hasActiveFilters">
-                        <button class="o_btn_clear" t-on-click="clearFilters">
-                            <t t-esc="_t('Reset View')"/>
+            <!-- 1. Access Restricted Screen -->
+            <t t-if="!state.isAuthorized">
+                <div class="o_restricted_screen">
+                    <div class="o_restricted_content">
+                        <i class="fa fa-shield o_restricted_icon"/>
+                        <h2 t-esc="this.translate('Access Restricted')"/>
+                        <p t-esc="this.translate('Permission Denied')"/>
+                        <t t-if="state.isMinimalMode">
+                            <p class="o_restricted_hint">
+                                <i class="fa fa-info-circle me-1"/>
+                                <t t-esc="this.translate('Contact Admin')"/>
+                            </p>
+                        </t>
+                        <button class="o_btn_back_login" t-on-click="onBackToLogin">
+                            <i class="fa fa-sign-out me-2"/>
+                            <t t-esc="this.translate('Back to Login')"/>
                         </button>
-                    </t>
+                    </div>
                 </div>
-            </div>
+            </t>
 
-            <div class="o_dashboard_main">
+            <!-- 2. Main Dashboard Content -->
+            <t t-else="">
+                <div class="o_dashboard_sidebar">
+
+                    <div class="o_sidebar_header">
+                        <h1>
+                            <i class="fa fa-globe" />
+                            <span> <t t-esc="this.translate('Dashboard')"/></span>
+                        </h1>
+                    </div>
+
+                    <!-- Language Switcher -->
+                    <div class="o_sidebar_lang_toggle">
+                        <span t-att-class="state.lang == 'en_US' ? 'active' : ''" t-on-click="() => this.switchLanguage('en_US')">EN</span>
+                        <span class="separator">|</span>
+                        <span t-att-class="state.lang == 'sw_TZ' ? 'active' : ''" t-on-click="() => this.switchLanguage('sw_TZ')">SW</span>
+                    </div>
 
 
-                <div class="o_main_map_section">
-                    <MapComponent
-                        data="state.map_data"
-                        filters="state.filters"
-                        province_data="state.province_data"
-                        map_geojson="state.map_geojson"
-                        onMapClick="applyFilterFromMap"
-                    />
-                    <div class="o_map_kpi_floating">
-                        <div class="o_map_kpi_label"><t t-esc="_t('Total Pensioners')"/></div>
-                        <div class="o_map_kpi_value">
-                            <t t-esc="state.kpi.total_pensioners || 0" />
+                    <div class="o_sidebar_filters">
+                        <div class="o_sidebar_section_title"><t t-esc="this.translate('Refine Data')"/></div>
+
+                        <label class="o_input_label"><t t-esc="this.translate('Gender')"/></label>
+                        <select class="o_prof_select select" t-att-value="state.filters.gender"
+                            t-on-change="(ev) => this.setFilterGender(ev.target.value || null)">
+                            <option value=""><t t-esc="this.translate('All Genders')"/></option>
+                            <option value="male"><t t-esc="this.translate('Male')"/></option>
+                            <option value="female"><t t-esc="this.translate('Female')"/></option>
+                        </select>
+
+                        <label class="o_input_label"><t t-esc="this.translate('Age Bracket')"/></label>
+                        <select class="o_prof_select select" t-att-value="state.filters.age_bucket"
+                            t-on-change="(ev) => this.setFilterAgeBucket(ev.target.value || null)">
+                            <option value=""><t t-esc="this.translate('All Ages')"/></option>
+                            <option value="70-75">70 - 75</option>
+                            <option value="76-80">76 - 80</option>
+                            <option value="81-85">81 - 85</option>
+                            <option value="86-90">86 - 90</option>
+                            <option value="91-95">91 - 95</option>
+                            <option value="101+"> &gt; 100</option>
+                        </select>
+
+                        <t t-if="this.hasActiveFilters">
+                            <button class="o_btn_clear" t-on-click="this.clearFilters">
+                                <t t-esc="this.translate('Reset View')"/>
+                            </button>
+                        </t>
+                    </div>
+
+                    <div class="o_sidebar_user_panel">
+                        <div class="o_sidebar_user_name" t-att-title="state.currentUserName">
+                            <i class="fa fa-user-circle" />
+                            <span t-esc="state.currentUserName" />
                         </div>
-                    </div>
-
-                    <div t-if="state.loading" class="o_map_loader">
-                        <i class="fa fa-spinner fa-spin" />
-                        <span><t t-esc="_t('Updating Data...')"/></span>
+                        <button class="o_btn_logout" t-on-click="this.logout">
+                            <i class="fa fa-sign-out" />
+                            <span><t t-esc="this.translate('Logout')"/></span>
+                        </button>
                     </div>
                 </div>
-                <div class="o_main_charts_section" t-if="!state.loading">
 
-                    <div class="o_chart_card o_card_age">
+                <div class="o_dashboard_main">
 
-                        <div class="o_chart_body">
-                            <ChartComponent
-                                t-if="state.charts.age"
-                                type="'pie'"
-                                title="_t('Age Distribution')"
-                                data_label="_t('Count')"
-                                labels="Object.keys(state.charts.age || {})"
-                                data="Object.values(state.charts.age || {})"
-                                options="{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }"
-                                chartType="'age'"
-                                onSegmentClick="applyFilterFromChart"
-                            />
-                                <div t-else="" class="text-center text-muted small mt-4"><t t-esc="_t('No data available')"/>
-                                </div>
+
+                    <div class="o_main_map_section">
+                        <MapComponent
+                            data="state.map_data"
+                            filters="state.filters"
+                            province_data="state.province_data"
+                            map_geojson="state.map_geojson"
+                            onMapClick="this.applyFilterFromMap"
+                        />
+                        <div class="o_map_kpi_floating">
+                            <div class="o_map_kpi_label"><t t-esc="this.translate('Total Pensioners')"/></div>
+                            <div class="o_map_kpi_value">
+                                <t t-esc="state.kpi.total_pensioners || 0" />
                             </div>
                         </div>
 
-                    <div class="o_chart_card o_card_gender">
-
-                        <div class="o_chart_body">
-                            <ChartComponent
-                                t-if="state.charts.gender"
-                                type="'doughnut'"
-                                title="_t('Gender Split')"
-                                data_label="_t('Count')"
-                                labels="Object.keys(state.charts.gender || {})"
-                                data="Object.values(state.charts.gender || {})"
-                                backgroundColor="['#1e40af', '#94a3b8']"
-                                options="{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12,padding: 12, font: { size: 11 } } } } }"
-                                chartType="'gender'"
-                                onSegmentClick="applyFilterFromChart"
-                            />
-                             <div t-else="" class="text-center text-muted small mt-4"><t t-esc="_t('No data available')"/></div>
+                        <div t-if="state.loading" class="o_map_loader">
+                            <i class="fa fa-spinner fa-spin" />
+                            <span><t t-esc="this.translate('Updating Data...')"/></span>
                         </div>
                     </div>
+                    <div class="o_main_charts_section" t-if="!state.loading">
 
-                    <div class="o_chart_card o_card_region">
+                        <div class="o_chart_card o_card_age">
 
-                        <div class="o_chart_body">
-                            <ChartComponent
-                                t-if="state.charts.region_data"
-                                type="'bar'"
-                                title="_t('Region Distribution')"
-                                labels="state.charts.region_data ? state.charts.region_data.labels || [] : []"
-                                data="(state.charts.region_data and state.charts.region_data.datasets and state.charts.region_data.datasets[0]) ? state.charts.region_data.datasets[0].data : []"
-                                data_label="_t('Registrations')"
-                                backgroundColor="['#3b82f6']"
-                                chartType="'region'"
-                                onSegmentClick="applyFilterFromChart"
-                                options="{ maintainAspectRatio: false, responsive: true,indexAxis: 'y', plugins: { legend: { position: 'bottom', labels: { boxWidth: 12,padding: 12, font: { size: 11 } } } }, scales: { y: { grid: { color: '#f1f5f9' },tick:{display: false}, x: { grid: { display: false } } } } }"
-                            />
-                            <div t-else="" class="text-center text-muted small mt-4"><t t-esc="_t('No data available')"/></div>
+                            <div class="o_chart_body">
+                                <ChartComponent
+                                    t-if="state.charts.age"
+                                    type="'pie'"
+                                    title="this.translate('Age Distribution')"
+                                    data_label="this.translate('Count')"
+                                    labels="Object.keys(state.charts.age || {})"
+                                    data="Object.values(state.charts.age || {})"
+                                    options="{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }"
+                                    chartType="'age'"
+                                    onSegmentClick="this.applyFilterFromChart"
+                                />
+                                    <div t-else="" class="text-center text-muted small mt-4"><t t-esc="this.translate('No data available')"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="o_chart_card o_card_gender">
+
+                            <div class="o_chart_body">
+                                <ChartComponent
+                                    t-if="state.charts.gender"
+                                    type="'doughnut'"
+                                    title="this.translate('Gender Split')"
+                                    data_label="this.translate('Count')"
+                                    labels="Object.keys(state.charts.gender || {})"
+                                    data="Object.values(state.charts.gender || {})"
+                                    backgroundColor="['#1e40af', '#94a3b8']"
+                                    options="{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12,padding: 12, font: { size: 11 } } } } }"
+                                    chartType="'gender'"
+                                    onSegmentClick="this.applyFilterFromChart"
+                                />
+                                <div t-else="" class="text-center text-muted small mt-4"><t t-esc="this.translate('No data available')"/></div>
+                            </div>
                         </div>
+
+                        <div class="o_chart_card o_card_region">
+
+                            <div class="o_chart_body">
+                                <ChartComponent
+                                    t-if="state.charts.region_data"
+                                    type="'bar'"
+                                    title="this.translate('Region Distribution')"
+                                    labels="state.charts.region_data ? state.charts.region_data.labels || [] : []"
+                                    data="(state.charts.region_data and state.charts.region_data.datasets and state.charts.region_data.datasets[0]) ? state.charts.region_data.datasets[0].data : []"
+                                    data_label="this.translate('Registrations')"
+                                    backgroundColor="['#3b82f6']"
+                                    chartType="'region'"
+                                    onSegmentClick="this.applyFilterFromChart"
+                                    options="{ maintainAspectRatio: false, responsive: true,indexAxis: 'y', plugins: { legend: { position: 'bottom', labels: { boxWidth: 12,padding: 12, font: { size: 11 } } } }, scales: { y: { grid: { color: '#f1f5f9' },tick:{display: false}, x: { grid: { display: false } } } } }"
+                                />
+                                <div t-else="" class="text-center text-muted small mt-4"><t t-esc="this.translate('No data available')"/></div>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
-
-            </div>
-
+            </t>
         </div>
     </t>
 </templates>

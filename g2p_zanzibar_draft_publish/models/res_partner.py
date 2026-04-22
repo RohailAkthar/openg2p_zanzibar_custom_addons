@@ -7,6 +7,17 @@ class G2PRespartnerIntegration(models.Model):
 
     draft_record_id = fields.Many2one('draft.record', string='Original Draft Record', readonly=True, required=False)
 
+    imported_record_state = fields.Selection(
+        selection=[
+            ("draft", "Not Verified"),
+            ("submitted", "Submitted"),
+            ("published", "Approved"),
+            ("rejected", "Rejected"),
+        ],
+        default="draft",
+        string="Status"
+    )
+
     @api.model
     def cleanup_orphaned_published_partners(self):
         """Clean up published partners whose draft records were deleted"""

@@ -3,10 +3,23 @@ from odoo import api, fields, models
 
 class G2PDraftRecord(models.Model):
     _inherit = "draft.record"
+    _description = "Not Verified Records"
     _order = "write_date desc, id desc"
 
     # Stored + tracked computed fields with inverse for full chatter logging
     _INV = "_inverse_mapped_fields"
+
+    state = fields.Selection(
+        selection=[
+            ("draft", "Not Verified"),
+            ("submitted", "Submitted"),
+            ("published", "Approved"),
+            ("rejected", "Rejected"),
+        ],
+        default="draft",
+        string="Status",
+        tracking=True
+    )
 
     zan_id = fields.Char(string="Zan ID", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     given_name = fields.Char(string="Given Name", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)

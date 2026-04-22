@@ -10,9 +10,10 @@
    <menuitem
         name="Dashboard"
         id="sr_dashboard"
-        sequence="0"
+        sequence="999"
         action="sr_dashboard_action"
         parent="g2p_registry_base.g2p_main_menu_root"
+        groups="group_dashboard_viewer"
     />
 
 </odoo>

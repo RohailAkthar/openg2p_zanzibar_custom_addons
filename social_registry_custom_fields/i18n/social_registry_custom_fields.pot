@@ -1,0 +1,76 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* social_registry_custom_fields
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__benf_post_code
+msgid "Post Code"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__benf_zan_id
+msgid "Zan ID"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__disability
+msgid "Do you have any disability?"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__is_receiving_allowance
+msgid "Are you receiving 5000 allowance from district council? (Below 70 years)"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__has_health_insurance
+msgid "Are you covered with any health insurance scheme?"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__pensioner_id
+msgid "Pensioner ID"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__phone
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_registry_individuals_filter_zanzibar
+msgid "Phone"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__db_import
+#: model:ir.ui.view,arch_db:social_registry_custom_fields.view_registry_individuals_filter_zanzibar
+msgid "Imported"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Registration Date"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Pensioner ID"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Zan ID"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Additional Information"
+msgstr ""
+
+#. module: social_registry_custom_fields
+#: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
+msgid "Phone Numbers"
+msgstr ""

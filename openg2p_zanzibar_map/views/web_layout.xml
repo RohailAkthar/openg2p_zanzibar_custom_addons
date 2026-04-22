@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        Server-side Automatic Kiosk Mode.
+        This override injects the 'o_minimal_view' class into the <body> tag 
+        if the user is a Dashboard Viewer but NOT a System Administrator.
+    -->
+    <template id="minimal_layout_dashboard" inherit_id="web.layout">
+        <xpath expr="//body" position="attributes">
+            <attribute name="t-att-class">
+                (
+                    (body_classname or '') + 
+                    (' o_minimal_view' if request.env.user.has_group('openg2p_zanzibar_map.group_dashboard_viewer') and not request.env.user.has_group('base.group_system') else '')
+                ).strip()
+            </attribute>
+        </xpath>
+    </template>
+</odoo>

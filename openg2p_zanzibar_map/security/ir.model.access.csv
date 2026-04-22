@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dashboard_logic_viewer,Dashboard Logic Viewer,model_dashboard_logic,group_dashboard_viewer,1,1,1,1
+access_dashboard_partner_read,Dashboard Partner Read,g2p_registry_base.model_res_partner,group_dashboard_viewer,1,0,0,0
+access_dashboard_region_read,Dashboard Region Read,g2p_social_registry.model_g2p_region,group_dashboard_viewer,1,0,0,0
+access_dashboard_district_read,Dashboard District Read,g2p_registry_base.model_g2p_district,group_dashboard_viewer,1,0,0,0
+access_dashboard_user_read,Dashboard User Read,base.model_res_users,group_dashboard_viewer,1,0,0,0
+access_dashboard_group_read,Dashboard Group Read,base.model_res_groups,group_dashboard_viewer,1,0,0,0
+access_dashboard_company_read,Dashboard Company Read,base.model_res_company,group_dashboard_viewer,1,0,0,0

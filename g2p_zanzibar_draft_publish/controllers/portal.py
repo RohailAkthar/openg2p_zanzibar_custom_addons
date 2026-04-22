@@ -184,7 +184,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             else:
                 return {
                     "status": "ALREADY_EXISTS_IN_DRAFT",
-                    "message": "Beneficiary with this Zan ID already exists in draft records."
+                    "message": "Beneficiary with this Zan ID already exists in Not Verified records."
                 }
 
         # If no active draft found (all are rejected or none exist), 
@@ -303,7 +303,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             if phone_rec.partner_id and any(d.state != 'rejected' for d in phone_rec.partner_id.draft_record_ids):
                 return {
                     "status": "ALREADY_EXISTS_IN_DRAFT",
-                    "message": "Beneficiary with this phone number already exists in draft records."
+                    "message": "Beneficiary with this phone number already exists in Not Verified records."
                 }
 
         for phone_rec in phone_records:
@@ -341,7 +341,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         if draft_records_with_nominee_phone:
             return {
                 "status": "ALREADY_EXISTS_IN_DRAFT",
-                "message": "Nominee with this phone number already exists in draft records."
+                "message": "Nominee with this phone number already exists in Not Verified records."
             }
 
         # Check in published partners via nominee_mobile field

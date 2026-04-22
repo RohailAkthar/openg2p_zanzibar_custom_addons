@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        By adding this group to the OpenG2P Module Access category, 
+        Odoo will automatically show it as a clean checkbox in the main 
+        'Access Rights' tab, and it will be visible without Debug Mode.
+    -->
+    <record id="group_dashboard_viewer" model="res.groups">
+        <field name="name">Dashboard Viewer</field>
+        <field name="comment">Users in this group can access the minimal dashboard view.</field>
+        <field name="category_id" ref="g2p_registry_base.openg2p_module"/>
+    </record>
+</odoo>

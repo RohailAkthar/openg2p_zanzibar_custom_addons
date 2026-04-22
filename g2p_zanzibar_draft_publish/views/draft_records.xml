@@ -260,7 +260,7 @@
         <field name="name">draft.record.readonly.form</field>
         <field name="model">draft.record</field>
         <field name="arch" type="xml">
-            <form string="Draft Record" edit="0" create="0" delete="0">
+            <form string="Not Verified Record" edit="0" create="0" delete="0">
                 <header>
                     <field
                         name="state"
@@ -383,14 +383,14 @@
         <field name="name">draft.record.search</field>
         <field name="model">draft.record</field>
         <field name="arch" type="xml">
-            <search string="Search Drafts">
+            <search string="Search Not Verified">
                 <field name="zan_id" string="Zan ID" />
                 <field name="name" string="Name" />
                 <field name="phone" string="Phone" />
                 <field name="gender" string="Gender" readonly="1" />
                 <field name="birthdate_date" string="Date of Birth" />
                 <field name="registration_date" string="Registration Date" />
-                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="filter_draft" string="Not Verified" domain="[('state', '=', 'draft')]" />
                 <filter name="filter_approved" string="Approved" domain="[('state', '=', 'published')]" />
                 <group expand="0" string="Group By">
                     <filter name="group_state" string="State" context="{'group_by': 'state'}" />
@@ -420,7 +420,7 @@
 
     <!-- Override Drafts action to show draft + approved records only -->
     <record id="g2p_draft_publish.action_draft_imported_record" model="ir.actions.act_window">
-        <field name="name">Drafts</field>
+        <field name="name">Not Verified</field>
         <field name="res_model">draft.record</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('state', '=', 'draft')]</field>
@@ -525,6 +525,11 @@
         action="action_rejected_records"
         sequence="12"
     />
+
+    <!-- Rename Drafts menu to Not Verified -->
+    <record id="g2p_draft_publish.menu_draft_imported_farmer_record" model="ir.ui.menu">
+        <field name="name">Not Verified</field>
+    </record>
 
     <!-- Rename main menu to Pensioner Verification -->
     <record id="g2p_draft_publish.draft_publish_main_menu" model="ir.ui.menu">

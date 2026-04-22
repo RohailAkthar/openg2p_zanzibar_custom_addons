@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        We no longer need custom xpaths here because the checkbox is now handled 
+        automatically by Odoo's category system in security/groups.xml.
+    -->
+</odoo>

@@ -14,7 +14,7 @@
                 <t t-if="group.state">
                     <!-- Draft record -->
                     <t t-if="group.state == 'draft'">
-                        <span class="badge rounded-pill bg-warning text-dark">Draft</span>
+                        <span class="badge rounded-pill bg-warning text-dark">Not Verified</span>
                     </t>
                     <t t-elif="group.state == 'submitted'">
                         <span class="badge rounded-pill bg-info text-dark">Submitted</span>
