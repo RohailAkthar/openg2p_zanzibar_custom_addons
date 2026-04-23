@@ -24,10 +24,7 @@
                 <attribute name="style">width:250px</attribute>
             </xpath>
 
-            <!-- Make Pensioner ID Readonly -->
-            <xpath expr="//field[@name='pensioner_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
+
         </field>
     </record>
 
@@ -40,7 +37,6 @@
                 <attribute name="class">hide_new_button_tree</attribute>
             </xpath>
             <xpath expr="//field[@name='name']" position="before">
-                <field name="pensioner_id" />
                 <field name="benf_zan_id" />
             </xpath>
         </field>

@@ -39,10 +39,6 @@
                                     <div style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
                                 </div>
                                 <div style="display: table-row;">
-                                    <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;" class="fw-bold"><label for="pensioner_id" string="Pensioner ID"/></div>
-                                    <div style="display: table-cell; padding-bottom: 10px;"><field name="pensioner_id" readonly="1" nolabel="1"/></div>
-                                </div>
-                                <div style="display: table-row;">
                                     <div style="display: table-cell; padding-right: 15px;" class="fw-bold"><label for="benf_zan_id" string="Zan ID"/></div>
                                     <div style="display: table-cell;"><field name="benf_zan_id" readonly="1" nolabel="1"/></div>
                                 </div>
@@ -109,7 +105,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="replace">
                 <search string="Search Individual">
-                    <field name="pensioner_id" string="Pensioner ID" filter_domain="[('pensioner_id', 'ilike', self)]" />
+
                     <field name="benf_zan_id" string="Zan ID" filter_domain="[('benf_zan_id', 'ilike', self)]" />
                     <field name="name" string="Name" filter_domain="['|', '|', ('complete_name', 'ilike', self), ('given_name', 'ilike', self), ('family_name', 'ilike', self)]" />
                     <field name="phone" string="Phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]" />
