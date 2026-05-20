@@ -4,7 +4,7 @@
         <field name="name">view_zanzi_district_tree</field>
         <field name="model">g2p.district</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree editable="bottom" import="false" export_xlsx="false">
                 <field name="name" />
                 <field name="code" />
                 <field name="province_id" />

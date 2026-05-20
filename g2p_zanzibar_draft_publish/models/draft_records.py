@@ -527,7 +527,8 @@ class G2PDraftRecord(models.Model):
         partner_data = json.loads(self.partner_data or "{}")
 
         partner_model = self.env["res.partner"]
-        fields_metadata = partner_model.fields_get()
+        # Optimize fields_get by only fetching metadata for fields present in partner_data to avoid full schema validation overhead
+        fields_metadata = partner_model.fields_get(allfields=list(partner_data.keys()))
         valid_data = {}
 
         validators = {
@@ -582,16 +583,18 @@ class G2PDraftRecord(models.Model):
         creator = self.create_uid
         if creator and creator.partner_id:
             enumerator_model = self.env["g2p.enumerator"].sudo()
-            # De-duplication: check by name or EID
-            enumerator = enumerator_model.search([
-                "|", ("name", "=", creator.name),
-                ("enumerator_user_id", "=", creator.partner_id.eid)
-            ], limit=1)
+            enumerator = False
+            # Search by unique EID first if available
+            if creator.partner_id.eid:
+                enumerator = enumerator_model.search([("enumerator_user_id", "=", creator.partner_id.eid)], limit=1)
+            # If not found by EID, search by name
+            if not enumerator:
+                enumerator = enumerator_model.search([("name", "=", creator.name)], limit=1)
             
-            if not enumerator and creator.partner_id.eid:
+            if not enumerator:
                 enumerator = enumerator_model.create({
                     "name": creator.name,
-                    "enumerator_user_id": creator.partner_id.eid,
+                    "enumerator_user_id": creator.partner_id.eid or False,
                     "data_collection_date": self.registration_date or fields.Date.today(),
                 })
             
@@ -665,3 +668,15 @@ class G2PDraftRecord(models.Model):
             "view_id": view_id,
             "target": "current",
         }
+
+    def action_approve_wizard(self):
+        self.ensure_one()
+        return {
+            "name": "Confirm Approval",
+            "type": "ir.actions.act_window",
+            "res_model": "approve.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"active_ids": self.ids, "active_id": self.id, "active_model": "draft.record"},
+        }
+

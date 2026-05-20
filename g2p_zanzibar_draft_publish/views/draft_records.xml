@@ -43,6 +43,7 @@
             <!-- Show Approve button for draft state instead of submitted -->
             <xpath expr="//button[@name='action_publish']" position="attributes">
                 <attribute name="invisible">state != 'draft'</attribute>
+                <attribute name="confirm">Are you sure you want to approve this pensioner?</attribute>
             </xpath>
 
             <!-- Show Reject button for draft state instead of submitted -->
@@ -204,6 +205,10 @@
             <!-- Hide Submit button -->
             <xpath expr="//footer/button[@name='action_submit']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Call approve wizard from validation popup -->
+            <xpath expr="//footer/button[@name='action_publish']" position="attributes">
+                <attribute name="confirm">Are you sure you want to approve this pensioner?</attribute>
             </xpath>
             <!-- Add Reject button after Approve -->
             <xpath expr="//footer/button[@name='action_publish']" position="after">
@@ -534,5 +539,22 @@
     <!-- Rename main menu to Pensioner Verification -->
     <record id="g2p_draft_publish.draft_publish_main_menu" model="ir.ui.menu">
         <field name="name">Pensioner Verification</field>
+    </record>
+
+    <!-- Approve confirmation wizard view -->
+    <record id="view_approve_wizard_form" model="ir.ui.view">
+        <field name="name">approve.wizard.form</field>
+        <field name="model">approve.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Approval">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px; font-size: 15px;">
+                    Are you sure you want to approve this pensioner?
+                </div>
+                <footer>
+                    <button name="confirm_approval" string="Yes, Approve" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
     </record>
 </odoo>

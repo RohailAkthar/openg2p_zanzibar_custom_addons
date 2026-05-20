@@ -36,7 +36,7 @@
                             <div style="display: table;">
                                 <div style="display: table-row;">
                                     <div style="display: table-cell; padding-right: 15px; padding-bottom: 10px;  white-space: nowrap;"><label for="registration_date" string="Registration Date"/></div>
-                                    <div style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
+                                    <div class="custom-reg-date-cell" style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
                                 </div>
                                 <div style="display: table-row;">
                                     <div style="display: table-cell; padding-right: 15px;" class="fw-bold"><label for="benf_zan_id" string="Zan ID"/></div>

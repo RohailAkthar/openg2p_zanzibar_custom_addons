@@ -1,3 +1,8 @@
 .o-mail-DiscussSystray-class {
     display: none !important;
 }
+
+/* Hide any extra fields (like checkboxes or payment modes) appended after the registration date in the header */
+.custom-reg-date-cell > *:not([name="registration_date"]):not(.o_field_date) {
+    display: none !important;
+}
