@@ -80,6 +80,26 @@ class ResPartner(models.Model):
         if vals.get('account_num'):
             vals['payment_mode'] = 'bank'
 
+        # 6. Normalize Status Value and sync Active/Disabled state
+        if vals.get('status'):
+            status_val = str(vals['status']).strip().lower()
+            if status_val == 'active':
+                vals.update({
+                    'status': 'active',
+                    'active': True,
+                    'disabled': False,
+                    'disabled_reason': False,
+                    'disabled_by': False,
+                })
+            elif status_val == 'inactive':
+                vals.update({
+                    'status': 'inactive',
+                    'active': False,
+                    'disabled': fields.Datetime.now(),
+                    'disabled_reason': _('Imported as Inactive'),
+                    'disabled_by': self.env.user.id,
+                })
+
     def _handle_import_lookups(self, vals_list):
         """Batch search for Region and District IDs with case-insensitivity."""
         regions_found = {}

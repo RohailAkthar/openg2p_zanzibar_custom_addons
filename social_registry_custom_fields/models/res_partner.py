@@ -30,6 +30,11 @@ class ResPartner(models.Model):
         string="Are you covered with any health insurance scheme?",
         tracking=True
     )
+    status = fields.Selection(
+        [("active", "Active"), ("inactive", "Inactive")],
+        string="Status (Import)",
+        tracking=True
+    )
     @api.depends("reg_ids.value", "reg_ids.id_type")
     def _compute_benf_zan_id(self):
         for record in self:
