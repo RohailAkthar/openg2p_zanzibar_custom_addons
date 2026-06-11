@@ -16,7 +16,7 @@ msgstr "Msimbo wa Posta"
 
 #. module: social_registry_custom_fields
 #: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__benf_zan_id
-msgid "Zan ID"
+msgid "Zanzibar ID"
 msgstr "Kitambulisho cha Zanzibar"
 
 #. module: social_registry_custom_fields
@@ -74,7 +74,7 @@ msgstr "Tarehe ya Usajili"
 
 #. module: social_registry_custom_fields
 #: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
-msgid "Zan ID"
+msgid "Zanzibar ID"
 msgstr "Kitambulisho cha Zanzibar"
 
 #. module: social_registry_custom_fields
@@ -86,3 +86,19 @@ msgstr "Taarifa ya Ziada"
 #: model:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
 msgid "Phone Numbers"
 msgstr "Namba za Simu"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields.selection,name:social_registry_custom_fields.selection__g2p_disable_registrant_wizard__disabled_reason__suspended
+msgid "Suspended"
+msgstr "Imesimamishwa"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields.selection,name:social_registry_custom_fields.selection__g2p_disable_registrant_wizard__disabled_reason__deceased
+msgid "Deceased"
+msgstr "Amefariki"
+
+#. module: social_registry_custom_fields
+#: model:ir.model.fields.selection,name:social_registry_custom_fields.selection__g2p_disable_registrant_wizard__disabled_reason__inactive
+msgid "Inactive"
+msgstr "Haifanyi kazi"
+

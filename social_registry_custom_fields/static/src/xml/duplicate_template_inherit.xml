@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template xml:space="preserve">
+    <!-- Inherit web.ListView template to add a 'no_deduplicate' context check -->
+    <t t-name="social_registry_custom_fields.ListView" t-inherit="web.ListView" t-inherit-mode="extension">
+        <xpath expr="//button[@name='deduplicate_registrants']" position="attributes">
+            <attribute name="t-if">model.root.resModel == 'res.partner'
+                        and ! model.root.context['default_is_duplicate']
+                        and ! model.root.context['no_deduplicate']
+                        and ! nbSelected and model.root.count > 0</attribute>
+        </xpath>
+    </t>
+</template>

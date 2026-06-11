@@ -39,7 +39,7 @@
                                     <div class="custom-reg-date-cell" style="display: table-cell; padding-bottom: 10px;"><field name="registration_date" readonly="1" nolabel="1"/></div>
                                 </div>
                                 <div style="display: table-row;">
-                                    <div style="display: table-cell; padding-right: 15px;" class="fw-bold"><label for="benf_zan_id" string="Zan ID"/></div>
+                                    <div style="display: table-cell; padding-right: 15px;" class="fw-bold"><label for="benf_zan_id" string="Zanzibar ID"/></div>
                                     <div style="display: table-cell;"><field name="benf_zan_id" readonly="1" nolabel="1"/></div>
                                 </div>
                             </div>
@@ -94,6 +94,17 @@
             <xpath expr="//page[@name='basic_info']/group[2]/group[1]" position="replace">
                 <!-- Removed DOB group -->
             </xpath>
+
+            <!-- Replace default ribbons with status-based ribbons -->
+            <xpath expr="//widget[@name='web_ribbon' and @bg_color='bg-danger']" position="replace">
+                <!-- Removed standard Archived ribbon -->
+            </xpath>
+            <xpath expr="//widget[@name='web_ribbon' and @bg_color='bg-warning']" position="replace">
+                <field name="status" invisible="1"/>
+                <widget name="web_ribbon" title="Suspended" bg_color="bg-warning" invisible="status != 'Suspended'" />
+                <widget name="web_ribbon" title="Deceased" bg_color="bg-danger" invisible="status != 'Deceased'" />
+                <widget name="web_ribbon" title="Inactive" bg_color="bg-secondary" invisible="status != 'Inactive'" />
+            </xpath>
         </field>
     </record>
 
@@ -106,22 +117,182 @@
             <xpath expr="//search" position="replace">
                 <search string="Search Individual">
 
-                    <field name="benf_zan_id" string="Zan ID" filter_domain="[('benf_zan_id', 'ilike', self)]" />
+                    <field name="benf_zan_id" string="Zanzibar ID" filter_domain="[('benf_zan_id', 'ilike', self)]" />
                     <field name="name" string="Name" filter_domain="['|', '|', ('complete_name', 'ilike', self), ('given_name', 'ilike', self), ('family_name', 'ilike', self)]" />
                     <field name="phone" string="Phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]" />
                     <field name="birthdate" string="Date of Birth" />
                     <field name="registration_date" string="Registration Date" />
                     <field name="db_import" string="Imported" />
+                    <field name="gender" string="Gender" />
                     <separator />
                     <filter string="Imported" name="imported_yes" domain="[('db_import', '=', 'yes')]" />
                     <filter string="Internal" name="imported_no" domain="[('db_import', '=', 'no')]" />
-                    <separator />
-                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]" />
                     <group expand="0" string="Group By">
                         <filter string="Imported" name="group_by_imported" context="{'group_by': 'db_import'}" />
+                        <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}" />
                     </group>
                 </search>
             </xpath>
         </field>
+    </record>
+
+    <record id="view_individuals_list_tree_inherit_custom" model="ir.ui.view">
+        <field name="name">view.individuals.list.tree.inherit.custom</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="gender"/>
+            </xpath>
+            <xpath expr="//field[@name='birthdate']" position="after">
+                <field name="phone"/>
+            </xpath>
+            <xpath expr="//field[@name='db_import']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='registration_date']" position="after">
+                <field name="status" string="Status"/>
+                <button
+                    type="action"
+                    icon="fa-ban"
+                    name="%(g2p_registry_base.action_disable_registrant_wizard)d"
+                    title="Disable"
+                    invisible="disabled"
+                    groups="g2p_zanzibar_access_restriction.group_g2p_super_admin"
+                />
+                <button
+                    type="object"
+                    icon="fa-check"
+                    name="enable_registrant"
+                    title="Enable"
+                    invisible="not disabled"
+                    groups="g2p_zanzibar_access_restriction.group_g2p_super_admin"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Wizard View Inheritance to change labels from 'Disable' to 'Inactive' -->
+    <record id="disable_registrant_wizard_form_view_inherit_custom" model="ir.ui.view">
+        <field name="name">disable.registrant.wizard.form.view.inherit.custom</field>
+        <field name="model">g2p.disable.registrant.wizard</field>
+        <field name="inherit_id" ref="g2p_registry_base.disable_registrant_wizard_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Replace original group with side-by-side columns for Dropdown and Info Legend -->
+            <xpath expr="//field[@name='disabled_reason']/.." position="replace">
+                <div class="row">
+                    <!-- Left column: the dropdown and attachments -->
+                    <div class="col-6">
+                        <group string="Reason">
+                            <field name="disabled_reason_selection" nolabel="1" class="w-100" style="width: 100%; min-width: 250px;"/>
+                            <field name="disabled_reason" invisible="1" required="0"/>
+                        </group>
+                        <group string="Attachments">
+                            <field name="attachment_ids" widget="many2many_binary" string="Attach Files" nolabel="1"/>
+                        </group>
+                    </div>
+                    <!-- Right column: information points -->
+                    <div class="col-6" style="padding-top: 15px;">
+                        <div class="alert alert-info" role="alert" style="font-size: 13px; border-radius: 4px; padding: 12px; border: 1px solid #cff4fc; background-color: #f8f9fa;">
+                            <div class="mb-2">
+                                <i class="fa fa-info-circle me-1" style="color: #0dcaf0; font-size: 14px;" title="Info"></i>
+                                <strong>Suspended:</strong> Temporarily not eligible for payment for various reasons.
+                            </div>
+                            <div class="mb-2">
+                                <i class="fa fa-info-circle me-1" style="color: #0dcaf0; font-size: 14px;" title="Info"></i>
+                                <strong>Deceased:</strong> Beneficiary has passed away and is no longer eligible.
+                            </div>
+                            <div>
+                                <i class="fa fa-info-circle me-1" style="color: #0dcaf0; font-size: 14px;" title="Info"></i>
+                                <strong>Inactive:</strong> Record was created incorrectly or is no longer valid.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//button[@name='disable_registrant']" position="attributes">
+                <attribute name="string">Inactive</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Override Wizard Action to change dialog title to 'Inactive' -->
+    <record id="g2p_registry_base.action_disable_registrant_wizard" model="ir.actions.act_window">
+        <field name="name">Inactive</field>
+    </record>
+
+    <!-- New Action for Suspended Individuals -->
+    <record id="action_archived_individuals_list" model="ir.actions.act_window">
+        <field name="name">Suspended Individuals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="g2p_registry_individual.view_registry_individuals_filter" />
+        <field name="context">{'default_is_registrant': True, 'default_is_group': False, 'registrant_form': True, 'active_test': False}</field>
+        <field name="domain">[('is_registrant', '=', True), ('is_group', '=', False), ('active', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No suspended individuals found.
+            </p>
+        </field>
+    </record>
+
+    <!-- Specific views for Suspended Action (Primary inheritance to disable import/creation) -->
+    <record id="view_suspended_individuals_list_tree" model="ir.ui.view">
+        <field name="name">view.suspended.individuals.list.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree" />
+        <field name="mode">primary</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="import">0</attribute>
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_archived_individuals_list_tree_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1" />
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_suspended_individuals_list_tree" />
+        <field name="act_window_id" ref="action_archived_individuals_list" />
+    </record>
+
+    <record id="action_archived_individuals_form_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2" />
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="g2p_registry_individual.view_individuals_form" />
+        <field name="act_window_id" ref="action_archived_individuals_list" />
+    </record>
+
+    <!-- Menu Item for Suspended Individuals -->
+    <menuitem
+        id="menu_archived_individuals_list"
+        name="Suspended"
+        action="action_archived_individuals_list"
+        parent="g2p_registry_base.g2p_main_menu_root"
+        sequence="25"
+        groups="g2p_registry_base.group_g2p_admin,g2p_registry_base.group_g2p_registrar"
+    />
+
+    <!-- Configures the Duplicated list views to show archived/suspended records as well -->
+    <record id="g2p_registry_id_deduplication.action_duplicate_individuals" model="ir.actions.act_window">
+        <field name="context">{'default_is_registrant': True, 'default_is_group': False, 'registrant_form': True, 'create': 0, 'active_test': False}</field>
+    </record>
+
+    <record id="g2p_registry_id_deduplication.action_duplicate_groups" model="ir.actions.act_window">
+        <field name="context">{'default_is_registrant': True, 'default_is_group': True, 'registrant_form': True, 'create': 0, 'active_test': False}</field>
+    </record>
+
+    <!-- Delete child menus to remove dropdown and link the action directly to top-level "Duplicates" menu -->
+    <delete model="ir.ui.menu" id="g2p_registry_id_deduplication.g2p_deduplication_group_menu"/>
+    <delete model="ir.ui.menu" id="g2p_registry_id_deduplication.g2p_deduplication_individual_menu"/>
+
+    <record id="g2p_registry_id_deduplication.g2p_deduplication_menu" model="ir.ui.menu">
+        <field name="action" ref="g2p_registry_id_deduplication.action_duplicate_individuals"/>
     </record>
 </odoo>

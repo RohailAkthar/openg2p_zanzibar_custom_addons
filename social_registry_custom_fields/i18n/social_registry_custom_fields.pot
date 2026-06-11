@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: social_registry_custom_fields
 #: model:ir.model.fields,field_description:social_registry_custom_fields.field_res_partner__benf_zan_id
-msgid "Zan ID"
+msgid "Zanzibar ID"
 msgstr ""
 
 #. module: social_registry_custom_fields
@@ -62,7 +62,7 @@ msgstr ""
 
 #. module: social_registry_custom_fields
 #: model_terms:ir.ui.view,arch_db:social_registry_custom_fields.view_res_partner_form_inherit_custom
-msgid "Zan ID"
+msgid "Zanzibar ID"
 msgstr ""
 
 #. module: social_registry_custom_fields

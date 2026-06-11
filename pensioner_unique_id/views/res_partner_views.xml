@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_form_pensioner_id" model="ir.ui.view">
+        <field name="name">res.partner.form.pensioner.id</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="social_registry_custom_fields.view_res_partner_form_inherit_custom"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='benf_zan_id']/parent::div/parent::div" position="after">
+                <div style="display: table-row;" invisible="not pensioner_id">
+                    <div style="display: table-cell; padding-right: 15px; padding-top: 10px;" class="fw-bold"><label for="pensioner_id" string="Pensioner ID"/></div>
+                    <div style="display: table-cell; padding-top: 10px;"><field name="pensioner_id" readonly="1" nolabel="1"/></div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

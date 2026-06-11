@@ -6,12 +6,16 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+
     import_zan_id = fields.Char(string="Zanzibar ID", help="Technical field used for importing Zanzibar ID")
     import_full_name = fields.Char(string="Beneficiary Name", help="Technical field used for importing Full Name")
     import_nominee_full_name = fields.Char(string="Next of Kin Name / Closest Relative Name", help="Technical field used for importing Nominee Full Name")
     import_shehia = fields.Char(string="Shehia (Ward)", help="Technical field used for importing Shehia (Ward)")
     import_region = fields.Char(string="Region (Import)", help="Technical field used for importing Region")
     import_district = fields.Char(string="District (Import)", help="Technical field used for importing District")
+    import_status = fields.Char(string="Status (Import)", help="Technical field used for importing Status")
+    import_mobile = fields.Char(string="Mobile", help="Technical field used for importing Mobile")
+    import_disability = fields.Char(string="Disability Status", help="Technical field used for importing Disability Status")
 
     @api.model
     def get_import_templates(self):
@@ -31,6 +35,22 @@ class ResPartner(models.Model):
             return parts[0], "", parts[1]
         else:
             return parts[0], parts[1], " ".join(parts[2:])
+
+    def _normalize_tz_phone(self, number):
+        if not number:
+            return ""
+        clean_number = "".join(c for c in str(number).strip() if c.isdigit() or c == '+')
+        if not clean_number:
+            return ""
+        if clean_number.startswith('+255'):
+            return clean_number
+        if clean_number.startswith('255'):
+            return '+' + clean_number
+        if clean_number.startswith('0'):
+            return '+255' + clean_number[1:]
+        if len(clean_number) == 9 and clean_number[0] in ('6', '7'):
+            return '+255' + clean_number
+        return clean_number
 
     def _prepare_import_vals(self, vals):
         """Prepares import values in bulk to avoid per-record writes."""
@@ -81,8 +101,9 @@ class ResPartner(models.Model):
             vals['payment_mode'] = 'bank'
 
         # 6. Normalize Status Value and sync Active/Disabled state
-        if vals.get('status'):
-            status_val = str(vals['status']).strip().lower()
+        status_in = vals.get('import_status') or vals.get('status')
+        if status_in:
+            status_val = str(status_in).strip().lower()
             if status_val == 'active':
                 vals.update({
                     'status': 'active',
@@ -91,14 +112,64 @@ class ResPartner(models.Model):
                     'disabled_reason': False,
                     'disabled_by': False,
                 })
-            elif status_val == 'inactive':
+            else:
+                mapped_status = 'Suspended'
+                if status_val in ('decesed', 'deceased'):
+                    mapped_status = 'Deceased'
+                elif status_val == 'inactive':
+                    mapped_status = 'Inactive'
+                elif status_val == 'suspended':
+                    mapped_status = 'Suspended'
+                
                 vals.update({
-                    'status': 'inactive',
+                    'status': mapped_status,
                     'active': False,
                     'disabled': fields.Datetime.now(),
-                    'disabled_reason': _('Imported as Inactive'),
+                    'disabled_reason': _('Imported as %s') % mapped_status,
                     'disabled_by': self.env.user.id,
                 })
+
+        # 7. Normalize Yes/No selection fields to lowercase 'yes' / 'no'
+        for fld in ('disability', 'is_receiving_allowance', 'has_health_insurance'):
+            val_in = vals.get(fld)
+            if val_in:
+                val_str = str(val_in).strip().lower()
+                if val_str in ('yes', 'y', '1', 'true'):
+                    vals[fld] = 'yes'
+                elif val_str in ('no', 'n', '0', 'false'):
+                    vals[fld] = 'no'
+
+        # Also support import_disability technical field
+        if vals.get('import_disability'):
+            dis_val = str(vals['import_disability']).strip().lower()
+            if dis_val in ('yes', 'y', '1', 'true'):
+                vals['disability'] = 'yes'
+            elif dis_val in ('no', 'n', '0', 'false'):
+                vals['disability'] = 'no'
+
+        # Normalize Gender field case-insensitively
+        if vals.get('gender'):
+            g_val = str(vals['gender']).strip().lower()
+            if g_val in ('male', 'm'):
+                vals['gender'] = 'Male'
+            elif g_val in ('female', 'f'):
+                vals['gender'] = 'Female'
+            elif g_val in ('other', 'o'):
+                vals['gender'] = 'Other'
+
+        # 8. Set standard phone and mobile fields if imported via import_mobile
+        mobile_in = vals.get('import_mobile')
+        if mobile_in:
+            norm_val = self._normalize_tz_phone(mobile_in)
+            vals['import_mobile'] = norm_val
+            vals['phone'] = norm_val
+            vals['mobile'] = norm_val
+
+        # Normalize any other phone numbers case-insensitively
+        for fld in ('phone', 'mobile', 'nominee_mobile'):
+            val = vals.get(fld)
+            if val:
+                vals[fld] = self._normalize_tz_phone(val)
 
     def _handle_import_lookups(self, vals_list):
         """Batch search for Region and District IDs with case-insensitivity."""
@@ -145,7 +216,7 @@ class ResPartner(models.Model):
         
         # 2. Process records in batch
         for i, record in enumerate(records):
-            vals = vals_list[i]
+            vals = vals_list[i] if i < len(vals_list) else vals_list[-1]
             zan_val = vals.get('import_zan_id')
             if not zan_val:
                 continue
@@ -167,6 +238,41 @@ class ResPartner(models.Model):
         if reg_ids_to_create:
             self.env['g2p.reg.id'].sudo().create(reg_ids_to_create)
 
+    def _sync_beneficiary_phone(self, mobile):
+        if not mobile:
+            return
+            
+        # Get active beneficiary numbers
+        active_phones = self.phone_number_ids.filtered(
+            lambda p: (p.phone_owner == 'beneficiary' or not p.phone_owner) and not p.disabled
+        )
+        
+        exists_active = False
+        for phone in active_phones:
+            if phone.phone_no == mobile:
+                exists_active = True
+            else:
+                # Disable old active number
+                phone.write({
+                    'disabled': fields.Datetime.now(),
+                    'disabled_by': self.env.user.id
+                })
+        
+        if not exists_active:
+             self.env['g2p.phone.number'].create({
+                 'partner_id': self.id,
+                 'phone_no': mobile,
+                 'phone_owner': 'beneficiary',
+                 'country_id': self.env.ref('base.tz').id
+             })
+
+    def _sync_partner_phone_field(self):
+        for record in self:
+            active_phones = record.phone_number_ids.filtered(lambda p: not p.disabled)
+            phone_val = ",".join(active_phones.mapped("phone_no"))
+            if record.phone != phone_val:
+                super(ResPartner, record).write({'phone': phone_val})
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -176,6 +282,17 @@ class ResPartner(models.Model):
         
         # Optimized batch handling for Zanzibar IDs
         self._handle_custom_import_logic(vals_list, records)
+
+        # Sync beneficiary phone numbers
+        for idx, record in enumerate(records):
+            vals = vals_list[idx] if idx < len(vals_list) else vals_list[-1]
+            mobile_val = vals.get('import_mobile') or vals.get('mobile') or vals.get('phone')
+            if mobile_val:
+                record._sync_beneficiary_phone(mobile_val)
+
+        # Sync the partner phone field
+        records._sync_partner_phone_field()
+
         return records
 
     def write(self, vals):
@@ -185,4 +302,31 @@ class ResPartner(models.Model):
         
         # Consistent handling for writes
         self._handle_custom_import_logic([vals], self)
+
+        # Sync beneficiary phone numbers
+        mobile_val = vals.get('import_mobile') or vals.get('mobile') or vals.get('phone')
+        if mobile_val:
+            for record in self:
+                record._sync_beneficiary_phone(mobile_val)
+
+        # Sync the partner phone field
+        self._sync_partner_phone_field()
+
+        return res
+
+class G2PPhoneNumber(models.Model):
+    _inherit = "g2p.phone.number"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for partner in records.mapped('partner_id'):
+            partner._sync_partner_phone_field()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        if any(f in vals for f in ('phone_no', 'disabled', 'partner_id')):
+            for partner in self.mapped('partner_id'):
+                partner._sync_partner_phone_field()
         return res
