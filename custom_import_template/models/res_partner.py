@@ -46,7 +46,7 @@ class ResPartner(models.Model):
             return clean_number
         if clean_number.startswith('255'):
             return '+' + clean_number
-        if clean_number.startswith('0'):
+        if clean_number.startswith('0') and len(clean_number) == 10:
             return '+255' + clean_number[1:]
         if len(clean_number) == 9 and clean_number[0] in ('6', '7'):
             return '+255' + clean_number
