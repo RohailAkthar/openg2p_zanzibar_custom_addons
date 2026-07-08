@@ -15,6 +15,8 @@ def simple_test():
     return {"status": "SUCCESS", "message": "Zanzibar module is loaded!"}
 
 from odoo.addons.g2p_social_registry_model.controllers.main import G2PSocialRegistryModel
+from .zanid_client import ZanidClient, RESPONSE_CODES
+
 
 class MockPhone:
     def __init__(self, no):
@@ -159,6 +161,47 @@ class PartnerRow:
 
 class ZanzibarPortalDraft(G2PSocialRegistryModel):
 
+    def _get_zanid_client(self):
+        import os
+        params = request.env["ir.config_parameter"].sudo()
+        
+        base_url = os.environ.get("ZANID_BASE_URL") or params.get_param("zanid.base_url")
+        private_key_path = os.environ.get("ZANID_PRIVATE_KEY_PATH") or params.get_param("zanid.private_key_path")
+        private_key_password = os.environ.get("ZANID_PRIVATE_KEY_PASSWORD") or params.get_param("zanid.private_key_password", "")
+        api_key = os.environ.get("ZANID_API_KEY") or params.get_param("zanid.api_key")
+        x_road_client = os.environ.get("ZANID_X_ROAD_CLIENT") or params.get_param("zanid.x_road_client")
+        
+        env_verify_ssl = os.environ.get("ZANID_VERIFY_SSL")
+        if env_verify_ssl is not None:
+            verify_ssl = env_verify_ssl.lower() == "true"
+        else:
+            verify_ssl = params.get_param("zanid.verify_ssl", "True") == "True"
+            
+        env_timeout = os.environ.get("ZANID_TIMEOUT")
+        if env_timeout is not None:
+            timeout = int(env_timeout)
+        else:
+            timeout = int(params.get_param("zanid.timeout", "30"))
+
+        if not base_url:
+            raise ValueError("ZANID Base URL (ZANID_BASE_URL / zanid.base_url) is not configured.")
+        if not x_road_client:
+            raise ValueError("ZANID X-Road Client (ZANID_X_ROAD_CLIENT / zanid.x_road_client) is not configured.")
+        if not private_key_path:
+            raise ValueError("ZANID private key path (ZANID_PRIVATE_KEY_PATH / zanid.private_key_path) is not configured.")
+        if not api_key:
+            raise ValueError("ZANID API key (ZANID_API_KEY / zanid.api_key) is not configured.")
+
+        return ZanidClient(
+            base_url=base_url,
+            private_key_path=private_key_path,
+            private_key_password=private_key_password,
+            api_key=api_key,
+            x_road_client=x_road_client,
+            verify_ssl=verify_ssl,
+            timeout=timeout
+        )
+
     @http.route("/portal/registration/zan_id_lookup", type="json", auth="user", csrf=False)
     def zan_id_lookup(self, zan_id):
         if not zan_id:
@@ -210,76 +253,109 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                     "message": "Beneficiary with this Zan ID already exists in the system."
                 }
 
-        # 3. Call External API (Mirror from main.py)
+        # 3. Call External API (ZANID Stakeholder Gateway)
         try:
-            url = "https://mock-api.credissuer.com/validate-zan"
-            payload = {"zan_id": zan_id}
-            response = requests.post(url, json=payload, timeout=10)
+            client = self._get_zanid_client()
+            result = client.query_demographic(zanid=zan_id.strip(), endpoint_suffix="demographic")
+            
+            payload = result.get("payload", {})
+            code = payload.get("code")
+            
+            if code == 9000:
+                api_data = payload.get("data", {})
+                
+                # Retrieve fields from the response
+                first_name = api_data.get("PRSN_FIRST_NAME") or ""
+                middle_name = api_data.get("PRSN_MIDLE_NAME") or ""
+                last_name = api_data.get("PRSN_LAST_NAME") or ""
+                dob_val = api_data.get("PRSN_BIRTH_DATE") or ""
+                gender_str = api_data.get("PRSN_SEX") or ""
+                mobile_val = api_data.get("PRSN_KIN_PHONE") or ""
+                street_val = api_data.get("PRSN_RES_ADDRESS") or ""
+                street2_val = api_data.get("PRSN_RES_WARD") or api_data.get("PRSN_PLACE_SHEHIA") or ""
+                post_code = api_data.get("PRSN_POST_CODE") or ""
+                beneficiary_image = api_data.get("PRSN_PHOTO") or ""
+                
+                # District and Region mapping
+                region_id = ""
+                district_id = ""
+                district_name = api_data.get("PRSN_RES_DISTRICT")
+                if district_name:
+                    district_name = district_name.strip()
+                    clean_district_name = district_name.replace('"', '').strip()
+                    district_rec = request.env["g2p.district"].sudo().search([
+                        '|', '|', '|',
+                        ('name', '=ilike', district_name),
+                        ('name', '=ilike', clean_district_name),
+                        ('name', '=ilike', f"{clean_district_name}%"),
+                        ('name', '=ilike', f"%{clean_district_name}%")
+                    ], limit=1)
+                    if district_rec:
+                        district_id = district_rec.id
+                        if district_rec.province_id:
+                            region_id = district_rec.province_id.id
 
-            if response.status_code == 200:
-                result = response.json()
-                status = result.get("status")
-
-                if status and status.lower() == "success":
-                    api_data = result.get("data", {})
-                    
-                    street2 = api_data.get("ward_name", "")
-                    
-                    # Gender Lookup
-                    gender_str = api_data.get("gender", "")
-                    gender_val = ""
-                    if gender_str:
-                        domain = ['|', ('code', '=ilike', gender_str), ('value', '=ilike', gender_str)]
-                        found = request.env["gender.type"].sudo().search(domain, limit=1)
-                        if found:
-                            gender_val = found.value
+                # Gender mapping
+                gender_val = ""
+                if gender_str:
+                    gender_str = gender_str.strip().lower()
+                    domain = ['|', ('code', '=ilike', gender_str), ('value', '=ilike', gender_str)]
+                    found = request.env["gender.type"].sudo().search(domain, limit=1)
+                    if found:
+                        gender_val = found.value
+                    else:
+                        if gender_str in ['female', 'f', 'woman']:
+                            gender_val = 'female'
+                        elif gender_str in ['male', 'm', 'man']:
+                            gender_val = 'male'
                         else:
-                            if gender_str.lower() in ['female', 'f', 'woman']:
-                                gender_val = 'female'
-                            elif gender_str.lower() in ['male', 'm', 'man']:
-                                gender_val = 'male'
-                            else:
-                                gender_val = gender_str
-                    
-                    data = {
-                        "status": "SUCCESS",
-                        "firstname": api_data.get("first_name", ""),
-                        "lastname": api_data.get("surname", ""),
-                        "middle_name": api_data.get("middle_name", ""),
-                        "dob": api_data.get("dob", ""),
-                        "gender": gender_val,
-                        "mobile": api_data.get("mobile_number", ""),
-                        "street": api_data.get("address", ""),
-                        "street2": street2,
-                        "benf_post_code": api_data.get("po_box", ""),
-                    }
+                            gender_val = gender_str
 
-                    # Age Validation
-                    dob_str = data.get("dob")
-                    if dob_str:
+                # Date parsing & formatting to YYYY-MM-DD for HTML5 date input
+                dob_date = None
+                if dob_val:
+                    try:
+                        dob_date = datetime.strptime(dob_val, "%d-%m-%Y").date()
+                    except ValueError:
                         try:
-                            dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+                            dob_date = datetime.strptime(dob_val, "%Y-%m-%d").date()
                         except ValueError:
-                            try:
-                                dob = datetime.strptime(dob_str, "%d-%m-%Y").date()
-                            except ValueError:
-                                dob = None
-                        
-                        if dob:
-                            today = date.today()
-                            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-                            if age < 69:
-                                return {
-                                    "status": "NOT_ELIGIBLE", 
-                                    "message": f"The citizen is not eligible for ZUPS scheme!. Age is  {age}, but must be 69+."
-                                }
+                            dob_date = None
 
-                    return data
-                else:
-                    return {"status": "NOT_FOUND", "message": "Zan ID not found in external registry"}
+                formatted_dob = dob_date.strftime("%Y-%m-%d") if dob_date else dob_val
+
+                data = {
+                    "status": "SUCCESS",
+                    "firstname": first_name,
+                    "lastname": last_name,
+                    "middle_name": middle_name,
+                    "dob": formatted_dob,
+                    "gender": gender_val,
+                    "mobile": mobile_val,
+                    "street": street_val,
+                    "street2": street2_val,
+                    "benf_post_code": post_code,
+                    "region": region_id,
+                    "district": district_id,
+                    "beneficiary_image": beneficiary_image,
+                }
+
+                # Age Validation
+                if dob_date:
+                    today = date.today()
+                    age = today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
+                    if age < 69:
+                        return {
+                            "status": "NOT_ELIGIBLE", 
+                            "message": f"The citizen is {age} years old. Eligibility requires the citizen to be at least 70 years old."
+                        }
+
+                return data
             else:
-                return {"status": "ERROR", "message": f"ZAN ID does not exist in eGAZ system, Please try with a Valid ZAN ID!"}
+                return {"status": "NOT_FOUND", "message": "Zan ID is not found in the ZCSRA."}
+                
         except Exception as e:
+            _logger.exception("Error during Zan ID lookup: %s", e)
             return {"status": "ERROR", "message": str(e)}
 
     @http.route("/portal/registration/phone_lookup", type="json", auth="user", csrf=False)
@@ -374,37 +450,77 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         if not nominee_zanid:
             return {"status": "ERROR", "message": "Zan ID is required"}
 
-        # 1. Check in database (Mirror from main.py)
-        # id_type = request.env["g2p.id.type"].sudo().search([("name", "=", "Nominee Zanzibar ID")], limit=1)
-        # ... (main.py version is commented out, so I'll follow that and jump to External API)
+        # 1. Check in database (Disabled: multiple beneficiaries can have the same nominee)
 
-        # 2. Call External API (Mirror from main.py)
+        # 2. Call External API (ZANID Stakeholder Gateway)
         try:
-            response = requests.get("https://mocki.io/v1/4661e182-00d4-4f26-a450-e4e96a7cc075", timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                if data.get("status") == "SUCCESS":
-                    # Map Mock API fields to Nominee Fields (Mirror from main.py)
-                    mapped_data = {
-                        "status": "SUCCESS",
-                        "message": "Found!",
-                        "nominee_first_name": data.get("firstname", ""),
-                        "nominee_last_name": data.get("lastname", ""),
-                        "nominee_gender": data.get("gender", "").lower(),
-                        "nominee_mobile": data.get("mobile", ""),
-                        "nominee_house_street": data.get("street", ""),
-                        "nominee_shehia": data.get("street2", ""),
-                        "nominee_rel_benf": data.get("relationship", ""),
-                        "nominee_region": data.get("region", ""),
-                        "nominee_district": data.get("district", ""),
-                        "nominee_post_code": data.get("postcode", ""),
-                    }
-                    return mapped_data
-                else:
-                    return {"status": "NOT_FOUND", "message": "Nominee Zan ID not found in external registry"}
+            client = self._get_zanid_client()
+            result = client.query_demographic(zanid=nominee_zanid.strip(), endpoint_suffix="demographic")
+            
+            payload = result.get("payload", {})
+            code = payload.get("code")
+            
+            if code == 9000:
+                api_data = payload.get("data", {})
+                
+                # Retrieve fields from the response
+                first_name = api_data.get("PRSN_FIRST_NAME") or ""
+                last_name = api_data.get("PRSN_LAST_NAME") or ""
+                gender_str = api_data.get("PRSN_SEX") or ""
+                mobile_val = api_data.get("PRSN_KIN_PHONE") or ""
+                street_val = api_data.get("PRSN_RES_ADDRESS") or ""
+                street2_val = api_data.get("PRSN_RES_WARD") or api_data.get("PRSN_PLACE_SHEHIA") or ""
+                post_code = api_data.get("PRSN_POST_CODE") or ""
+                nominee_image = api_data.get("PRSN_PHOTO") or ""
+                
+                # District and Region mapping
+                region_id = ""
+                district_id = ""
+                district_name = api_data.get("PRSN_RES_DISTRICT")
+                if district_name:
+                    district_name = district_name.strip()
+                    clean_district_name = district_name.replace('"', '').strip()
+                    district_rec = request.env["g2p.district"].sudo().search([
+                        '|', '|', '|',
+                        ('name', '=ilike', district_name),
+                        ('name', '=ilike', clean_district_name),
+                        ('name', '=ilike', f"{clean_district_name}%"),
+                        ('name', '=ilike', f"%{clean_district_name}%")
+                    ], limit=1)
+                    if district_rec:
+                        district_id = district_rec.code or ""
+                        if district_rec.province_id:
+                            region_id = district_rec.province_id.code or ""
+
+                # Gender mapping
+                gender_val = ""
+                if gender_str:
+                    gender_str = gender_str.strip().lower()
+                    domain = ['|', ('code', '=ilike', gender_str), ('value', '=ilike', gender_str)]
+                    found = request.env["gender.type"].sudo().search(domain, limit=1)
+                    if found:
+                        gender_val = found.value
+
+                mapped_data = {
+                    "status": "SUCCESS",
+                    "message": "Found!",
+                    "nominee_first_name": first_name,
+                    "nominee_last_name": last_name,
+                    "nominee_gender": gender_val,
+                    "nominee_mobile": mobile_val,
+                    "nominee_house_street": street_val,
+                    "nominee_shehia": street2_val,
+                    "nominee_rel_benf": "",  # To be filled by user
+                    "nominee_region": region_id,
+                    "nominee_district": district_id,
+                    "nominee_post_code": post_code,
+                    "nominee_image": nominee_image,
+                }
+                return mapped_data
             else:
-                return {"status": "ERROR", "message": f"External API error: {response.status_code}"}
+                return {"status": "NOT_FOUND", "message": "Zan ID is not found in the ZCSRA."}
         except Exception as e:
+            _logger.exception("Error during nominee Zan ID lookup: %s", e)
             return {"status": "ERROR", "message": str(e)}
 
     @http.route(
@@ -618,6 +734,15 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                     {"error_message": f"Nominee Zan ID: {nominee_zan_id_error}"},
                 )
 
+            # Ensure Beneficiary Zan ID and Nominee Zan ID are not the same
+            benf_zan_id = kw.get("benf_zan_id")
+            nominee_zanid = kw.get("nominee_zanid")
+            if benf_zan_id and nominee_zanid and benf_zan_id.strip() == nominee_zanid.strip():
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": "Beneficiary Zan ID and Nominee Zan ID cannot be the same."},
+                )
+
             user = request.env.user
             # Name construction logic from main.py
             name = ""
@@ -704,12 +829,22 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             # Handle images (Mirror from main.py)
             if kw.get("nominee_image"):
                 data["nominee_image"] = base64.b64encode(kw.get("nominee_image").read()).decode('utf-8')
+            elif kw.get("nominee_image_b64"):
+                data["nominee_image"] = kw.get("nominee_image_b64")
+
             if kw.get("zan_image"):
                 data["zan_image"] = base64.b64encode(kw.get("zan_image").read()).decode('utf-8')
+            elif kw.get("zan_image_b64"):
+                data["zan_image"] = kw.get("zan_image_b64")
+
             if kw.get("beneficiary_image"):
                 image_data = base64.b64encode(kw.get("beneficiary_image").read()).decode('utf-8')
                 data["image_1920"] = image_data
-                data["beneficiary_image"] = image_data # Mirroring the sync in update_individual_submit
+                data["beneficiary_image"] = image_data
+            elif kw.get("beneficiary_image_b64"):
+                image_data = kw.get("beneficiary_image_b64")
+                data["image_1920"] = image_data
+                data["beneficiary_image"] = image_data
 
             # Create the draft record
             vals = {
@@ -802,6 +937,15 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 return request.render(
                     "g2p_registration_portal_base.error_template",
                     {"error_message": f"Nominee Zan ID: {nominee_zan_id_error}"},
+                )
+
+            # Ensure Beneficiary Zan ID and Nominee Zan ID are not the same
+            benf_zan_id = kw.get("benf_zan_id")
+            nominee_zanid = kw.get("nominee_zanid")
+            if benf_zan_id and nominee_zanid and benf_zan_id.strip() == nominee_zanid.strip():
+                return request.render(
+                    "g2p_registration_portal_base.error_template",
+                    {"error_message": "Beneficiary Zan ID and Nominee Zan ID cannot be the same."},
                 )
 
             draft_id = kw.get("group_id")
@@ -938,10 +1082,20 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             # Image Handling (Mirror from main.py lines 765-774)
             if kw.get("nominee_image"):
                 vals["nominee_image"] = base64.b64encode(kw.get("nominee_image").read()).decode('utf-8')
+            elif kw.get("nominee_image_b64"):
+                vals["nominee_image"] = kw.get("nominee_image_b64")
+
             if kw.get("zan_image"):
                 vals["zan_image"] = base64.b64encode(kw.get("zan_image").read()).decode('utf-8')
+            elif kw.get("zan_image_b64"):
+                vals["zan_image"] = kw.get("zan_image_b64")
+
             if kw.get("beneficiary_image"):
                 image_data = base64.b64encode(kw.get("beneficiary_image").read()).decode('utf-8')
+                vals["image_1920"] = image_data
+                vals["beneficiary_image"] = image_data
+            elif kw.get("beneficiary_image_b64"):
+                image_data = kw.get("beneficiary_image_b64")
                 vals["image_1920"] = image_data
                 vals["beneficiary_image"] = image_data
 
