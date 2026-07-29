@@ -7,6 +7,48 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    def init(self):
+        super().init()
+        # Automatically clean up existing duplicate phone rows in DB on module upgrade
+        try:
+            self.env.cr.execute("""
+                DELETE FROM g2p_phone_number
+                WHERE id IN (
+                    SELECT id FROM (
+                        SELECT id, ROW_NUMBER() OVER (
+                            PARTITION BY partner_id, TRIM(phone_no), COALESCE(phone_owner, 'beneficiary')
+                            ORDER BY id ASC
+                        ) as rnum
+                        FROM g2p_phone_number
+                    ) t WHERE t.rnum > 1
+                );
+            """)
+        except Exception as e:
+            _logger.warning("Could not execute phone cleanup in init: %s", str(e))
+
+    def _deduplicate_phone_numbers(self):
+        for partner in self:
+            all_phones = self.env["g2p.phone.number"].sudo().search([("partner_id", "=", partner.id)], order="id asc")
+            seen = set()
+            to_unlink = self.env["g2p.phone.number"].sudo()
+            for p in all_phones:
+                key = (str(p.phone_no).strip(), p.phone_owner or "beneficiary")
+                if key in seen:
+                    to_unlink |= p
+                else:
+                    seen.add(key)
+            if to_unlink:
+                to_unlink.sudo().unlink()
+
+            # Recompute clean phone string for partner.phone (beneficiary active numbers only, unique, separated by ', ')
+            benf_phones = partner.phone_number_ids.filtered(
+                lambda r: not r.disabled and r.phone_no and r.phone_owner in ["beneficiary", False]
+            ).mapped("phone_no")
+            unique_phones = list(dict.fromkeys(p.strip() for p in benf_phones if p and p.strip()))
+            clean_str = ", ".join(unique_phones)
+            if partner.phone != clean_str:
+                super(ResPartner, partner).write({"phone": clean_str})
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -16,12 +58,24 @@ class ResPartner(models.Model):
             # Requirement: Approved from draft shows as 'No'
             elif vals.get("db_import") == "yes":
                 vals["db_import"] = "no"
-        return super().create(vals_list)
+        partners = super().create(vals_list)
+        partners._deduplicate_phone_numbers()
+        return partners
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "phone_number_ids" in vals or "phone" in vals:
+            self._deduplicate_phone_numbers()
+        return res
 
     benf_post_code = fields.Char(string="Post Code", tracking=True)
     benf_zan_id = fields.Char(string="Zanzibar ID", compute="_compute_benf_zan_id", readonly=True, store=True)
     disability = fields.Selection(
         [("yes", "Yes"), ("no", "No")], string="Do you have any disability?",
+        tracking=True
+    )
+    type_of_disability = fields.Char(
+        string="Type of Disease / Disability",
         tracking=True
     )
     is_receiving_allowance = fields.Selection(

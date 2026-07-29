@@ -24,6 +24,17 @@
                     </t>
                     <t t-elif="group.state == 'rejected'">
                         <span class="badge rounded-pill bg-danger text-white">Rejected</span>
+                        <t t-if="group.rejection_reason">
+                            <div class="text-danger small mt-1" style="font-size: 0.78rem; white-space: pre-line;">
+                                Reason: <t t-esc="group.rejection_reason"/>
+                                <t t-if="group.rejected_by_user_id and group.rejected_by_user_id.name">
+                                    (<t t-esc="group.rejected_by_user_id.name"/>)
+                                </t>
+                                <t t-elif="group.rejected_by_name">
+                                    (<t t-esc="group.rejected_by_name"/>)
+                                </t>
+                            </div>
+                        </t>
                     </t>
                     <t t-else="">
                         <span class="badge rounded-pill bg-secondary text-white"><t t-esc="group.state"/></span>

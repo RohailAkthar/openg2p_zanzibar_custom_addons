@@ -24,7 +24,7 @@
                                     <field name="given_name" placeholder="First Name..." required="1" class="oe_edit_only" readonly="disabled" style="max-width: 100%;"/>
                                 </h2>
                                 <h2>
-                                    <field name="middle_name" placeholder="Middle Name..." class="oe_edit_only" readonly="disabled" nolabel="1" required="1" style="max-width: 100%;"/>
+                                    <field name="middle_name" placeholder="Middle Name..." class="oe_edit_only" readonly="disabled" nolabel="1" required="0" style="max-width: 100%;"/>
                                 </h2>
                                 <h2>
                                     <field name="family_name" placeholder="Surname..." required="1" class="oe_edit_only" readonly="disabled" style="max-width: 100%;"/>
@@ -78,6 +78,7 @@
             <xpath expr="//page[@name='basic_info']/group[1]/group[2]" position="inside">
                 <group string="Additional Information" colspan="2">
                     <field name="disability" widget="radio" options="{'horizontal': true}"/>
+                    <field name="type_of_disability" string="Type of Disease / Disability" invisible="disability != 'yes'"/>
                     <!-- <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/> -->
                     <field name="has_health_insurance" widget="radio" options="{'horizontal': true}"/>
                 </group>

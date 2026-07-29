@@ -35,6 +35,7 @@ class G2PDraftRecord(models.Model):
     district_id = fields.Many2one('g2p.district', string="District", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     gender = fields.Selection([('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], string="Gender", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True, readonly=True)
     has_disability = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Do you have any disability?", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
+    type_of_disability = fields.Char(string="Type of Disease / Disability", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     receives_allowance = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Are you receiving 5000 allowance from district council? (Below 70 years)", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
     has_health_insurance = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Are you covered with any health insurance scheme?", compute="_compute_mapped_fields", inverse=_INV, store=True, tracking=True)
 
@@ -137,7 +138,7 @@ class G2PDraftRecord(models.Model):
         all_fields = [
             'zan_id', 'given_name', 'middle_name', 'family_name', 'birthdate_date', 'registration_date',
             'phone', 'region_id', 'post_code', 'district_id', 'gender',
-            'has_disability', 'receives_allowance', 'has_health_insurance',
+            'has_disability', 'type_of_disability', 'receives_allowance', 'has_health_insurance',
             'nominee_first_name', 'nominee_middle_name_display', 'nominee_last_name',
             'nominee_gender', 'nominee_zanid', 'nominee_rel_benf',
             'nominee_house_street', 'nominee_shehia',
@@ -235,6 +236,7 @@ class G2PDraftRecord(models.Model):
             
             # Additional Information
             record.has_disability = pd.get('disability') or pd.get('has_disability')
+            record.type_of_disability = pd.get('type_of_disability')
             record.receives_allowance = pd.get('is_receiving_allowance')
             record.has_health_insurance = pd.get('has_health_insurance')
 
@@ -421,7 +423,7 @@ class G2PDraftRecord(models.Model):
             tracked_fields = [
                 'zan_id', 'birthdate_date', 'registration_date', 'name', 'phone',
                 'gender', 'nominee_mobile', 'post_code', 'district_id',
-                'has_disability', 'receives_allowance', 'has_health_insurance',
+                'has_disability', 'type_of_disability', 'receives_allowance', 'has_health_insurance',
                 'nominee_first_name', 'nominee_middle_name_display', 'nominee_last_name',
                 'nominee_gender', 'nominee_zanid', 'nominee_rel_benf',
                 'nominee_house_street', 'nominee_shehia',
@@ -464,6 +466,7 @@ class G2PDraftRecord(models.Model):
         partner_data["district_name"] = self.district_id.name if self.district_id else False
         
         partner_data["disability"] = self.has_disability
+        partner_data["type_of_disability"] = self.type_of_disability
         partner_data["is_receiving_allowance"] = self.receives_allowance
         partner_data["has_health_insurance"] = self.has_health_insurance
         partner_data["gender"] = self.gender
@@ -607,12 +610,39 @@ class G2PDraftRecord(models.Model):
 
         benf_phone = partner_data.get("phone") or partner_data.get("mobile") or self.phone
         if benf_phone:
-            self.env["g2p.phone.number"].sudo().create({
-                "partner_id": partner.id,
-                "phone_no": benf_phone,
-                "phone_owner": "beneficiary",
-                "country_id": country_id,
-            })
+            benf_phone_clean = str(benf_phone).strip()
+            existing_phone = partner.phone_number_ids.filtered(
+                lambda p: p.phone_no and p.phone_no.strip() == benf_phone_clean and p.phone_owner in ["beneficiary", False]
+            )
+            if not existing_phone:
+                self.env["g2p.phone.number"].sudo().create({
+                    "partner_id": partner.id,
+                    "phone_no": benf_phone_clean,
+                    "phone_owner": "beneficiary",
+                    "country_id": country_id,
+                })
+
+        # Remove duplicate g2p.phone.number records and recompute clean partner.phone
+        if hasattr(partner, "_deduplicate_phone_numbers"):
+            partner._deduplicate_phone_numbers()
+        else:
+            all_phones = self.env["g2p.phone.number"].sudo().search([("partner_id", "=", partner.id)], order="id asc")
+            seen_phones = set()
+            to_unlink = self.env["g2p.phone.number"].sudo()
+            for p in all_phones:
+                key = (p.phone_no and p.phone_no.strip(), p.phone_owner or "beneficiary")
+                if key in seen_phones:
+                    to_unlink |= p
+                else:
+                    seen_phones.add(key)
+            if to_unlink:
+                to_unlink.sudo().unlink()
+
+            active_phones = partner.phone_number_ids.filtered(
+                lambda r: not r.disabled and r.phone_no and r.phone_owner in ["beneficiary", False]
+            ).mapped("phone_no")
+            unique_phones = list(dict.fromkeys(p.strip() for p in active_phones if p and p.strip()))
+            partner.sudo().write({"phone": ", ".join(unique_phones)})
 
         # --- Create registration ID records ---
         benf_zan_id = partner_data.get("benf_zan_id") or self.zan_id

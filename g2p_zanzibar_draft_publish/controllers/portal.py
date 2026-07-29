@@ -95,6 +95,9 @@ class MockPartner:
         self.street2 = self._data.get('street2') or ''
         self.benf_post_code = self._data.get('benf_post_code') or ''
         self.disability = self._data.get('disability') or ''
+        self.type_of_disability = self._data.get('type_of_disability') or (getattr(draft_rec, 'type_of_disability', '') or '')
+        self.rejection_reason = getattr(draft_rec, 'rejection_reason', '') or ''
+        self.rejected_by_name = draft_rec.rejected_by_user_id.name if (hasattr(draft_rec, 'rejected_by_user_id') and draft_rec.rejected_by_user_id) else ''
         self.is_receiving_allowance = self._data.get('is_receiving_allowance') or ''
         self.has_health_insurance = self._data.get('has_health_insurance') or ''
 
@@ -810,6 +813,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 "benf_post_code": kw.get("benf_post_code"),
                 # "benf_zan_id" removed (stored in reg_ids)
                 "disability": kw.get("disability"),
+                "type_of_disability": kw.get("type_of_disability"),
                 "is_receiving_allowance": kw.get("is_receiving_allowance"),
                 "has_health_insurance": kw.get("has_health_insurance"),
             }
@@ -1005,6 +1009,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 "street2": "street2",
                 "benf_post_code": "benf_post_code",
                 "disability": "disability",
+                "type_of_disability": "type_of_disability",
                 "is_receiving_allowance": "is_receiving_allowance",
                 "has_health_insurance": "has_health_insurance",
             }
@@ -1044,6 +1049,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
 
             # Extra specific fields
             if "disability" in kw: vals["disability"] = kw.get("disability")
+            if "type_of_disability" in kw: vals["type_of_disability"] = kw.get("type_of_disability")
             if "is_receiving_allowance" in kw: vals["is_receiving_allowance"] = kw.get("is_receiving_allowance")
             if "has_health_insurance" in kw: vals["has_health_insurance"] = kw.get("has_health_insurance")
             if "benf_post_code" in kw: vals["benf_post_code"] = kw.get("benf_post_code")
