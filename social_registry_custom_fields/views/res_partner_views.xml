@@ -81,6 +81,8 @@
                     <field name="type_of_disability" string="Type of Disease / Disability" invisible="disability != 'yes'"/>
                     <!-- <field name="is_receiving_allowance" widget="radio" options="{'horizontal': true}"/> -->
                     <field name="has_health_insurance" widget="radio" options="{'horizontal': true}"/>
+                    <field name="date_of_death" invisible="status != 'Deceased'"/>
+                    <field name="death_reported_by" invisible="status != 'Deceased'"/>
                 </group>
             </xpath>
 
@@ -188,8 +190,10 @@
                     <!-- Left column: the dropdown and attachments -->
                     <div class="col-6">
                         <group string="Reason">
-                            <field name="disabled_reason_selection" nolabel="1" class="w-100" style="width: 100%; min-width: 250px;"/>
+                            <field name="disabled_reason_selection" string="Reason"/>
                             <field name="disabled_reason" invisible="1" required="0"/>
+                            <field name="date_of_death" string="Date of Death *" invisible="disabled_reason_selection != 'Deceased'" required="disabled_reason_selection == 'Deceased'"/>
+                            <field name="death_reported_by" string="Who Reported the Death *" invisible="disabled_reason_selection != 'Deceased'" required="disabled_reason_selection == 'Deceased'"/>
                         </group>
                         <group string="Attachments">
                             <field name="attachment_ids" widget="many2many_binary" string="Attach Files" nolabel="1"/>

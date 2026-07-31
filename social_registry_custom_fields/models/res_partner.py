@@ -99,6 +99,8 @@ class ResPartner(models.Model):
         default="active",
         tracking=True
     )
+    date_of_death = fields.Date(string="Date of Death", tracking=True)
+    death_reported_by = fields.Char(string="Who Reported the Death", tracking=True)
     @api.depends("reg_ids.value", "reg_ids.id_type")
     def _compute_benf_zan_id(self):
         for record in self:
@@ -115,7 +117,7 @@ class ResPartner(models.Model):
     x_district_code=fields.Char("X_dist")
 
     pensioner_id=fields.Char(string="Pensioner ID")
-    middle_name = fields.Char(string="Middle Name", translate=False, tracking=True)
+    middle_name = fields.Char(string="Middle Name", translate=False, tracking=True, required=False)
 
     @api.onchange("is_group", "family_name", "given_name", "middle_name", "addl_name")
     def name_change(self):
@@ -213,6 +215,9 @@ class G2PDisableRegistrantWizard(models.TransientModel):
         required=True,
     )
 
+    date_of_death = fields.Date(string="Date of Death")
+    death_reported_by = fields.Char(string="Who Reported the Death")
+
     attachment_ids = fields.Many2many(
         "ir.attachment",
         string="Attachments",
@@ -225,10 +230,27 @@ class G2PDisableRegistrantWizard(models.TransientModel):
 
     def disable_registrant(self):
         for rec in self:
+            if rec.disabled_reason_selection == "Deceased":
+                if not rec.date_of_death:
+                    raise UserError(_("Date of Death is required when reason is Deceased."))
+                if not rec.death_reported_by or not rec.death_reported_by.strip():
+                    raise UserError(_("Who Reported the Death is required when reason is Deceased."))
+
             if rec.partner_id:
-                rec.partner_id.write({
+                write_vals = {
                     "status": rec.disabled_reason_selection
-                })
+                }
+                if rec.disabled_reason_selection == "Deceased":
+                    write_vals["date_of_death"] = rec.date_of_death
+                    write_vals["death_reported_by"] = rec.death_reported_by.strip()
+                rec.partner_id.write(write_vals)
+
+                if rec.disabled_reason_selection == "Deceased":
+                    msg = "<b>Status set to Deceased</b><br/>"
+                    msg += f"<b>Date of Death:</b> {rec.date_of_death}<br/>"
+                    msg += f"<b>Reported By:</b> {rec.death_reported_by.strip()}"
+                    rec.partner_id.message_post(body=msg)
+
             if rec.attachment_ids:
                 backend = rec.partner_id.get_registry_documents_store()
                 if not backend:

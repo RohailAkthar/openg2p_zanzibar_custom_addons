@@ -8,6 +8,26 @@
             </td>
         </xpath>
 
+        <!-- Add Shehia, Region, District table headers right after Gender header -->
+        <xpath expr="//table[@id='newreimbursements']//thead//tr//th[3]" position="after">
+            <th>Shehia</th>
+            <th>Region</th>
+            <th>District</th>
+        </xpath>
+
+        <!-- Add Shehia, Region, District table body cells right after Gender cell -->
+        <xpath expr="//table[@id='newreimbursements']//tbody//tr//td[@data-search-field='gender']" position="after">
+            <td data-search-field="shehia">
+                <t t-out="group.shehia_display or group.street2 or group.address or ''"/>
+            </td>
+            <td data-search-field="region">
+                <t t-out="group.region.name if group.region else ''"/>
+            </td>
+            <td data-search-field="district">
+                <t t-out="group.district.name if group.district else ''"/>
+            </td>
+        </xpath>
+
         <!-- Update status icon based on state for draft records or active status for partners -->
         <xpath expr="//div[@class='status-icon']" position="replace">
             <div class="status-icon">

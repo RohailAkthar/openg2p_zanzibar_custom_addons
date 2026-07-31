@@ -92,7 +92,8 @@ class MockPartner:
         self.write_date = draft_rec.write_date or fields.Datetime.now()
         self.address = self._data.get('address') or ''
         self.street = self._data.get('street') or ''
-        self.street2 = self._data.get('street2') or ''
+        self.shehia_display = getattr(draft_rec, 'shehia_display', '') or self._data.get('street2') or self._data.get('address') or ''
+        self.street2 = self.shehia_display
         self.benf_post_code = self._data.get('benf_post_code') or ''
         self.disability = self._data.get('disability') or ''
         self.type_of_disability = self._data.get('type_of_disability') or (getattr(draft_rec, 'type_of_disability', '') or '')
@@ -139,8 +140,6 @@ class PartnerRow:
         self.write_date = partner.write_date
         self.state = "published"
 
-        self.state = "published"
-
         # Robust retrieval of Zanzibar ID with fallbacks
         zan_id = getattr(partner, 'benf_zan_id', False)
         if not zan_id:
@@ -152,6 +151,12 @@ class PartnerRow:
             zan_id = partner.draft_record_id.zan_id
             
         self.benf_zan_id = zan_id or ''
+
+        # Address & Geographical Fields
+        self.region = getattr(partner, 'region_id', partner.env['g2p.region'])
+        self.district = getattr(partner, 'district_id', partner.env['g2p.district'])
+        self.street2 = getattr(partner, 'street2', '') or getattr(partner, 'shehia_display', '') or ''
+        self.shehia_display = self.street2
 
     def __getattr__(self, name):
         return getattr(self._partner, name)
