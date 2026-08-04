@@ -1,11 +1,43 @@
 import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
+
+    @api.model
+    def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
+        new_domain = []
+        for leaf in domain:
+            if isinstance(leaf, (list, tuple)) and len(leaf) == 3:
+                field_name, operator, value = leaf
+                if field_name in ("name", "complete_name") and operator in ("ilike", "=ilike", "like") and isinstance(value, str):
+                    clean_val = value.replace(",", " ").strip()
+                    words = [w.strip() for w in clean_val.split() if w.strip()]
+                    if len(words) > 1:
+                        word_domains = []
+                        for word in words:
+                            word_dom = [
+                                "|", "|", "|", "|", "|", "|",
+                                ("benf_zan_id", "ilike", word),
+                                ("name", "ilike", word),
+                                ("complete_name", "ilike", word),
+                                ("given_name", "ilike", word),
+                                ("middle_name", "ilike", word),
+                                ("family_name", "ilike", word),
+                                ("death_reported_by", "ilike", word),
+                            ]
+                            word_domains.append(word_dom)
+                        combined = word_domains[0]
+                        for wd in word_domains[1:]:
+                            combined = expression.AND([combined, wd])
+                        new_domain.extend(combined)
+                        continue
+            new_domain.append(leaf)
+        return super()._search(new_domain, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
 
     def init(self):
         super().init()

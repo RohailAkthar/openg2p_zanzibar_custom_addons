@@ -119,20 +119,37 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="replace">
                 <search string="Search Individual">
-
+                    <field name="name" string="Name" filter_domain="['|', '|', '|', '|', '|', ('benf_zan_id', 'ilike', self), ('name', 'ilike', self), ('complete_name', 'ilike', self), ('given_name', 'ilike', self), ('middle_name', 'ilike', self), ('family_name', 'ilike', self)]" />
                     <field name="benf_zan_id" string="Zanzibar ID" filter_domain="[('benf_zan_id', 'ilike', self)]" />
-                    <field name="name" string="Name" filter_domain="['|', '|', ('complete_name', 'ilike', self), ('given_name', 'ilike', self), ('family_name', 'ilike', self)]" />
+                    <field name="given_name" string="First Name" filter_domain="[('given_name', 'ilike', self)]" />
+                    <field name="middle_name" string="Middle Name" filter_domain="[('middle_name', 'ilike', self)]" />
+                    <field name="family_name" string="Surname / Last Name" filter_domain="[('family_name', 'ilike', self)]" />
+                    <field name="status" string="Status" />
+                    <field name="date_of_death" string="Date of Death" />
+                    <field name="death_reported_by" string="Death Reported By" filter_domain="[('death_reported_by', 'ilike', self)]" />
                     <field name="phone" string="Phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]" />
+                    <field name="region" string="Region" />
+                    <field name="district" string="District" />
+                    <field name="address" string="Address" />
                     <field name="birthdate" string="Date of Birth" />
                     <field name="registration_date" string="Registration Date" />
                     <field name="db_import" string="Imported" />
                     <field name="gender" string="Gender" />
                     <separator />
+                    <filter string="Suspended" name="status_suspended" domain="[('status', '=', 'Suspended')]" />
+                    <filter string="Deceased" name="status_deceased" domain="[('status', '=', 'Deceased')]" />
+                    <filter string="Inactive" name="status_inactive" domain="[('status', '=', 'Inactive')]" />
+                    <filter string="Active" name="status_active" domain="[('status', '=', 'active')]" />
+                    <separator />
                     <filter string="Imported" name="imported_yes" domain="[('db_import', '=', 'yes')]" />
                     <filter string="Internal" name="imported_no" domain="[('db_import', '=', 'no')]" />
                     <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'status'}" />
+                        <filter string="Date of Death" name="group_by_date_of_death" context="{'group_by': 'date_of_death'}" />
                         <filter string="Imported" name="group_by_imported" context="{'group_by': 'db_import'}" />
                         <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}" />
+                        <filter string="Region" name="group_by_region" context="{'group_by': 'region'}" />
+                        <filter string="District" name="group_by_district" context="{'group_by': 'district'}" />
                     </group>
                 </search>
             </xpath>
@@ -144,14 +161,18 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_list_tree"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='address']" position="replace"/>
             <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='birthdate']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="gender"/>
-            </xpath>
-            <xpath expr="//field[@name='birthdate']" position="after">
-                <field name="phone"/>
+                <field name="region"/>
+                <field name="district"/>
+                <field name="address"/>
             </xpath>
             <xpath expr="//field[@name='db_import']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
