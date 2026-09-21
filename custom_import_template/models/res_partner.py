@@ -68,18 +68,8 @@ class ResPartner(models.Model):
             family_name = vals.get('family_name') or ''
 
             if given_name or middle_name or family_name:
-                name_parts = []
-                if family_name:
-                    if given_name or middle_name:
-                        name_parts.append(f"{family_name},")
-                    else:
-                        name_parts.append(family_name)
-                if given_name:
-                    name_parts.append(given_name)
-                if middle_name:
-                    name_parts.append(middle_name)
-                
-                fullname = " ".join(filter(None, name_parts)).upper()
+                name_parts = [given_name, middle_name, family_name]
+                fullname = " ".join(p.strip() for p in name_parts if p and p.strip()).upper()
                 if fullname:
                     vals['name'] = fullname
 

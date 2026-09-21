@@ -752,16 +752,14 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 )
 
             user = request.env.user
-            # Name construction logic from main.py
-            name = ""
-            if kw.get("family_name"):
-                name += kw.get("family_name") + ", "
-            if kw.get("given_name"):
-                name += kw.get("given_name") + " "
-            if kw.get("middle_name"):
-                name += kw.get("middle_name") + " "
-            if kw.get("addl_name"):
-                name += kw.get("addl_name") + " "
+            # Name construction: First Name, Middle Name, Additional Name, Surname
+            name_parts = [
+                kw.get("given_name"),
+                kw.get("middle_name"),
+                kw.get("addl_name"),
+                kw.get("family_name"),
+            ]
+            name = " ".join(p.strip() for p in name_parts if p and p.strip())
             
             if kw.get("birthdate") == "":
                 birthdate = False
@@ -1065,17 +1063,17 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             if "street" in kw or "street2" in kw:
                 vals["address"] = ", ".join(filter(None, [kw.get("street"), kw.get("street2")]))
 
-            # Name construction
+            # Name construction: First Name, Middle Name, Additional Name, Surname
             f_name = kw.get("family_name") if "family_name" in kw else (current_data.get("family_name") or "")
             g_name = kw.get("given_name") if "given_name" in kw else (current_data.get("given_name") or "")
             m_name = kw.get("middle_name") if "middle_name" in kw else (current_data.get("middle_name") or "")
             a_name = kw.get("addl_name") if "addl_name" in kw else (current_data.get("addl_name") or "")
             
             new_parts = []
-            if f_name: new_parts.append(f_name + ",")
             if g_name: new_parts.append(g_name)
             if m_name: new_parts.append(m_name)
             if a_name: new_parts.append(a_name)
+            if f_name: new_parts.append(f_name)
             vals["name"] = " ".join(" ".join(new_parts).split()).strip()
 
             # Store phone numbers as plain strings only (ORM records created on publish)

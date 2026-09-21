@@ -102,12 +102,12 @@ class G2PDraftRecord(models.Model):
     def _compute_name(self):
         for record in self:
             name_parts = []
-            if record.family_name:
-                name_parts.append(record.family_name + ",")
             if record.given_name:
                 name_parts.append(record.given_name)
             if record.middle_name:
                 name_parts.append(record.middle_name)
+            if record.family_name:
+                name_parts.append(record.family_name)
             record.name = " ".join(name_parts).strip()
 
     @api.depends('birthdate_date')
@@ -578,7 +578,7 @@ class G2PDraftRecord(models.Model):
             given_name = partner_data.get("given_name") or ""
             family_name = partner_data.get("family_name") or ""
             middle_name = partner_data.get("middle_name") or ""
-            valid_data["name"] = " ".join(filter(None, [family_name + "," if family_name else "", given_name, middle_name])).strip()
+            valid_data["name"] = " ".join(filter(None, [given_name, middle_name, family_name])).strip()
 
         partner = partner_model.sudo().create(valid_data)
 

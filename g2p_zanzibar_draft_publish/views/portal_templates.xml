@@ -83,6 +83,15 @@
             </t>
         </xpath>
 
+        <!-- Ensure Name column displays First Name Middle Name Surname -->
+        <xpath expr="//table[@id='newreimbursements']//tbody//tr//td[@data-search-field='name']" position="replace">
+            <td style="color:#1e40af; font: normal normal 600 13px/16px Inter;" data-search-field="name">
+                <span t-out="group.given_name"/>
+                <t t-if="group.middle_name"> <span t-out="group.middle_name"/></t>
+                <t t-if="group.family_name"> <span t-out="group.family_name"/></t>
+            </td>
+        </xpath>
+
     </template>
 
 </odoo>
