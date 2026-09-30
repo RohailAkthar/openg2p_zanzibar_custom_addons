@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_g2p_shehia_all,access_g2p_shehia_all,model_g2p_shehia,,1,0,0,0
+access_g2p_shehia_admin,access_g2p_shehia_admin,model_g2p_shehia,g2p_registry_base.group_g2p_admin,1,1,1,1
+access_g2p_shehia_registrar,access_g2p_shehia_registrar,model_g2p_shehia,g2p_registry_base.group_g2p_registrar,1,1,1,1

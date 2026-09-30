@@ -130,7 +130,7 @@
                     <field name="phone" string="Phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]" />
                     <field name="region" string="Region" />
                     <field name="district" string="District" />
-                    <field name="address" string="Address" />
+                    <field name="shehia_name" string="Shehia" filter_domain="['|', '|', ('shehia_name', 'ilike', self), ('address', 'ilike', self), ('street2', 'ilike', self)]" />
                     <field name="birthdate" string="Date of Birth" />
                     <field name="registration_date" string="Registration Date" />
                     <field name="db_import" string="Imported" />
@@ -150,6 +150,7 @@
                         <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}" />
                         <filter string="Region" name="group_by_region" context="{'group_by': 'region'}" />
                         <filter string="District" name="group_by_district" context="{'group_by': 'district'}" />
+                        <filter string="Shehia" name="group_by_shehia" context="{'group_by': 'shehia_name'}" />
                     </group>
                 </search>
             </xpath>
@@ -172,7 +173,7 @@
                 <field name="gender"/>
                 <field name="region"/>
                 <field name="district"/>
-                <field name="address"/>
+                <field name="shehia_name" string="Shehia"/>
             </xpath>
             <xpath expr="//field[@name='db_import']" position="attributes">
                 <attribute name="column_invisible">1</attribute>

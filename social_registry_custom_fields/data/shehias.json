@@ -1,0 +1,1566 @@
+[
+  {
+    "name": "Makangale",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Tondooni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Msuka Mashariki",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Msuka Magharibi",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Konde",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Kifundi",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Kinowe",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Chimba",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Tumbe Mashariki",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Tumbe Magharibi",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Shumba Viamboni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Mihogoni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Sizini",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Mapofu",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Mtemani",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Wingwi Njuguni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Majenzi",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Micheweni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Shumba Mjini",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Mjini Wingwi",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Maziwa Ngombe",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Shanake",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Kipange",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Chamboni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Kiuyu Mbuyuni",
+    "district": "Micheweni"
+  },
+  {
+    "name": "Gando",
+    "district": "Wete"
+  },
+  {
+    "name": "Junguni",
+    "district": "Wete"
+  },
+  {
+    "name": "Ukunjwi",
+    "district": "Wete"
+  },
+  {
+    "name": "Fundo",
+    "district": "Wete"
+  },
+  {
+    "name": "Kizimbani",
+    "district": "Wete"
+  },
+  {
+    "name": "Mgogon",
+    "district": "Wete"
+  },
+  {
+    "name": "Finya",
+    "district": "Wete"
+  },
+  {
+    "name": "Kinyasini",
+    "district": "Wete"
+  },
+  {
+    "name": "Chwale",
+    "district": "Wete"
+  },
+  {
+    "name": "Mpambani",
+    "district": "Wete"
+  },
+  {
+    "name": "Kojani",
+    "district": "Wete"
+  },
+  {
+    "name": "Kinyikani",
+    "district": "Wete"
+  },
+  {
+    "name": "Mchangamdogo",
+    "district": "Wete"
+  },
+  {
+    "name": "Kangagani",
+    "district": "Wete"
+  },
+  {
+    "name": "Kiuyu Kigongoni",
+    "district": "Wete"
+  },
+  {
+    "name": "Minungwini",
+    "district": "Wete"
+  },
+  {
+    "name": "Kambini",
+    "district": "Wete"
+  },
+  {
+    "name": "Kisiwani",
+    "district": "Wete"
+  },
+  {
+    "name": "Mtambwe Kusini",
+    "district": "Wete"
+  },
+  {
+    "name": "Mtambwe Kaskazini",
+    "district": "Wete"
+  },
+  {
+    "name": "Piki",
+    "district": "Wete"
+  },
+  {
+    "name": "Limbani",
+    "district": "Wete"
+  },
+  {
+    "name": "Pandani",
+    "district": "Wete"
+  },
+  {
+    "name": "Mjananza",
+    "district": "Wete"
+  },
+  {
+    "name": "Pembeni",
+    "district": "Wete"
+  },
+  {
+    "name": "Mlindo",
+    "district": "Wete"
+  },
+  {
+    "name": "Maziwani",
+    "district": "Wete"
+  },
+  {
+    "name": "Kiungoni",
+    "district": "Wete"
+  },
+  {
+    "name": "Mzambarauni",
+    "district": "Wete"
+  },
+  {
+    "name": "Shengejuu",
+    "district": "Wete"
+  },
+  {
+    "name": "Selemu",
+    "district": "Wete"
+  },
+  {
+    "name": "Jadida",
+    "district": "Wete"
+  },
+  {
+    "name": "Mtemani",
+    "district": "Wete"
+  },
+  {
+    "name": "Kipangani",
+    "district": "Wete"
+  },
+  {
+    "name": "Utaani",
+    "district": "Wete"
+  },
+  {
+    "name": "Bopwe",
+    "district": "Wete"
+  },
+  {
+    "name": "Ng'Ombeni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mbuyuni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Uweleni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mbuguwani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Changaweni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Makombeni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Makoongwe",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Shidi",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mkanyageni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Michenzani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Stahabu",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Chokocho",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kisiawa Panza",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mtambile",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mjimbini",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kuukuu",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kangani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mkungu",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kengeja",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Minazini",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Chole",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kiwani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Kendwa",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mtangani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mwambe",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Jombwe",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Shamiani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mchakwe",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Chambani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Ukutini",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Ngwachani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mgagadu",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Dodo",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Wambaa",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Chumbageni",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Mizingani",
+    "district": "Mkoani"
+  },
+  {
+    "name": "Chanjaani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Madungu",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Shungi",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Msingini",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Chachani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Kichungwani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Tibirinzi",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Ole",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mjini Ole",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mchanga Mrima",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Ng'Ambwa",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Uwandani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Vitongoji",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Ziwani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Kwale",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mbuzini",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Ndagoni",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Wesha",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Michungwani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Kibokoni",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mvumoni",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mgogoni",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Gombani",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Wara",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mkoroshoni",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Wawi",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Matale",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Pujini",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mfikiwa",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Kilindi",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mgelema",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Chonga",
+    "district": "Chake Chake"
+  },
+  {
+    "name": "Mtofaani",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mwera",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Michikichini",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Masingini",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kianga",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Welezo",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Hawaii",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Monduli",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Uholanzi",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mtopepo",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Muembe Mchomeke",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Dole",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kizimbani",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Bumbwisudi",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mwakaje",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mtoni Kidato",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kihinani",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kikaangoni",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mtoni",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Bububu",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kijichi",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Bububu Chemchem",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mwanyanya",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kibweni",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kwa Goa",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mtoni Chemchem",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Sharifu Msa",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mbuzini",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Chuini",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Mfenesini",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Kama",
+    "district": "Magharibi A"
+  },
+  {
+    "name": "Bweleo",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Fumba",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kombeni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Dimani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Nyamanzi",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kisauni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Maungani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Shakani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kiembe Samaki",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Chukwani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mombasa",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Michungwani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kwamchina",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mbweni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Tomondo",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Sokoni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kinuni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Muembe Majogoo",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mwanakwerekwe",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Meli Nne",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kijitoupele",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Magogoni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Uzi",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Taveta",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mnarani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Jitimai",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mikarafuuni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Pangawe",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Fuoni Kibondeni",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Uwandani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Chunga",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Fuoni Migombani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Fuoni Kipungani",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Mambosasa",
+    "district": "Magharibi B"
+  },
+  {
+    "name": "Kikwajuni Juu",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kikwajuni Bondeni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kisiwandui",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kisima Majongoo",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mkunazini",
+    "district": "Mjini"
+  },
+  {
+    "name": "Shangani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mnazi Mmoja",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kiponda",
+    "district": "Mjini"
+  },
+  {
+    "name": "Muembe Tanga",
+    "district": "Mjini"
+  },
+  {
+    "name": "Vikokotoni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mchangani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kilimani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Malindi",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mwembeladu",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwalinato",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwahani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mwembeshauri",
+    "district": "Mjini"
+  },
+  {
+    "name": "Rahaleo",
+    "district": "Mjini"
+  },
+  {
+    "name": "Gulioni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Makadara",
+    "district": "Mjini"
+  },
+  {
+    "name": "Muembe Madema",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mitiulaya",
+    "district": "Mjini"
+  },
+  {
+    "name": "Miembeni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mlandege",
+    "district": "Mjini"
+  },
+  {
+    "name": "Sogea",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mkele",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mapinduzi",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwaalamsha",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mikunguni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Muungano",
+    "district": "Mjini"
+  },
+  {
+    "name": "Sebleni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Amani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwa Wazee",
+    "district": "Mjini"
+  },
+  {
+    "name": "Nyerere",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwamtumwajeni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Meya",
+    "district": "Mjini"
+  },
+  {
+    "name": "Matarumbeta",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kidongochekundu",
+    "district": "Mjini"
+  },
+  {
+    "name": "Jangombe",
+    "district": "Mjini"
+  },
+  {
+    "name": "Urusi",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mpendae",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwa Bintihamrani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Migombani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Magomeni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Shauri Moyo",
+    "district": "Mjini"
+  },
+  {
+    "name": "Saateni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Karakana",
+    "district": "Mjini"
+  },
+  {
+    "name": "Banko",
+    "district": "Mjini"
+  },
+  {
+    "name": "Maruhubi",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mwembe Makumbi",
+    "district": "Mjini"
+  },
+  {
+    "name": "Masumbani",
+    "district": "Mjini"
+  },
+  {
+    "name": "Chumbuni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Mboriborini",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kwamtipura",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kilimahewa Bondeni",
+    "district": "Mjini"
+  },
+  {
+    "name": "Kilimahewa Juu",
+    "district": "Mjini"
+  },
+  {
+    "name": "Bwejuu",
+    "district": "Kusini"
+  },
+  {
+    "name": "Dongwe",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kibigija",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kikadini",
+    "district": "Kusini"
+  },
+  {
+    "name": "Michamvi",
+    "district": "Kusini"
+  },
+  {
+    "name": "Paje",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kizimkazi Dimbani",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kizimkazi Mkunguni",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kibuteni",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kitogani",
+    "district": "Kusini"
+  },
+  {
+    "name": "Muungoni",
+    "district": "Kusini"
+  },
+  {
+    "name": "Muyuni A",
+    "district": "Kusini"
+  },
+  {
+    "name": "Muyuni B",
+    "district": "Kusini"
+  },
+  {
+    "name": "Muyuni C",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kiongoni",
+    "district": "Kusini"
+  },
+  {
+    "name": "Nganani",
+    "district": "Kusini"
+  },
+  {
+    "name": "Tasani",
+    "district": "Kusini"
+  },
+  {
+    "name": "Mtende",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kajengwa",
+    "district": "Kusini"
+  },
+  {
+    "name": "Kijini",
+    "district": "Kusini"
+  },
+  {
+    "name": "Mzuri",
+    "district": "Kusini"
+  },
+  {
+    "name": "Miwani",
+    "district": "kati"
+  },
+  {
+    "name": "Kiboje Mkwajuni",
+    "district": "kati"
+  },
+  {
+    "name": "Machui",
+    "district": "kati"
+  },
+  {
+    "name": "Ghana",
+    "district": "kati"
+  },
+  {
+    "name": "Kiboje Mwembeshauri",
+    "district": "kati"
+  },
+  {
+    "name": "Ubago",
+    "district": "kati"
+  },
+  {
+    "name": "Koani",
+    "district": "kati"
+  },
+  {
+    "name": "Kidimni",
+    "district": "kati"
+  },
+  {
+    "name": "Dunga Bweni",
+    "district": "kati"
+  },
+  {
+    "name": "Dunga Kiembeni",
+    "district": "kati"
+  },
+  {
+    "name": "Mchangani",
+    "district": "kati"
+  },
+  {
+    "name": "Mitakawani",
+    "district": "kati"
+  },
+  {
+    "name": "Tunduni",
+    "district": "kati"
+  },
+  {
+    "name": "Uzini",
+    "district": "kati"
+  },
+  {
+    "name": "Mgeni Haji",
+    "district": "kati"
+  },
+  {
+    "name": "Kijibwemtu",
+    "district": "kati"
+  },
+  {
+    "name": "Bambi",
+    "district": "kati"
+  },
+  {
+    "name": "Mpapa",
+    "district": "kati"
+  },
+  {
+    "name": "Umbuji",
+    "district": "kati"
+  },
+  {
+    "name": "Pagali",
+    "district": "kati"
+  },
+  {
+    "name": "Binguni",
+    "district": "kati"
+  },
+  {
+    "name": "Tunguu",
+    "district": "kati"
+  },
+  {
+    "name": "Jumbi",
+    "district": "kati"
+  },
+  {
+    "name": "Bungi",
+    "district": "kati"
+  },
+  {
+    "name": "Unguja Ukuu Tindini",
+    "district": "kati"
+  },
+  {
+    "name": "Unguja Ukuu Kaebona",
+    "district": "kati"
+  },
+  {
+    "name": "Unguja Ukuu Kaepwani",
+    "district": "kati"
+  },
+  {
+    "name": "Kikungwi",
+    "district": "kati"
+  },
+  {
+    "name": "Jendele",
+    "district": "kati"
+  },
+  {
+    "name": "Cheju H/Mchana",
+    "district": "kati"
+  },
+  {
+    "name": "Zuwiani",
+    "district": "kati"
+  },
+  {
+    "name": "Ndijani Muembepunda",
+    "district": "kati"
+  },
+  {
+    "name": "Ndijani Mseweni",
+    "district": "kati"
+  },
+  {
+    "name": "Marumbi",
+    "district": "kati"
+  },
+  {
+    "name": "Pongwe",
+    "district": "kati"
+  },
+  {
+    "name": "Uroa",
+    "district": "kati"
+  },
+  {
+    "name": "Chwaka",
+    "district": "kati"
+  },
+  {
+    "name": "Ukongoroni",
+    "district": "kati"
+  },
+  {
+    "name": "Charawe",
+    "district": "kati"
+  },
+  {
+    "name": "Pete",
+    "district": "kati"
+  },
+  {
+    "name": "Uzi",
+    "district": "kati"
+  },
+  {
+    "name": "Ng'Ambwa",
+    "district": "kati"
+  },
+  {
+    "name": "Chaani Kubwa",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mcheza Shauri",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Gamba",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Chaani Masingini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Moga",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Chutama",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kinyasini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Banda Maji",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kikobweni",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kandwi",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Pwani Mchangani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mkwajuni",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kidombo",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kivunge",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kipange",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mto Wa Pwani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mkokotoni",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Pale",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Potoa",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Pitanazako",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Muwange",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kibeni",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "D/Mchangani 2",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Muwanda 2",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kidoti",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Fukuchani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Tazari",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kilimani Tazari",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Bwereu",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kigunda",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kigongoni",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Banda Kuu",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kilindi",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kiungani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Matemwe Kusini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Matemwe Kaskazini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kigomani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Juga Kuu",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Kijini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mbuyu Tende",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Tumbatu Jongowe",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Tumbatu Uvivini",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Mtakuja",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Tumbatu Gomani",
+    "district": "Kaskazini A"
+  },
+  {
+    "name": "Misufini",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Fujoni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kidanzini",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mangapwani",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kiombamvua",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Zingwe Zingwe",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mafufuni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Makoba",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kitope",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mbaleni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kwagube",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Matetema",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mkadini",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mahonda",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mkataleni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kinduni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mgambo",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mnyimbi",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Mbiji",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Karange",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Vijibweni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Donge Pwani",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Donge Mtambile",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kiongwe Kidogo",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Njia Ya Mtoni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Donge Majenzi",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kiwengwa",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Upenja",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kilombero",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Pangeni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kisongoni",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Muwanda 2",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "D/ Mchangani 2",
+    "district": "Kaskazini B"
+  },
+  {
+    "name": "Kipange 2",
+    "district": "Kaskazini B"
+  }
+]

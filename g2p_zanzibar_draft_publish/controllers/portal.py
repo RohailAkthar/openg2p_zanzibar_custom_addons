@@ -173,11 +173,29 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         import os
         params = request.env["ir.config_parameter"].sudo()
         
-        base_url = os.environ.get("ZANID_BASE_URL") or params.get_param("zanid.base_url")
+        # Local testing credentials (used as fallbacks if not configured in production)
+        LOCAL_TEST_BASE_URL = "http://zanxcssdemo.egoz.go.tz:8080/r1/ZXC-CS/GOV/ZCSRA001/001/ZANID/zanid"
+        LOCAL_TEST_X_ROAD_CLIENT = "ZXC-CS/GOV/EGAZ-001/ZUPS"
+        LOCAL_TEST_API_KEY = "2F2C6038A8E8D670D0C1762A00FCBE4CB1D927ECADF5F09E5FBCC77CDA25E1A9"
+        LOCAL_TEST_KEY_PASSWORD = "Zcsra@2023"
+        
+        # In production, values come from os.environ or ir.config_parameter; fall back to local test credentials
+        base_url = os.environ.get("ZANID_BASE_URL") or params.get_param("zanid.base_url") or LOCAL_TEST_BASE_URL
+        x_road_client = os.environ.get("ZANID_X_ROAD_CLIENT") or params.get_param("zanid.x_road_client") or LOCAL_TEST_X_ROAD_CLIENT
+        api_key = os.environ.get("ZANID_API_KEY") or params.get_param("zanid.api_key") or LOCAL_TEST_API_KEY
+        private_key_password = os.environ.get("ZANID_PRIVATE_KEY_PASSWORD") or params.get_param("zanid.private_key_password") or LOCAL_TEST_KEY_PASSWORD
+        
         private_key_path = os.environ.get("ZANID_PRIVATE_KEY_PATH") or params.get_param("zanid.private_key_path")
-        private_key_password = os.environ.get("ZANID_PRIVATE_KEY_PASSWORD") or params.get_param("zanid.private_key_password", "")
-        api_key = os.environ.get("ZANID_API_KEY") or params.get_param("zanid.api_key")
-        x_road_client = os.environ.get("ZANID_X_ROAD_CLIENT") or params.get_param("zanid.x_road_client")
+        if not private_key_path or not os.path.exists(private_key_path):
+            possible_local_paths = [
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../certs/zanid_private.pfx")),
+                "/Users/rohail/Zanzibar/socail_registry/odoo/odoo17/certs/zanid_private.pfx",
+                "certs/zanid_private.pfx",
+            ]
+            for p in possible_local_paths:
+                if os.path.exists(p):
+                    private_key_path = p
+                    break
         
         env_verify_ssl = os.environ.get("ZANID_VERIFY_SSL")
         if env_verify_ssl is not None:
@@ -195,8 +213,8 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             raise ValueError("ZANID Base URL (ZANID_BASE_URL / zanid.base_url) is not configured.")
         if not x_road_client:
             raise ValueError("ZANID X-Road Client (ZANID_X_ROAD_CLIENT / zanid.x_road_client) is not configured.")
-        if not private_key_path:
-            raise ValueError("ZANID private key path (ZANID_PRIVATE_KEY_PATH / zanid.private_key_path) is not configured.")
+        if not private_key_path or not os.path.exists(private_key_path):
+            raise ValueError(f"ZANID private key path ({private_key_path}) is not configured.")
         if not api_key:
             raise ValueError("ZANID API key (ZANID_API_KEY / zanid.api_key) is not configured.")
 
@@ -341,7 +359,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                     "gender": gender_val,
                     "mobile": mobile_val,
                     "street": street_val,
-                    "street2": street2_val,
+                    "street2": "",
                     "benf_post_code": post_code,
                     "region": region_id,
                     "district": district_id,
@@ -779,8 +797,10 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 "user_id": user.id,
                 "is_registrant": True,
                 "is_group": False,
-                # Additional fields
+                # Additional fields - street, street2 as address
                 "address": ", ".join(filter(None, [kw.get("street"), kw.get("street2")])),
+                "street": kw.get("street") or "",
+                "street2": kw.get("street2") or "",
                 "occupation": kw.get("occupation"),
                 "income": float(kw.get("income", 0.0)) if kw.get("income") else 0.0,
                 "education_level": kw.get("education_level"),
@@ -885,6 +905,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             gender = request.env["gender.type"].sudo().search([])
             regions = request.env["g2p.region"].sudo().search([])
             districts = request.env["g2p.district"].sudo().search([])
+            shehias = request.env["g2p.shehia"].sudo().search([("active", "=", True)])
             id_types = request.env["g2p.id.type"].sudo().search([])
             
             beneficiary = request.env["draft.record"].sudo().browse(_id).exists()
@@ -901,6 +922,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 "gender": gender,
                 "regions": regions,
                 "districts": districts,
+                "shehias": shehias,
                 "id_types": id_types,
             })
         except Exception as e:
@@ -1026,9 +1048,11 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             if "birthdate" in kw:
                 vals["birthdate"] = kw.get("birthdate") if kw.get("birthdate") != "" else False
 
-            # Special handling for address
+            # Special handling for address: street, street2 as address
             street = kw.get("street") if "street" in kw else (current_data.get("street") or "")
             street2 = kw.get("street2") if "street2" in kw else (current_data.get("street2") or "")
+            vals["street"] = street
+            vals["street2"] = street2
             vals["address"] = ", ".join(filter(None, [street, street2]))
 
             # Numeric fields
@@ -1059,9 +1083,11 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             if "street" in kw: vals["street"] = kw.get("street")
             if "street2" in kw: vals["street2"] = kw.get("street2")
             
-            # Combine address
+            # Address update: street, street2 as address
+            if "street" in kw: vals["street"] = kw.get("street")
+            if "street2" in kw: vals["street2"] = kw.get("street2")
             if "street" in kw or "street2" in kw:
-                vals["address"] = ", ".join(filter(None, [kw.get("street"), kw.get("street2")]))
+                vals["address"] = ", ".join(filter(None, [vals.get("street"), vals.get("street2")]))
 
             # Name construction: First Name, Middle Name, Additional Name, Surname
             f_name = kw.get("family_name") if "family_name" in kw else (current_data.get("family_name") or "")

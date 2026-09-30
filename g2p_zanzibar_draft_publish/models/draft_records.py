@@ -512,9 +512,10 @@ class G2PDraftRecord(models.Model):
         else:
             partner_data["scheme_name"] = ""
 
-        # Address
-        partner_data["address"] = self.address_display
-        partner_data["street2"] = self.shehia_display
+        # Address - street, street2 as address
+        partner_data["street"] = self.address_display or ""
+        partner_data["street2"] = self.shehia_display or ""
+        partner_data["address"] = ", ".join(filter(None, [self.address_display, self.shehia_display]))
         # Clean up any None/False values to prevent JS widget crashes (Object.entries(null) errors)
         final_pd = {}
         for k, v in partner_data.items():
@@ -579,6 +580,19 @@ class G2PDraftRecord(models.Model):
             family_name = partner_data.get("family_name") or ""
             middle_name = partner_data.get("middle_name") or ""
             valid_data["name"] = " ".join(filter(None, [given_name, middle_name, family_name])).strip()
+
+        # Ensure address is street, street2
+        street_val = valid_data.get("street") or partner_data.get("street")
+        shehia_val = valid_data.get("street2") or partner_data.get("street2")
+        if street_val or shehia_val:
+            valid_data["address"] = ", ".join(filter(None, [street_val, shehia_val]))
+
+        # Link shehia_id if available
+        shehia_name = valid_data.get("street2") or shehia_val
+        if shehia_name and not valid_data.get("shehia_id"):
+            shehia_rec = self.env["g2p.shehia"].sudo().search([("name", "=ilike", str(shehia_name).strip())], limit=1)
+            if shehia_rec:
+                valid_data["shehia_id"] = shehia_rec.id
 
         partner = partner_model.sudo().create(valid_data)
 

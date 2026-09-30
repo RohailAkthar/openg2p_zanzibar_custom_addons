@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <function model="g2p.shehia" name="seed_shehias_from_json"/>
+    </data>
+</odoo>

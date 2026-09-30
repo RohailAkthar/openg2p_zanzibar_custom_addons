@@ -100,6 +100,31 @@ class ResPartner(models.Model):
             self._deduplicate_phone_numbers()
         return res
 
+    shehia_id = fields.Many2one(
+        "g2p.shehia",
+        string="Shehia (Ward)",
+        domain="[('district_id', '=', district)]",
+        tracking=True,
+    )
+    shehia_name = fields.Char(
+        string="Shehia",
+        compute="_compute_shehia_name",
+        store=True,
+        index=True,
+    )
+
+    @api.depends("shehia_id", "shehia_id.name", "street2", "address")
+    def _compute_shehia_name(self):
+        for partner in self:
+            if partner.shehia_id:
+                partner.shehia_name = partner.shehia_id.name
+            elif partner.street2:
+                partner.shehia_name = partner.street2
+            elif partner.address:
+                parts = [p.strip() for p in partner.address.split(",") if p.strip()]
+                partner.shehia_name = parts[-1] if len(parts) > 1 else partner.address
+            else:
+                partner.shehia_name = ""
     benf_post_code = fields.Char(string="Post Code", tracking=True)
     benf_zan_id = fields.Char(string="Zanzibar ID", compute="_compute_benf_zan_id", readonly=True, store=True)
     disability = fields.Selection(

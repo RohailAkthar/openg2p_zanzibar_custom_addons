@@ -7,12 +7,16 @@
     "website": "https://openg2p.org",
     "license": "LGPL-3",
     "depends": [
+        "g2p_registry_base",
         "g2p_social_registry",
         "g2p_registry_individual",
         "g2p_draft_publish",
         "g2p_registry_id_deduplication",
     ],
     "data": [
+        "security/ir.model.access.csv",
+        "data/shehia_seed.xml",
+        "views/shehia_views.xml",
         "views/res_partner_views.xml",
     ],
     "assets": {
