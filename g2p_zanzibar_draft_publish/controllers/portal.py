@@ -171,52 +171,54 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
 
     def _get_zanid_client(self):
         import os
+        from odoo.tools import config
         params = request.env["ir.config_parameter"].sudo()
         
-        # Local testing credentials (used as fallbacks if not configured in production)
-        LOCAL_TEST_BASE_URL = "http://zanxcssdemo.egoz.go.tz:8080/r1/ZXC-CS/GOV/ZCSRA001/001/ZANID/zanid"
-        LOCAL_TEST_X_ROAD_CLIENT = "ZXC-CS/GOV/EGAZ-001/ZUPS"
-        LOCAL_TEST_API_KEY = "2F2C6038A8E8D670D0C1762A00FCBE4CB1D927ECADF5F09E5FBCC77CDA25E1A9"
-        LOCAL_TEST_KEY_PASSWORD = "Zcsra@2023"
+        # Configuration is retrieved with fallback order:
+        # 1. Environment variables (e.g. ZANID_BASE_URL)
+        # 2. odoo.conf file options (e.g. zanid_base_url or zanid.base_url)
+        # 3. ir.config_parameter database records (e.g. zanid.base_url or zanid_base_url)
+        def _get_cfg(env_key, conf_key, param_key):
+            val = (
+                os.environ.get(env_key)
+                or config.get(conf_key)
+                or config.get(param_key)
+                or params.get_param(param_key)
+                or params.get_param(conf_key)
+            )
+            return val.strip() if isinstance(val, str) else val
+
+        base_url = _get_cfg("ZANID_BASE_URL", "zanid_base_url", "zanid.base_url")
+        x_road_client = _get_cfg("ZANID_X_ROAD_CLIENT", "zanid_x_road_client", "zanid.x_road_client")
+        api_key = _get_cfg("ZANID_API_KEY", "zanid_api_key", "zanid.api_key")
+        private_key_password = _get_cfg("ZANID_PRIVATE_KEY_PASSWORD", "zanid_private_key_password", "zanid.private_key_password")
+        private_key_path = _get_cfg("ZANID_PRIVATE_KEY_PATH", "zanid_private_key_path", "zanid.private_key_path")
         
-        # In production, values come from os.environ or ir.config_parameter; fall back to local test credentials
-        base_url = os.environ.get("ZANID_BASE_URL") or params.get_param("zanid.base_url") or LOCAL_TEST_BASE_URL
-        x_road_client = os.environ.get("ZANID_X_ROAD_CLIENT") or params.get_param("zanid.x_road_client") or LOCAL_TEST_X_ROAD_CLIENT
-        api_key = os.environ.get("ZANID_API_KEY") or params.get_param("zanid.api_key") or LOCAL_TEST_API_KEY
-        private_key_password = os.environ.get("ZANID_PRIVATE_KEY_PASSWORD") or params.get_param("zanid.private_key_password") or LOCAL_TEST_KEY_PASSWORD
-        
-        private_key_path = os.environ.get("ZANID_PRIVATE_KEY_PATH") or params.get_param("zanid.private_key_path")
-        if not private_key_path or not os.path.exists(private_key_path):
-            possible_local_paths = [
-                os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../certs/zanid_private.pfx")),
-                "/Users/rohail/Zanzibar/socail_registry/odoo/odoo17/certs/zanid_private.pfx",
-                "certs/zanid_private.pfx",
-            ]
-            for p in possible_local_paths:
-                if os.path.exists(p):
-                    private_key_path = p
-                    break
-        
-        env_verify_ssl = os.environ.get("ZANID_VERIFY_SSL")
+        env_verify_ssl = _get_cfg("ZANID_VERIFY_SSL", "zanid_verify_ssl", "zanid.verify_ssl")
         if env_verify_ssl is not None:
-            verify_ssl = env_verify_ssl.lower() == "true"
+            verify_ssl = str(env_verify_ssl).strip().lower() in ("true", "1", "yes")
         else:
-            verify_ssl = params.get_param("zanid.verify_ssl", "True") == "True"
+            verify_ssl = True
             
-        env_timeout = os.environ.get("ZANID_TIMEOUT")
+        env_timeout = _get_cfg("ZANID_TIMEOUT", "zanid_timeout", "zanid.timeout")
         if env_timeout is not None:
-            timeout = int(env_timeout)
+            try:
+                timeout = int(env_timeout)
+            except ValueError:
+                timeout = 30
         else:
-            timeout = int(params.get_param("zanid.timeout", "30"))
+            timeout = 30
 
         if not base_url:
-            raise ValueError("ZANID Base URL (ZANID_BASE_URL / zanid.base_url) is not configured.")
+            raise ValueError("ZANID Base URL (ZANID_BASE_URL / zanid_base_url / zanid.base_url) is not configured.")
         if not x_road_client:
-            raise ValueError("ZANID X-Road Client (ZANID_X_ROAD_CLIENT / zanid.x_road_client) is not configured.")
-        if not private_key_path or not os.path.exists(private_key_path):
-            raise ValueError(f"ZANID private key path ({private_key_path}) is not configured.")
+            raise ValueError("ZANID X-Road Client (ZANID_X_ROAD_CLIENT / zanid_x_road_client / zanid.x_road_client) is not configured.")
         if not api_key:
-            raise ValueError("ZANID API key (ZANID_API_KEY / zanid.api_key) is not configured.")
+            raise ValueError("ZANID API key (ZANID_API_KEY / zanid_api_key / zanid.api_key) is not configured.")
+        if not private_key_password:
+            raise ValueError("ZANID private key password (ZANID_PRIVATE_KEY_PASSWORD / zanid_private_key_password / zanid.private_key_password) is not configured.")
+        if not private_key_path or not os.path.exists(private_key_path):
+            raise ValueError(f"ZANID private key path ({private_key_path}) is not found or not configured.")
 
         return ZanidClient(
             base_url=base_url,
@@ -491,11 +493,12 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 
                 # Retrieve fields from the response
                 first_name = api_data.get("PRSN_FIRST_NAME") or ""
+                middle_name = api_data.get("PRSN_MIDLE_NAME") or ""
                 last_name = api_data.get("PRSN_LAST_NAME") or ""
                 gender_str = api_data.get("PRSN_SEX") or ""
                 mobile_val = api_data.get("PRSN_KIN_PHONE") or ""
                 street_val = api_data.get("PRSN_RES_ADDRESS") or ""
-                street2_val = api_data.get("PRSN_RES_WARD") or api_data.get("PRSN_PLACE_SHEHIA") or ""
+                # Shehia is not pulled from external system; user selects from dropdown based on region and district
                 post_code = api_data.get("PRSN_POST_CODE") or ""
                 nominee_image = api_data.get("PRSN_PHOTO") or ""
                 
@@ -531,11 +534,12 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                     "status": "SUCCESS",
                     "message": "Found!",
                     "nominee_first_name": first_name,
+                    "nominee_middle_name": middle_name,
                     "nominee_last_name": last_name,
                     "nominee_gender": gender_val,
                     "nominee_mobile": mobile_val,
                     "nominee_house_street": street_val,
-                    "nominee_shehia": street2_val,
+                    "nominee_shehia": "",  # Selected manually from filtered dropdown
                     "nominee_rel_benf": "",  # To be filled by user
                     "nominee_region": region_id,
                     "nominee_district": district_id,
@@ -691,10 +695,11 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 }))
         return reg_ids
 
-    def _validate_tz_phone(self, phone):
+    def _validate_tz_phone(self, phone, strict_length=False):
         """Validate Tanzania phone number format.
-        After stripping +255/255/0 prefix, the local number must start with 6 or 7
-        and be exactly 9 digits. Returns error message or None if valid.
+        After stripping +255/255/0 prefix, the local number must start with 6 or 7.
+        If strict_length is True (beneficiary mobile), it must also be exactly 9 digits.
+        Returns error message or None if valid.
         """
         if not phone:
             return None  # Empty phone is allowed (not required)
@@ -706,9 +711,13 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
             local = local[3:]
         elif local.startswith('0'):
             local = local[1:]
-        # Validate: must be 9 digits starting with 6 or 7
-        if local and not re.match(r'^[67][0-9]{8}$', local):
-            return "Phone number must start with 6 or 7 after +255 and be 9 digits"
+        if strict_length:
+            # Beneficiary: must start with 6 or 7 and be exactly 9 digits
+            if local and not re.match(r'^[67][0-9]{8}$', local):
+                return "Phone number must start with 6 or 7 after +255 and be 9 digits"
+        # Nominee: must start with 6 or 7 (no length restriction)
+        elif local and not re.match(r'^[67][0-9]*$', local):
+            return "Phone number must start with 6 or 7 after +255"
         return None
 
     def _validate_id_type(self, id_type_name, value):
@@ -733,7 +742,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     def individual_create_submit(self, **kw):
         try:
             # Validate phone numbers before processing
-            phone_error = self._validate_tz_phone(kw.get("mobile"))
+            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True)
             if phone_error:
                 return request.render(
                     "g2p_registration_portal_base.error_template",
@@ -941,7 +950,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     def update_individual_submit(self, **kw):
         try:
             # Validate phone numbers before processing
-            phone_error = self._validate_tz_phone(kw.get("mobile"))
+            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True)
             if phone_error:
                 return request.render(
                     "g2p_registration_portal_base.error_template",
