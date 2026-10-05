@@ -43,7 +43,7 @@ class ZanidClient:
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.x_road_client = x_road_client
-        self.timeout = timeout
+        self.timeout = timeout if (isinstance(timeout, (int, float)) and timeout > 0) else 30
         self.verify_ssl = verify_ssl
 
         self._private_key = self._load_private_key(

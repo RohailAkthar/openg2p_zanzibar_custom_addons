@@ -200,14 +200,16 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
         else:
             verify_ssl = True
             
+        # Timeout (must be > 0; urllib3/requests rejects timeout <= 0)
+        timeout = 30
         env_timeout = _get_cfg("ZANID_TIMEOUT", "zanid_timeout", "zanid.timeout")
         if env_timeout is not None:
             try:
-                timeout = int(env_timeout)
-            except ValueError:
+                parsed_timeout = int(env_timeout)
+                if parsed_timeout > 0:
+                    timeout = parsed_timeout
+            except (ValueError, TypeError):
                 timeout = 30
-        else:
-            timeout = 30
 
         if not base_url:
             raise ValueError("ZANID Base URL (ZANID_BASE_URL / zanid_base_url / zanid.base_url) is not configured.")
