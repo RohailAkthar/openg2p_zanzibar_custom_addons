@@ -92,7 +92,7 @@ class MockPartner:
         self.write_date = draft_rec.write_date or fields.Datetime.now()
         self.address = self._data.get('address') or ''
         self.street = self._data.get('street') or ''
-        self.shehia_display = getattr(draft_rec, 'shehia_display', '') or self._data.get('street2') or self._data.get('address') or ''
+        self.shehia_display = getattr(draft_rec, 'shehia_display', '') or self._data.get('street2') or ''
         self.street2 = self.shehia_display
         self.benf_post_code = self._data.get('benf_post_code') or ''
         self.disability = self._data.get('disability') or ''
@@ -105,6 +105,7 @@ class MockPartner:
         # Nominee address fields
         self.nominee_region = self._data.get('nominee_region', False)
         self.nominee_district = self._data.get('nominee_district', False)
+        self.nominee_shehia = self._data.get('nominee_shehia') or getattr(draft_rec, 'nominee_shehia', '') or ''
 
         # Image fields: image_data_uri() expects bytes, not str
         # Convert base64 strings from JSON to bytes for template compatibility
@@ -157,6 +158,7 @@ class PartnerRow:
         self.district = getattr(partner, 'district_id', partner.env['g2p.district'])
         self.street2 = getattr(partner, 'street2', '') or getattr(partner, 'shehia_display', '') or ''
         self.shehia_display = self.street2
+        self.nominee_shehia = getattr(partner, 'nominee_shehia', '') or ''
 
     def __getattr__(self, name):
         return getattr(self._partner, name)
@@ -300,7 +302,14 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 last_name = api_data.get("PRSN_LAST_NAME") or ""
                 dob_val = api_data.get("PRSN_BIRTH_DATE") or ""
                 gender_str = api_data.get("PRSN_SEX") or ""
-                mobile_val = api_data.get("PRSN_KIN_PHONE") or ""
+                # Do not give kin mobile number in beneficiary mobile field; only use person's mobile if provided
+                mobile_val = (
+                    api_data.get("PRSN_MOBILE")
+                    or api_data.get("PRSN_PHONE")
+                    or api_data.get("PRSN_PERSON_PHONE")
+                    or api_data.get("mobile_number")
+                    or ""
+                )
                 street_val = api_data.get("PRSN_RES_ADDRESS") or ""
                 street2_val = api_data.get("PRSN_RES_WARD") or api_data.get("PRSN_PLACE_SHEHIA") or ""
                 post_code = api_data.get("PRSN_POST_CODE") or ""
@@ -498,7 +507,15 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 middle_name = api_data.get("PRSN_MIDLE_NAME") or ""
                 last_name = api_data.get("PRSN_LAST_NAME") or ""
                 gender_str = api_data.get("PRSN_SEX") or ""
-                mobile_val = api_data.get("PRSN_KIN_PHONE") or ""
+                # Nominee phone number fetched from ZANID system
+                mobile_val = (
+                    api_data.get("PRSN_MOBILE")
+                    or api_data.get("PRSN_PHONE")
+                    or api_data.get("PRSN_PERSON_PHONE")
+                    # or api_data.get("PRSN_KIN_PHONE")
+                    or api_data.get("mobile_number")
+                    or ""
+                )
                 street_val = api_data.get("PRSN_RES_ADDRESS") or ""
                 # Shehia is not pulled from external system; user selects from dropdown based on region and district
                 post_code = api_data.get("PRSN_POST_CODE") or ""
@@ -697,29 +714,32 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
                 }))
         return reg_ids
 
-    def _validate_tz_phone(self, phone, strict_length=False):
+    def _validate_tz_phone(self, phone, strict_length=False, required=False):
         """Validate Tanzania phone number format.
         After stripping +255/255/0 prefix, the local number must start with 6 or 7.
         If strict_length is True (beneficiary mobile), it must also be exactly 9 digits.
+        If required is True, empty/missing phone is rejected.
         Returns error message or None if valid.
         """
         if not phone:
-            return None  # Empty phone is allowed (not required)
+            return "is required." if required else None
         # Strip common prefixes to get local number
-        local = phone
+        local = str(phone).strip()
         if local.startswith('+255'):
             local = local[4:]
         elif local.startswith('255'):
             local = local[3:]
         elif local.startswith('0'):
             local = local[1:]
+        if not local and required:
+            return "is required."
         if strict_length:
             # Beneficiary: must start with 6 or 7 and be exactly 9 digits
-            if local and not re.match(r'^[67][0-9]{8}$', local):
-                return "Phone number must start with 6 or 7 after +255 and be 9 digits"
+            if not re.match(r'^[67][0-9]{8}$', local):
+                return "must start with 6 or 7 after +255 and be 9 digits."
         # Nominee: must start with 6 or 7 (no length restriction)
         elif local and not re.match(r'^[67][0-9]*$', local):
-            return "Phone number must start with 6 or 7 after +255"
+            return "must start with 6 or 7 after +255."
         return None
 
     def _validate_id_type(self, id_type_name, value):
@@ -744,7 +764,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     def individual_create_submit(self, **kw):
         try:
             # Validate phone numbers before processing
-            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True)
+            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True, required=True)
             if phone_error:
                 return request.render(
                     "g2p_registration_portal_base.error_template",
@@ -952,7 +972,7 @@ class ZanzibarPortalDraft(G2PSocialRegistryModel):
     def update_individual_submit(self, **kw):
         try:
             # Validate phone numbers before processing
-            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True)
+            phone_error = self._validate_tz_phone(kw.get("mobile"), strict_length=True, required=True)
             if phone_error:
                 return request.render(
                     "g2p_registration_portal_base.error_template",
