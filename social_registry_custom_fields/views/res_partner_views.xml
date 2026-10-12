@@ -69,9 +69,12 @@
             <!-- Note: The above replace usually handles it if the original xpath was targeted there, but we need to clean up the previous file content manually if it was there. -->
             <!-- Actually, since I'm editing the file, I should just remove the old blocks. The replace_file_content below targets the whole file structure related to these changes. -->
             
-            <!-- Add Post Code after Address -->
-            <xpath expr="//div[@class='o_address_format']" position="after">
-                <field name="benf_post_code"/>
+            <!-- Hide the default Address label and Address field -->
+            <xpath expr="//span[@name='address_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
             
             <!-- Add the Yes/No questions to the first group (right column) to align with Post Code/Address -->
@@ -86,8 +89,20 @@
                 </group>
             </xpath>
 
-            <!-- Move Date of Birth fields to under the District field (left column) -->
+            <!-- Dynamic dropdown filtering for Region -> District -> Shehia -->
+            <xpath expr="//field[@name='region']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='district']" position="attributes">
+                <attribute name="domain">[('province_id', '=?', region)]</attribute>
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+
+            <!-- Sequence in left column: Region (placed before district by social registry), District, Shehia, House & Street, Post Code, Date of Birth, Age, Gender -->
             <xpath expr="//field[@name='district']" position="after">
+                <field name="shehia_id" string="Shehia" domain="[('district_id', '=?', district)]" readonly="disabled" options="{'no_create': True}"/>
+                <field name="street" string="House &amp; Street" readonly="disabled"/>
+                <field name="benf_post_code" readonly="disabled"/>
                 <field name="birthdate" readonly="disabled" colspan="2" placeholder="mm/dd/yyyy"/>
                 <field name="age" />
                 <field name="gender" readonly="disabled" />

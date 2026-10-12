@@ -100,10 +100,15 @@ class ResPartner(models.Model):
             self._deduplicate_phone_numbers()
         return res
 
+    district = fields.Many2one(
+        "g2p.district",
+        domain="[('province_id', '=?', region)]",
+        tracking=True,
+    )
     shehia_id = fields.Many2one(
         "g2p.shehia",
         string="Shehia (Ward)",
-        domain="[('district_id', '=', district)]",
+        domain="[('district_id', '=?', district)]",
         tracking=True,
     )
     shehia_name = fields.Char(
@@ -125,6 +130,49 @@ class ResPartner(models.Model):
                 partner.shehia_name = parts[-1] if len(parts) > 1 else partner.address
             else:
                 partner.shehia_name = ""
+
+    @api.onchange("region")
+    def _onchange_region_custom(self):
+        if self.region:
+            if self.district and self.district.province_id != self.region:
+                self.district = False
+                self.shehia_id = False
+            elif self.shehia_id and self.shehia_id.region_id != self.region:
+                self.shehia_id = False
+        else:
+            self.district = False
+            self.shehia_id = False
+
+    @api.onchange("district")
+    def _onchange_district_custom(self):
+        if self.district:
+            if self.district.province_id and self.region != self.district.province_id:
+                self.region = self.district.province_id
+            if self.shehia_id and self.shehia_id.district_id != self.district:
+                self.shehia_id = False
+        else:
+            self.shehia_id = False
+
+    @api.onchange("shehia_id")
+    def _onchange_shehia_id_custom(self):
+        if self.shehia_id:
+            self.street2 = self.shehia_id.name
+            if self.shehia_id.district_id and self.district != self.shehia_id.district_id:
+                self.district = self.shehia_id.district_id
+            if self.shehia_id.region_id and self.region != self.shehia_id.region_id:
+                self.region = self.shehia_id.region_id
+
+    @api.onchange("street", "shehia_id")
+    def _onchange_street_shehia_sync(self):
+        parts = []
+        if self.street:
+            parts.append(self.street.strip())
+        if self.shehia_id:
+            parts.append(self.shehia_id.name.strip())
+        elif self.street2:
+            parts.append(self.street2.strip())
+        if parts:
+            self.address = " , ".join(parts)
     benf_post_code = fields.Char(string="Post Code", tracking=True)
     benf_zan_id = fields.Char(string="Zanzibar ID", compute="_compute_benf_zan_id", readonly=True, store=True)
     disability = fields.Selection(

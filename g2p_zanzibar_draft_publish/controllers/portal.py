@@ -93,6 +93,10 @@ class MockPartner:
         self.address = self._data.get('address') or ''
         self.street = self._data.get('street') or ''
         self.shehia_display = getattr(draft_rec, 'shehia_display', '') or self._data.get('street2') or ''
+        if not self.street and self.address and ',' in self.address:
+            self.street = self.address.split(',')[0].strip()
+        if not self.shehia_display and self.address and ',' in self.address:
+            self.shehia_display = self.address.split(',')[1].strip()
         self.street2 = self.shehia_display
         self.benf_post_code = self._data.get('benf_post_code') or ''
         self.disability = self._data.get('disability') or ''
@@ -156,7 +160,14 @@ class PartnerRow:
         # Address & Geographical Fields
         self.region = getattr(partner, 'region_id', partner.env['g2p.region'])
         self.district = getattr(partner, 'district_id', partner.env['g2p.district'])
+        self.street = getattr(partner, 'street', '') or ''
         self.street2 = getattr(partner, 'street2', '') or getattr(partner, 'shehia_display', '') or ''
+        if not self.street2 and hasattr(partner, 'shehia_id') and partner.shehia_id:
+            self.street2 = partner.shehia_id.name
+        if not self.street and getattr(partner, 'address', '') and ',' in partner.address:
+            self.street = partner.address.split(',')[0].strip()
+        if not self.street2 and getattr(partner, 'address', '') and ',' in partner.address:
+            self.street2 = partner.address.split(',')[1].strip()
         self.shehia_display = self.street2
         self.nominee_shehia = getattr(partner, 'nominee_shehia', '') or ''
 
