@@ -58,6 +58,19 @@ class ResPartner(models.Model):
         except Exception as e:
             _logger.warning("Could not execute phone cleanup in init: %s", str(e))
 
+        # Automatically synchronize street2 and shehia_name with shehia_id for existing records
+        try:
+            self.env.cr.execute("""
+                UPDATE res_partner p
+                SET street2 = s.name,
+                    shehia_name = s.name
+                FROM g2p_shehia s
+                WHERE p.shehia_id = s.id 
+                  AND (p.street2 IS NULL OR p.street2 != s.name OR p.shehia_name IS NULL OR p.shehia_name != s.name);
+            """)
+        except Exception as e:
+            _logger.warning("Could not execute shehia/street2 sync in init: %s", str(e))
+
     def _deduplicate_phone_numbers(self):
         for partner in self:
             all_phones = self.env["g2p.phone.number"].sudo().search([("partner_id", "=", partner.id)], order="id asc")
@@ -84,6 +97,17 @@ class ResPartner(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if "shehia_id" in vals:
+                if vals["shehia_id"]:
+                    shehia = self.env["g2p.shehia"].browse(vals["shehia_id"])
+                    if shehia.exists():
+                        vals["street2"] = shehia.name
+                        if "address" not in vals:
+                            street = vals.get("street", "") or ""
+                            parts = [p.strip() for p in [street, shehia.name] if p and p.strip()]
+                            vals["address"] = " , ".join(parts)
+                else:
+                    vals["street2"] = False
             # Requirement: Direct Excel upload shows as 'Yes'
             if self.env.context.get("import_file"):
                 vals["db_import"] = "yes"
@@ -95,7 +119,21 @@ class ResPartner(models.Model):
         return partners
 
     def write(self, vals):
+        if "shehia_id" in vals:
+            if vals["shehia_id"]:
+                shehia = self.env["g2p.shehia"].browse(vals["shehia_id"])
+                if shehia.exists():
+                    vals["street2"] = shehia.name
+            else:
+                vals["street2"] = False
         res = super().write(vals)
+        if ("shehia_id" in vals or "street" in vals) and "address" not in vals:
+            for rec in self:
+                sh_name = rec.shehia_id.name if rec.shehia_id else (rec.street2 or rec.shehia_name or "")
+                parts = [p.strip() for p in [rec.street, sh_name] if p and p.strip()]
+                new_address = " , ".join(parts)
+                if rec.address != new_address:
+                    super(ResPartner, rec).write({"address": new_address})
         if "phone_number_ids" in vals or "phone" in vals:
             self._deduplicate_phone_numbers()
         return res
@@ -161,6 +199,8 @@ class ResPartner(models.Model):
                 self.district = self.shehia_id.district_id
             if self.shehia_id.region_id and self.region != self.shehia_id.region_id:
                 self.region = self.shehia_id.region_id
+        else:
+            self.street2 = False
 
     @api.onchange("street", "shehia_id")
     def _onchange_street_shehia_sync(self):

@@ -102,6 +102,7 @@
             <xpath expr="//field[@name='district']" position="after">
                 <field name="shehia_id" string="Shehia" domain="[('district_id', '=?', district)]" readonly="disabled" options="{'no_create': True}"/>
                 <field name="street" string="House &amp; Street" readonly="disabled"/>
+                <field name="street2" invisible="1"/>
                 <field name="benf_post_code" readonly="disabled"/>
                 <field name="birthdate" readonly="disabled" colspan="2" placeholder="mm/dd/yyyy"/>
                 <field name="age" />
@@ -145,7 +146,7 @@
                     <field name="phone" string="Phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]" />
                     <field name="region" string="Region" />
                     <field name="district" string="District" />
-                    <field name="shehia_name" string="Shehia" filter_domain="['|', '|', ('shehia_name', 'ilike', self), ('address', 'ilike', self), ('street2', 'ilike', self)]" />
+                    <field name="shehia_name" string="Shehia" />
                     <field name="birthdate" string="Date of Birth" />
                     <field name="registration_date" string="Registration Date" />
                     <field name="db_import" string="Imported" />
